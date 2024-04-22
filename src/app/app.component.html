@@ -18,14 +18,32 @@
 <!--            </ng-template>-->
 <!--        </p-autoComplete>-->
 
-        @for (item of selectedItems | keyvalue; track item.key) {
-            <div>{{item.value.name}}</div>
-            <ul>
-                @for (recipe of item.value.recipes | keyvalue; track recipe.key) {
-                    <li>{{recipe.value.name}}</li>
-                }
-            </ul>
-        }
+        <p-treeTable [value]="selectedItems">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Total</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr [ttRow]="rowNode">
+                    <td>
+                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                        @if (rowData.image) {
+                            <span>
+                                    <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32" priority>
+                                </span>
+                        }
+                        {{rowData.name}}
+                    </td>
+                    <td>
+                        <div>
+                            <span>{{rowData.amount}}</span>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-treeTable>
     </div>
     <div class="border-left-1 surface-border overflow-y-auto p-2">
         <h3>Add an item</h3>
@@ -35,7 +53,7 @@
         </span>
 
 
-        @for (item of itemsToSearch; track item.key) {
+        @for (item of itemsToSearch$ | async; track item.key) {
             <div class="flex align-items-center cursor-pointer hover:bg-primary py-1" (click)="selectItem(item)">
                 <span>
                     <img [ngSrc]="item.image" [alt]="item.name" class="mr-2" width="32" height="32" priority>

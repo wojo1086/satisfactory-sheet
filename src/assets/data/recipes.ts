@@ -29,7 +29,7 @@ export interface Item {
     }
 }
 
-export const Recipes = {
+export const Recipes: Item = {
     hatcherRemains: {
         name: "Hatcher Remains",
         piped: false,
