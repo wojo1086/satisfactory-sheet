@@ -3,33 +3,44 @@
 </header>
 <main class="h-screen">
     <div>
-        <p-autoComplete [(ngModel)]="selectedFilteredRecipe"
-                        [suggestions]="filteredRecipes"
-                        (completeMethod)="filterRecipes($event)"
-                        (onSelect)="selectRecipe($event)"
-                        optionLabel="name"
-                        [dropdown]="true"
-                        placeholder="Add an item">
-            <ng-template let-recipe pTemplate="item">
-                <div class="flex align-items-center">
-                    <img [ngSrc]="recipe.image" [alt]="recipe.name" class="mr-2" width="32" height="32" priority>
-                    <span>{{recipe.name}}</span>
-                </div>
-            </ng-template>
-        </p-autoComplete>
+<!--        <p-autoComplete [(ngModel)]="selectedFilteredRecipe"-->
+<!--                        [suggestions]="filteredRecipes"-->
+<!--                        (completeMethod)="filterRecipes($event)"-->
+<!--                        (onSelect)="selectRecipe($event)"-->
+<!--                        optionLabel="name"-->
+<!--                        [dropdown]="true"-->
+<!--                        placeholder="Add an item">-->
+<!--            <ng-template let-recipe pTemplate="item">-->
+<!--                <div class="flex align-items-center">-->
+<!--                    <img [ngSrc]="recipe.image" [alt]="recipe.name" class="mr-2" width="32" height="32" priority>-->
+<!--                    <span>{{recipe.name}}</span>-->
+<!--                </div>-->
+<!--            </ng-template>-->
+<!--        </p-autoComplete>-->
+
+        @for (item of selectedItems | keyvalue; track item.key) {
+            <div>{{item.value.name}}</div>
+            <ul>
+                @for (recipe of item.value.recipes | keyvalue; track recipe.key) {
+                    <li>{{recipe.value.name}}</li>
+                }
+            </ul>
+        }
     </div>
-    <div class="border-left-1 surface-border overflow-y-auto">
-        <span class="p-input-icon-left">
+    <div class="border-left-1 surface-border overflow-y-auto p-2">
+        <h3>Add an item</h3>
+        <span class="p-input-icon-left mb-4">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" placeholder="Search" [formControl]="searchText">
+            <input pInputText type="text" class="w-full" placeholder="Search" [formControl]="searchText">
         </span>
 
-        @for (recipe of recipes | keyvalue; track recipe.key) {
-            <div class="flex">
+
+        @for (item of itemsToSearch; track item.key) {
+            <div class="flex align-items-center cursor-pointer hover:bg-primary py-1" (click)="selectItem(item)">
                 <span>
-                    <img [ngSrc]="'../assets/images/'+recipe.key+'.png'" [alt]="recipe.value.name" class="mr-2" width="32" height="32" priority>
+                    <img [ngSrc]="item.image" [alt]="item.name" class="mr-2" width="32" height="32" priority>
                 </span>
-                <span>{{recipe.value.name}}</span>
+                <span>{{item.name}}</span>
             </div>
         }
     </div>

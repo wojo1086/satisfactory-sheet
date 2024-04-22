@@ -1,3 +1,34 @@
+export type RecipesKey = keyof typeof Recipes;
+
+export interface Item {
+    [key: string]: {
+        name: string;
+        piped: boolean;
+        isRaw: boolean;
+        handPicked: boolean;
+        default: string;
+        recipes: {
+            [key: string]: {
+                name: string;
+                machine: string;
+                inputs: {
+                    [key: string]: {
+                        amount: number;
+                        rate: number;
+                    };
+                };
+                outputs: {
+                    [key: string]: {
+                        amount: number;
+                        rate: number;
+                    };
+                };
+                parentRecipe: string;
+            }
+        }
+    }
+}
+
 export const Recipes = {
     hatcherRemains: {
         name: "Hatcher Remains",
