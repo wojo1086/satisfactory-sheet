@@ -18,39 +18,134 @@
 <!--            </ng-template>-->
 <!--        </p-autoComplete>-->
 
-        <p-treeTable [value]="selectedItems">
-            <ng-template pTemplate="header">
+        <p-treeTable [value]="selectedItems" (onEditComplete)="editingComplete()">
+            <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th>Name</th>
-                    <th>Total</th>
+                    <th>Amount</th>
+                    <th></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-                <tr [ttRow]="rowNode">
-                    <td>
+                <tr [ttRow]="rowNode" class="hover:bg-black-alpha-10 delete-row">
+                    <td class="flex align-items-center" style="height: 65px">
                         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                         @if (rowData.image) {
                             <span>
-                                    <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32" priority>
-                                </span>
+                                <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32" priority>
+                            </span>
                         }
-                        {{rowData.name}}
+                        <span [ngClass]="{'pl-5 text-gray-500': !rowData.item}">{{rowData.name}}</span>
                     </td>
-                    <td>
-                        <div>
-                            <span>{{rowData.amount}}</span>
-                        </div>
+                    @if (!rowData.item) {
+                        <td ttEditableColumn style="height: 65px">
+                            <p-treeTableCellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="number" [(ngModel)]="rowData.amount">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <span class="text-gray-500">
+                                        {{rowData.amount}}
+                                    </span>
+                                </ng-template>
+                            </p-treeTableCellEditor>
+                        </td>
+                    } @else {
+                        <td class="font-bold" style="height: 65px" [ngClass]="{'text-green-500': rowData.amount > 0, 'text-red-500': rowData.amount < 0}">
+                            {{rowData.amount}}
+                            @if (rowData.item.piped) {
+                                m<sup>3</sup>
+                            } @else {
+                                min
+                            }
+                        </td>
+                    }
+                    <td style="height: 65px" class="text-right">
+                        <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" (click)="deleteItem(rowNode)"></p-button>
                     </td>
                 </tr>
             </ng-template>
         </p-treeTable>
+
+        @if (!selectedItems.length) {
+            <p class="text-center">You currently don't have any items being tracked.</p>
+            <p class="text-center">Add them from the right sidebar to start tracking production.</p>
+        }
+
+<!--        @for (col of columns; track $index) {-->
+<!--            <td ttEditableColumn [ttEditableColumnDisabled]="$index == 0" [ngClass]="{ 'p-toggler-column': $index === 0 }">-->
+<!--                @if ($index === 0) {-->
+<!--                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>-->
+<!--                    @if (rowData.image) {-->
+<!--                        <span>-->
+<!--                                        <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32" priority>-->
+<!--                                    </span>-->
+<!--                    }-->
+<!--                }-->
+
+
+
+<!--                <p-treeTableCellEditor>-->
+<!--                    <ng-template pTemplate="input">-->
+<!--                        <input pInputText type="text" [(ngModel)]="rowData[col.field]" />-->
+<!--                    </ng-template>-->
+<!--                    <ng-template pTemplate="output">{{ rowData[col.field] }}</ng-template>-->
+<!--                </p-treeTableCellEditor>-->
+<!--            </td>-->
+<!--        }-->
+
+<!--            <span>{{rowData.name}}</span>-->
+
+<!--            @if (!rowData.item) {-->
+<!--                <td ttEditableColumn [ttEditableColumnDisabled]="$index === 0">-->
+<!--                    <p-treeTableCellEditor>-->
+<!--                        <ng-template pTemplate="input">-->
+<!--                            <input pInputText type="number" [(ngModel)]="rowData[col.field]">-->
+<!--                        </ng-template>-->
+<!--                        <ng-template pTemplate="output">-->
+<!--                            {{rowData[col.field]}}-->
+<!--                        </ng-template>-->
+<!--                    </p-treeTableCellEditor>-->
+<!--                </td>-->
+<!--            } @else {-->
+<!--                <td>{{rowData[col.field]}}</td>-->
+<!--            }-->
+
+<!--        <p-treeTable [value]="selectedItems" [columns]="treeColumns" (onEditComplete)="recalculateAmounts($event)">-->
+<!--            <ng-template pTemplate="header" let-columns>-->
+<!--                <tr>-->
+<!--                    @for (col of columns; track $index) {-->
+<!--                        <th>-->
+<!--                            {{ col.header }}-->
+<!--                        </th>-->
+<!--                    }-->
+<!--                </tr>-->
+<!--            </ng-template>-->
+<!--            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">-->
+<!--                <tr [ttRow]="rowNode">-->
+<!--                    @for (col of columns; track $index) {-->
+<!--                        <td class="flex align-items-center" [ngClass]="{ 'p-toggler-column': $index === 0 }">-->
+<!--                            @if ($index === 0) {-->
+<!--                                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>-->
+<!--                            }-->
+<!--                        </td>-->
+<!--                    }-->
+<!--                </tr>-->
+<!--            </ng-template>-->
+<!--        </p-treeTable>-->
+
     </div>
+
     <div class="border-left-1 surface-border overflow-y-auto p-2">
         <h3>Add an item</h3>
-        <span class="p-input-icon-left mb-4">
+        <span class="p-input-icon-left mb-2">
             <i class="pi pi-search"></i>
             <input pInputText type="text" class="w-full" placeholder="Search" [formControl]="searchText">
         </span>
+<!--        <div class="mb-4">-->
+<!--            <p-checkbox [(ngModel)]="addPrecursor" [binary]="true" inputId="precursor"></p-checkbox>-->
+<!--            <label for="precursor" class="pl-2 text-gray-400">Add precursor items</label>-->
+<!--        </div>-->
 
 
         @for (item of itemsToSearch$ | async; track item.key) {
@@ -63,4 +158,3 @@
         }
     </div>
 </main>
-
