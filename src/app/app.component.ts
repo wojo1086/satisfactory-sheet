@@ -1,18 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Recipes, RecipesKey } from '../assets/data/recipes';
-import { FilterService, TreeNode } from 'primeng/api';
 import { AsyncPipe, JsonPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-import { combineLatestWith, map, startWith, Subject } from 'rxjs';
-import { TreeTableEditEvent, TreeTableModule } from 'primeng/treetable';
+import { combineLatestWith, from, map, startWith, Subject, Subscription } from 'rxjs';
+import { TreeTableModule } from 'primeng/treetable';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
+import { Auth, signInWithPopup, GoogleAuthProvider, UserCredential, user, User, signOut } from '@angular/fire/auth';
+import { collection, collectionData, Firestore, getDoc, query, where } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-root',
@@ -21,9 +22,13 @@ import { CheckboxModule } from 'primeng/checkbox';
     templateUrl: './app.component.html',
     styleUrl: './app.component.sass'
 })
-export class AppComponent implements OnInit {
-    private filterService = inject(FilterService);
+export class AppComponent implements OnInit, OnDestroy {
+    private auth = inject(Auth);
+    private firestore = inject(Firestore);
+    private productionCollection = collection(this.firestore, 'production');
     private triggerSearchManually$ = new Subject<boolean>();
+    user$ = user(this.auth);
+    userSubscription!: Subscription;
     recipes = Recipes;
     masterItems: any = {};
     selectedFilteredRecipe: any;
@@ -51,48 +56,18 @@ export class AppComponent implements OnInit {
     }));
 
     ngOnInit() {
-        this.loadData();
-        // for(const key in Recipes) {
-        //     if (!this.masterItems[key as RecipesKey]) {
-        //         this.masterItems[key as RecipesKey] = {...Recipes[key as RecipesKey]};
-        //     }
-        //
-        //     for (const itemKey in Recipes[key as RecipesKey].recipes) {
-        //         for (const input in Recipes[key as RecipesKey].recipes[itemKey].inputs) {
-        //             if (!this.masterItems[input as RecipesKey]) {
-        //                 this.masterItems[input as RecipesKey] = {...Recipes[input as RecipesKey]};
-        //             }
-        //         }
-        //         const objCopy = {...Recipes[key as RecipesKey].recipes[itemKey]};
-        //     }
-        // }
-        //
-        // console.log(this.masterItems);
-
-    }
-
-    filterRecipes(event: AutoCompleteCompleteEvent) {
-        const query = event.query.toLowerCase();
-        // const filteredRecipes: any[] = [];
-        const filteredRecipes = Object.keys(Recipes).sort().filter(key => !this.alreadySelected(key) || !Recipes[key as RecipesKey].handPicked || key.includes(query)).map(key => {
-            return {
-                name: Recipes[key as RecipesKey].name,
-                image: `../assets/images/${key}.png`,
-                key
-                // items
-            };
+        this.userSubscription = this.user$.subscribe((user: User | null) => {
+            console.log(user);
+            if (!user) {
+                this.loadLocalItems();
+            } else {
+                this.loadUserItems(user.uid);
+            }
         });
-        console.log(filteredRecipes);
-        // for (const itemName in Recipes) {
-        //     console.log(itemName);
-        //
-        // }
-
-        this.filteredRecipes = filteredRecipes;
     }
 
-    selectRecipe(event: AutoCompleteSelectEvent) {
-        console.log(event);
+    ngOnDestroy() {
+        this.userSubscription.unsubscribe();
     }
 
     selectItem(item: any) {
@@ -101,7 +76,8 @@ export class AppComponent implements OnInit {
             data: {
                 key: item.key,
                 name: Recipes[item.key as RecipesKey].name,
-                amount: 0,
+                remaining: 0,
+                total: 0,
                 image: `../assets/images/${item.key}.png`,
                 item: Recipes[item.key],
             },
@@ -151,14 +127,17 @@ export class AppComponent implements OnInit {
         this.triggerSearchManually$.next(true);
     }
 
-    editingComplete() {
+    editingComplete(saveData = true) {
         this.selectedItems.forEach(item => {
-            item.data.amount = 0;
+            item.data.remaining = 0;
+            item.data.total = 0;
         });
         this.selectedItems.forEach(item => {
             this.recalculateAmounts(item);
         });
-        this.saveData();
+        if (saveData) {
+            this.saveData();
+        }
     }
 
     recalculateAmounts(item: any) {
@@ -171,7 +150,7 @@ export class AppComponent implements OnInit {
                 const selectedItemInput = this.alreadySelected(inputKey);
                 const recipeInput = Recipes[parentKey].recipes[childKey].inputs[inputKey];
                 if (selectedItemInput) {
-                    selectedItemInput.data.amount -= (child.data.amount * recipeInput.amount) / recipeOutputValues.amount;
+                    selectedItemInput.data.remaining -= (child.data.amount * recipeInput.amount) / recipeOutputValues.amount;
                 }
             }
 
@@ -179,7 +158,8 @@ export class AppComponent implements OnInit {
                 const outputItem = this.alreadySelected(output);
                 const outputRecipe = Recipes[parentKey].recipes[childKey].outputs[output];
                 if (outputItem && child.data.amount !== 0) {
-                    outputItem.data.amount += (child.data.amount / recipeOutputValues.amount) * outputRecipe.amount;
+                    outputItem.data.remaining += (child.data.amount / recipeOutputValues.amount) * outputRecipe.amount;
+                    outputItem.data.total += (child.data.amount / recipeOutputValues.amount) * outputRecipe.amount;
                 }
             }
         });
@@ -191,6 +171,17 @@ export class AppComponent implements OnInit {
         this.saveData();
     }
 
+    signIn() {
+        const provider = new GoogleAuthProvider();
+        from(signInWithPopup(this.auth, provider)).pipe().subscribe((res: UserCredential) => {
+            console.log(res);
+        });
+    }
+
+    signOut() {
+        signOut(this.auth);
+    }
+
     private alreadySelected(key: string) {
         return this.selectedItems.find(item => item.data.key === key);
     }
@@ -200,7 +191,7 @@ export class AppComponent implements OnInit {
             console.log(item);
             return {
                 key: item.data.key,
-                amount: item.data.amount,
+                remaining: item.data.remaining,
                 children: item.children.map((child: { data: { key: any; amount: any; }; }) => {
                     return {
                         key: child.data.key,
@@ -212,15 +203,14 @@ export class AppComponent implements OnInit {
         localStorage.setItem('selectedItems', JSON.stringify(data));
     }
 
-    private loadData() {
+    private loadLocalItems() {
         const data = localStorage.getItem('selectedItems');
         if (data) {
             const parsedData = JSON.parse(data);
-            this.selectedItems = parsedData.map((item: { key: any; amount: any; children: any; }) => {
+            this.selectedItems = parsedData.map((item: { key: any; remaining: any; children: any; }) => {
                 return {
                     data: {
                         key: item.key,
-                        amount: item.amount,
                         name: Recipes[item.key].name,
                         image: `../assets/images/${item.key}.png`,
                         item: Recipes[item.key],
@@ -237,8 +227,17 @@ export class AppComponent implements OnInit {
                     }),
                 };
             });
+            this.editingComplete(false);
         }
+    }
 
+    private loadUserItems(uid: string) {
+        // collectionData(this.productionCollection).subscribe(data => {
+        //     console.log(data);
+        // });
+        collectionData(query(this.productionCollection, where('uid', '==', uid))).subscribe(data => {
+            console.log(data);
+        });
     }
 }
 

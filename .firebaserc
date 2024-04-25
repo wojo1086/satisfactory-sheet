@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "satisfactory-a0b5d": {
+      "hosting": {
+        "satisfactory-sheet": [
+          "satisfactory-a0b5d"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "satisfactory-a0b5d"
+  }
+}

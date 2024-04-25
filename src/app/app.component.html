@@ -1,28 +1,29 @@
-<header>
-
+<header class="flex px-2 justify-content-end align-items-center border-bottom-1 surface-border">
+    @if (user$ | async; as user) {
+        <div class="flex align-items-center">
+            @if (user.photoURL) {
+                <img [ngSrc]="user.photoURL" [alt]="user?.displayName" class="mr-2" width="32" height="32" priority>
+            }
+            <span>{{user?.displayName}}</span>
+        </div>
+        <p-button (click)="signOut()" icon="pi pi-sign-out" [rounded]="true" severity="danger" [text]="true"></p-button>
+    } @else {
+        <div>
+            <p-button (click)="signIn()">
+                <img ngSrc="assets/images/google-logo.png" alt="Google Logo" width="24" height="24">
+                <span class="pl-1">Sign In</span>
+            </p-button>
+        </div>
+    }
 </header>
-<main class="h-screen">
+<main>
     <div>
-<!--        <p-autoComplete [(ngModel)]="selectedFilteredRecipe"-->
-<!--                        [suggestions]="filteredRecipes"-->
-<!--                        (completeMethod)="filterRecipes($event)"-->
-<!--                        (onSelect)="selectRecipe($event)"-->
-<!--                        optionLabel="name"-->
-<!--                        [dropdown]="true"-->
-<!--                        placeholder="Add an item">-->
-<!--            <ng-template let-recipe pTemplate="item">-->
-<!--                <div class="flex align-items-center">-->
-<!--                    <img [ngSrc]="recipe.image" [alt]="recipe.name" class="mr-2" width="32" height="32" priority>-->
-<!--                    <span>{{recipe.name}}</span>-->
-<!--                </div>-->
-<!--            </ng-template>-->
-<!--        </p-autoComplete>-->
-
         <p-treeTable [value]="selectedItems" (onEditComplete)="editingComplete()">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th>Name</th>
-                    <th>Amount</th>
+                    <th>Remaining</th>
+                    <th>Total</th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -50,9 +51,18 @@
                                 </ng-template>
                             </p-treeTableCellEditor>
                         </td>
+                        <td></td>
                     } @else {
-                        <td class="font-bold" style="height: 65px" [ngClass]="{'text-green-500': rowData.amount > 0, 'text-red-500': rowData.amount < 0}">
-                            {{rowData.amount}}
+                        <td class="font-bold" style="height: 65px" [ngClass]="{'text-green-500': rowData.remaining > 0, 'text-red-500': rowData.remaining < 0}">
+                            {{rowData.remaining}}
+                            @if (rowData.item.piped) {
+                                m<sup>3</sup>
+                            } @else {
+                                min
+                            }
+                        </td>
+                        <td>
+                            {{rowData.total}}
                             @if (rowData.item.piped) {
                                 m<sup>3</sup>
                             } @else {
@@ -60,6 +70,7 @@
                             }
                         </td>
                     }
+
                     <td style="height: 65px" class="text-right">
                         <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" (click)="deleteItem(rowNode)"></p-button>
                     </td>
