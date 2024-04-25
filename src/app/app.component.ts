@@ -13,7 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Auth, signInWithPopup, GoogleAuthProvider, UserCredential, user, User, signOut } from '@angular/fire/auth';
-import { collection, collectionData, Firestore, getDoc, query, where } from '@angular/fire/firestore';
+import { collection, collectionData, doc, docData, Firestore, getDoc, query, where } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-root',
@@ -232,27 +232,12 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     private loadUserItems(uid: string) {
-        // collectionData(this.productionCollection).subscribe(data => {
-        //     console.log(data);
-        // });
-        collectionData(query(this.productionCollection, where('uid', '==', uid))).subscribe(data => {
+        const userData = doc(this.firestore, `production/${uid}`)
+        docData(userData).subscribe((data: any) => {
             console.log(data);
+            if (!data.key) {
+                console.log('old format');
+            }
         });
-    }
-}
-
-
-class ItemList {
-    head = null;
-    constructor(head = null) {
-        this.head = head;
-    }
-}
-
-class ItemNode {
-    data = null;
-    next = null;
-    constructor(data = null) {
-        this.data = data;
     }
 }
