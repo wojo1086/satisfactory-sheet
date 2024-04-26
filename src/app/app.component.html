@@ -43,19 +43,19 @@
                         <span [ngClass]="{'pl-5 text-gray-500': !rowData.item}">{{rowData.name}}</span>
                     </td>
                     @if (!rowData.item) {
+                        <td></td>
                         <td ttEditableColumn style="height: 65px">
                             <p-treeTableCellEditor>
                                 <ng-template pTemplate="input">
                                     <input pInputText type="number" [(ngModel)]="rowData.amount">
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    <span class="text-gray-500">
+                                    <span class="text-gray-500 cursor-pointer">
                                         {{rowData.amount}}
                                     </span>
                                 </ng-template>
                             </p-treeTableCellEditor>
                         </td>
-                        <td></td>
                     } @else {
                         <td class="font-bold" style="height: 65px" [ngClass]="{'text-green-500': rowData.remaining > 0, 'text-red-500': rowData.remaining < 0}">
                             {{rowData.remaining}}
