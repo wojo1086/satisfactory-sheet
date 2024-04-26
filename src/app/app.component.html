@@ -3,6 +3,9 @@
         <img ngSrc="assets/images/logo-small.webp" alt="Satisfactory Logo" height="35" width="182">
         <span class="text-primary">Sheet</span>
     </div>
+    <div class="pr-8">
+        <p-button [link]="true" label="How it works" (click)="showHowItWorks()"></p-button>
+    </div>
     @if (user$ | async; as user) {
         <div class="flex align-items-center">
             @if (user.photoURL) {
@@ -56,9 +59,10 @@
                                 </ng-template>
                             </p-treeTableCellEditor>
                         </td>
+                        <td></td>
                     } @else {
                         <td class="font-bold" style="height: 65px" [ngClass]="{'text-green-500': rowData.remaining > 0, 'text-red-500': rowData.remaining < 0}">
-                            {{rowData.remaining}}
+                            {{rowData.remaining | number: '0.0-2'}}
                             @if (rowData.item.piped) {
                                 m<sup>3</sup>
                             } @else {
@@ -73,11 +77,10 @@
                                 min
                             }
                         </td>
+                        <td style="height: 65px" class="text-right">
+                            <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" (click)="deleteItem(rowNode)"></p-button>
+                        </td>
                     }
-
-                    <td style="height: 65px" class="text-right">
-                        <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" (click)="deleteItem(rowNode)"></p-button>
-                    </td>
                 </tr>
             </ng-template>
         </p-treeTable>
@@ -111,3 +114,27 @@
 </main>
 <p-toast></p-toast>
 <p-confirmDialog position="top" [closeOnEscape]="false" [closable]="false"></p-confirmDialog>
+<p-dialog header="How it works" [(visible)]="howItWorksIsVisible" [style]="{'min-width': '50vw'}">
+    <p class="pb-2">Initially, you won't have any recipes being tracked. You will need to select them from the right sidebar by clicking on their name. They will then show up in the main section of the page.</p>
+    <div class="text-center pb-2">
+        <img ngSrc="assets/images/how_it_works/sidebar.png" alt="Sidebar of items" width="200" height="516" class="shadow-7">
+    </div>
+    <div class="text-center pb-2">
+        <img ngSrc="assets/images/how_it_works/main-collapsed.png" alt="Main content of collapsed page" width="1000" height="134" class="shadow-7">
+    </div>
+    <p class="pb-2">Clicking on the arrow to the left will reveal the recipes for that item. <b class="text-primary">Note:</b> The default, non-alternate recipe has the same name as the item itself.</p>
+    <div class="text-center pb-2">
+        <img ngSrc="assets/images/how_it_works/main-uncollapsed.png" alt="Main content of uncollapsed page" width="1000" height="241" class="shadow-7">
+    </div>
+    <p class="pb-2">Clicking on the number for the recipe will switch to edit mode where you can enter the total production rate for that recipe. Hitting ENTER or clicking out of the input will leave edit mode and save your data.</p>
+    <div class="text-center pb-2">
+        <img ngSrc="assets/images/how_it_works/main-uncollapsed-editing.png" alt="Main content of uncollapsed page in edit mode" width="1000" height="241" class="shadow-7">
+    </div>
+    <p class="pb-2">Once done editing, the total and remaining values will update to reflect the changes. It's worth noting that the inputs for the recipe you edited will also adjust to account for the new rate if they're also in the list of items to track.</p>
+    <div class="text-center pb-2">
+        <img ngSrc="assets/images/how_it_works/main-uncollapsed-saved.png" alt="Main content of uncollapsed page in edit mode" width="1000" height="325" class="shadow-7">
+    </div>
+    <p class="pb-2">The <b class="text-primary">Total</b> column tells you how much you're making of that item across all recipes. The <b class="text-primary">Remaining</b> column tells you how much you have left after that item is accounted for in all recipes. <i class="text-primary">total - (sum from all recipes)</i>.</p>
+    <p class="pb-2">If you are using this tool and you <span class="text-primary">are NOT</span> logged in, your data is saved locally in your browser. If you decide to log in, your data will be saved in the cloud in Google Firebase.</p>
+    <p class="text-green-500">I do NOT store anything about you except your production rates and will gladly prove it to whomever is concerned.</p>
+</p-dialog>

@@ -4,7 +4,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Recipes, RecipesKey } from '../assets/data/recipes';
-import { AsyncPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, DecimalPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { combineLatestWith, from, map, startWith, Subject, Subscription, take } from 'rxjs';
 import { TreeTableModule } from 'primeng/treetable';
@@ -17,6 +17,7 @@ import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
     selector: 'app-root',
@@ -37,7 +38,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
         RippleModule,
         CheckboxModule,
         ToastModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        DialogModule,
+        DecimalPipe
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './app.component.html',
@@ -53,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     recipes = Recipes;
     selectedItems: any[] = [];
     searchText = new FormControl('');
+    howItWorksIsVisible = false;
 
     itemsToSearch$ = this.searchText.valueChanges.pipe(
         startWith(''),
@@ -164,6 +168,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     signOut() {
         signOut(this.auth);
+    }
+
+    showHowItWorks() {
+        this.howItWorksIsVisible = true;
     }
 
     private saveData() {
