@@ -12,12 +12,13 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
-import { Auth, GoogleAuthProvider, signInWithPopup, signOut, User, user, UserCredential } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, signOut, User, user } from '@angular/fire/auth';
 import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
+import { getAnalytics, logEvent } from '@angular/fire/analytics';
 
 @Component({
     selector: 'app-root',
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private confirmationService = inject(ConfirmationService);
     private auth = inject(Auth);
     private firestore = inject(Firestore);
+    private analytics = getAnalytics();
     private triggerSearchManually$ = new Subject<boolean>();
     user$ = user(this.auth);
     userSubscription!: Subscription;
@@ -172,6 +174,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     showHowItWorks() {
         this.howItWorksIsVisible = true;
+        logEvent(this.analytics, 'how_it_works', { action: 'open' });
     }
 
     private saveData() {
