@@ -1,41 +1,58 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Recipes, RecipesKey } from '../assets/data/recipes';
-import { AsyncPipe, JsonPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-import { combineLatestWith, from, map, startWith, Subject, Subscription } from 'rxjs';
+import { combineLatestWith, from, map, startWith, Subject, Subscription, take } from 'rxjs';
 import { TreeTableModule } from 'primeng/treetable';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
-import { Auth, signInWithPopup, GoogleAuthProvider, UserCredential, user, User, signOut } from '@angular/fire/auth';
-import { collection, collectionData, doc, docData, Firestore, getDoc, query, where } from '@angular/fire/firestore';
+import { Auth, GoogleAuthProvider, signInWithPopup, signOut, User, user, UserCredential } from '@angular/fire/auth';
+import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet, AutoCompleteModule, FormsModule, NgOptimizedImage, KeyValuePipe, InputTextModule, ReactiveFormsModule, TreeTableModule, AsyncPipe, NgClass, TableModule, JsonPipe, ButtonModule, RippleModule, CheckboxModule],
+    imports: [
+        RouterOutlet,
+        AutoCompleteModule,
+        FormsModule,
+        NgOptimizedImage,
+        KeyValuePipe,
+        InputTextModule,
+        ReactiveFormsModule,
+        TreeTableModule,
+        AsyncPipe,
+        NgClass,
+        TableModule,
+        ButtonModule,
+        RippleModule,
+        CheckboxModule,
+        ToastModule,
+        ConfirmDialogModule
+    ],
+    providers: [ConfirmationService, MessageService],
     templateUrl: './app.component.html',
     styleUrl: './app.component.sass'
 })
 export class AppComponent implements OnInit, OnDestroy {
+    private confirmationService = inject(ConfirmationService);
     private auth = inject(Auth);
     private firestore = inject(Firestore);
-    private productionCollection = collection(this.firestore, 'production');
     private triggerSearchManually$ = new Subject<boolean>();
     user$ = user(this.auth);
     userSubscription!: Subscription;
     recipes = Recipes;
-    masterItems: any = {};
-    selectedFilteredRecipe: any;
-    filteredRecipes: any[] = [];
     selectedItems: any[] = [];
     searchText = new FormControl('');
-    addPrecursor = new FormControl(false);
 
     itemsToSearch$ = this.searchText.valueChanges.pipe(
         startWith(''),
@@ -57,7 +74,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.userSubscription = this.user$.subscribe((user: User | null) => {
-            console.log(user);
             if (!user) {
                 this.loadLocalItems();
             } else {
@@ -92,36 +108,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 };
             }),
         });
-
-        // if (this.addPrecursor) {
-            // for (const key in Recipes[item.key as RecipesKey].recipes) {
-        //
-        //         for(const input in Recipes[item.key as RecipesKey].recipes[key].inputs) {
-        //
-        //         }
-                // if (!this.alreadySelected(key)) {
-                //     copy.push({
-                //         data: {
-                //             key,
-                //             name: Recipes[key as RecipesKey].name,
-                //             amount: 0,
-                //             image: `../assets/images/${key}.png`,
-                //             item: Recipes[key as RecipesKey],
-                //         },
-                //         children: Object.keys(Recipes[key as RecipesKey].recipes).map(key => {
-                //             return {
-                //                 data: {
-                //                     name: Recipes[key as RecipesKey].recipes[key].name,
-                //                     amount: 0,
-                //                     parentKey: key,
-                //                     key
-                //                 },
-                //             };
-                //         }),
-                //     });
-                // }
-            // }
-        // }
         this.selectedItems = [...copy];
         this.saveData();
         this.triggerSearchManually$.next(true);
@@ -173,70 +159,156 @@ export class AppComponent implements OnInit, OnDestroy {
 
     signIn() {
         const provider = new GoogleAuthProvider();
-        from(signInWithPopup(this.auth, provider)).pipe().subscribe((res: UserCredential) => {
-            console.log(res);
-        });
+        from(signInWithPopup(this.auth, provider)).pipe(take(1)).subscribe();
     }
 
     signOut() {
         signOut(this.auth);
     }
 
+    private saveData() {
+        this.user$.pipe(take(1)).subscribe((user: User | null) => {
+            if (user) {
+                this.saveCloudData(user.uid);
+            } else {
+                this.saveLocalData();
+            }
+        });
+    }
+
     private alreadySelected(key: string) {
         return this.selectedItems.find(item => item.data.key === key);
     }
 
-    private saveData() {
-        const data = this.selectedItems.map(item => {
-            console.log(item);
-            return {
-                key: item.data.key,
-                remaining: item.data.remaining,
-                children: item.children.map((child: { data: { key: any; amount: any; }; }) => {
-                    return {
-                        key: child.data.key,
-                        amount: child.data.amount
-                    }
-                })
-            }
-        });
+    private clearLocalData() {
+        localStorage.removeItem('selectedItems');
+    }
+
+    private saveLocalData() {
+        const data = this.prepareSaveData();
         localStorage.setItem('selectedItems', JSON.stringify(data));
+    }
+
+    private saveCloudData(uid: string): Promise<any> {
+        const userDataDoc = doc(this.firestore, `production/${uid}`);
+        return setDoc(userDataDoc, this.prepareSaveData());
+    }
+
+    private prepareSaveData() {
+        const saveObj: any = {};
+        this.selectedItems.forEach(item => {
+            saveObj[item.data.key] = {};
+            item.children.forEach((child: any) => {
+                saveObj[item.data.key][child.data.key] = child.data.amount;
+            });
+        });
+        return saveObj;
     }
 
     private loadLocalItems() {
         const data = localStorage.getItem('selectedItems');
         if (data) {
             const parsedData = JSON.parse(data);
-            this.selectedItems = parsedData.map((item: { key: any; remaining: any; children: any; }) => {
-                return {
-                    data: {
-                        key: item.key,
-                        name: Recipes[item.key].name,
-                        image: `../assets/images/${item.key}.png`,
-                        item: Recipes[item.key],
-                    },
-                    children: item.children.map((child: { key: any; amount: any; }) => {
-                        return {
-                            data: {
-                                name: Recipes[item.key].recipes[child.key].name,
-                                amount: child.amount,
-                                parentKey: item.key,
-                                key: child.key
-                            },
-                        };
-                    }),
-                };
-            });
+            this.prepareLoadData(parsedData);
             this.editingComplete(false);
         }
     }
 
+    private prepareLoadData(data: any) {
+        const selectedItems = [];
+        for (const parentKey in data) {
+            selectedItems.push({
+                data: {
+                    key: parentKey,
+                    name: Recipes[parentKey].name,
+                    remaining: 0,
+                    total: 0,
+                    image: `../assets/images/${parentKey}.png`,
+                    item: Recipes[parentKey],
+                },
+                children: Object.keys(data[parentKey]).map(key => {
+                    return {
+                        data: {
+                            name: Recipes[parentKey].recipes[key].name,
+                            amount: data[parentKey][key],
+                            parentKey,
+                            key
+                        },
+                    };
+                }),
+            });
+        }
+        this.selectedItems = [...selectedItems];
+    }
+
+    private loadOldCloudFormat(data: any) {
+        const selectedItems = [];
+        for (const parentKey in data) {
+            if (data[parentKey].total > 0) {
+                selectedItems.push({
+                    data: {
+                        key: parentKey,
+                        name: Recipes[parentKey].name,
+                        remaining: 0,
+                        total: 0,
+                        image: `../assets/images/${parentKey}.png`,
+                        item: Recipes[parentKey],
+                    },
+                    children: Object.keys(data[parentKey].recipes).map(recipeKey => {
+                        return {
+                            data: {
+                                name: Recipes[parentKey].recipes[recipeKey].name,
+                                amount: data[parentKey].recipes[recipeKey].rate,
+                                parentKey,
+                                key: recipeKey
+                            },
+                        };
+                    }),
+                });
+            }
+        }
+        this.selectedItems = [...selectedItems];
+    }
+
     private loadUserItems(uid: string) {
         const userData = doc(this.firestore, `production/${uid}`)
-        docData(userData).subscribe((data: any) => {
-            console.log(data);
-            if (!data.key) {
-                console.log('old format');
+        docData(userData).pipe(take(1)).subscribe((data: any) => {
+            const localData = localStorage.getItem('selectedItems');
+            if (data && localData) {
+                this.confirmationService.confirm({
+                    message: 'You have a local save and a cloud save. Which would you like to use?',
+                    header: 'Data Conflict',
+                    icon: 'pi pi-exclamation-triangle',
+                    acceptIcon: 'none',
+                    rejectIcon: 'none',
+                    acceptLabel: 'Cloud',
+                    rejectLabel: 'Local',
+                    rejectButtonStyleClass: 'p-button-text',
+                    accept: () => {
+                        if (data.key) {
+                            console.log('old format');
+                        } else {
+                            this.prepareLoadData(data);
+                            this.editingComplete(false);
+                        }
+                    },
+                    reject: () => {
+                        this.loadLocalItems();
+                        this.saveCloudData(uid).then(() => {
+                            this.clearLocalData();
+                        });
+                    }
+                });
+            } else if (localData) {
+                this.loadLocalItems();
+            } else if (data) {
+                if (data['ironOre']?.total !== undefined) {
+                    this.loadOldCloudFormat(data);
+                    this.editingComplete();
+                } else {
+                    this.prepareLoadData(data);
+                    this.editingComplete(false);
+                }
             }
         });
     }
