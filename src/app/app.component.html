@@ -1,10 +1,12 @@
 <header class="flex px-2 align-items-center border-bottom-1 surface-border">
     <div class="flex-1">
-        <img ngSrc="assets/images/logo-small.webp" alt="Satisfactory Logo" height="35" width="182" priority>
+        <img ngSrc="assets/images/logo-small.webp" alt="Satisfactory Logo" height="35" width="182" priority class="lg:inline-block hidden">
+        <img ngSrc="assets/images/logo-small.webp" alt="Satisfactory Logo" height="28" width="144" priority class="lg:hidden inline-block">
         <span class="text-primary">Sheet</span>
     </div>
-    <div class="lg:pr-8">
-        <p-button [link]="true" label="How it works" (click)="showHowItWorks()"></p-button>
+    <div class="lg:pr-8 pr-4">
+        <p-button [link]="true" label="How it works" (click)="showHowItWorks()" class="hidden lg:block"></p-button>
+        <p-button icon="pi pi-question-circle" class="block lg:hidden" (click)="showHowItWorks()" [text]="true" [rounded]="true"></p-button>
     </div>
     @if (user$ | async; as user) {
         <div class="flex align-items-center">
@@ -14,22 +16,26 @@
         </div>
     } @else {
         <div>
-            <p-button (click)="signIn()">
+            <p-button (click)="signIn()" class="lg:block hidden">
                 <img ngSrc="assets/images/google-logo.png" alt="Google Logo" width="24" height="24">
+                <span class="pl-1">Sign In</span>
+            </p-button>
+
+            <p-button (click)="signIn()" class="lg:hidden block" size="small">
+                <img ngSrc="assets/images/google-logo.png" alt="Google Logo" width="16" height="16">
                 <span class="pl-1">Sign In</span>
             </p-button>
         </div>
     }
 </header>
 <main>
-    <div class="block lg:hidden">
-        <p-autoComplete [suggestions]="filteredItems" [formControl]="autocompleteSearch" delay="100"
+    <div class="block lg:hidden p-2 w-full">
+        <p-autoComplete [suggestions]="filteredItems" [formControl]="autocompleteSearch" delay="100" class="w-full"
+                        styleClass="w-full" inputStyleClass="w-full" placeholder="Add an item" [dropdown]="true" scrollHeight="400px"
                         optionLabel="name" (onSelect)="selectAutocompleteItem($event)" (completeMethod)="filterItems($event)">
             <ng-template let-item pTemplate="item">
-                <div class="flex align-items-center">
-                    <div>
-                        <img [ngSrc]="item.image" [alt]="item.name" class="mr-2" width="32" height="32" priority>
-                    </div>
+                <div class="flex align-items-center py-2">
+                    <img [ngSrc]="item.image" [alt]="item.name" class="mr-2" width="32" height="32" priority>
                     <div>{{item.name}}</div>
                 </div>
 
@@ -50,37 +56,13 @@
             <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
                 <tr [ttRow]="rowNode" class="hover:bg-black-alpha-10 delete-row">
                     @if (rowData.item) {
-
-                    })
-                    <td class="flex align-items-center" style="height: 65px">
-                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                        @if (rowData.image) {
+                        <td class="flex align-items-center" style="height: 65px">
+                            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                             <span>
                                 <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32" priority>
                             </span>
-                        }
-                        @if (rowData.item) {
                             <span class="hidden lg:block">{{rowData.name}}</span>
-                        } @else {
-                            <span class="lg:pl-5 text-gray-500 block">{{rowData.name}}</span>
-                        }
-                    </td>
-                    @if (!rowData.item) {
-                        <td></td>
-                        <td ttEditableColumn style="height: 65px">
-                            <p-treeTableCellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="number" [(ngModel)]="rowData.amount">
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <span class="text-gray-500 cursor-pointer">
-                                        {{rowData.amount}}
-                                    </span>
-                                </ng-template>
-                            </p-treeTableCellEditor>
                         </td>
-                        <td></td>
-                    } @else {
                         <td class="font-bold" style="height: 65px" [ngClass]="{'text-green-500': rowData.remaining > 0, 'text-red-500': rowData.remaining < 0}">
                             {{rowData.remaining | number: '0.0-2'}}
                             @if (rowData.item.piped) {
@@ -100,6 +82,23 @@
                         <td style="height: 65px" class="text-right">
                             <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true" (click)="deleteItem(rowNode)"></p-button>
                         </td>
+                    } @else {
+                        <td colspan="2">
+                            <span class="lg:pl-5 text-gray-500 block">{{rowData.name}}</span>
+                        </td>
+                        <td ttEditableColumn style="height: 65px">
+                            <p-treeTableCellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="number" [(ngModel)]="rowData.amount">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <span class="text-gray-500 cursor-pointer">
+                                        {{rowData.amount}}
+                                    </span>
+                                </ng-template>
+                            </p-treeTableCellEditor>
+                        </td>
+                        <td></td>
                     }
                 </tr>
             </ng-template>
