@@ -1,12 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Recipes, RecipesKey } from '../assets/data/recipes';
 import { AsyncPipe, DecimalPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-import { combineLatestWith, from, map, startWith, Subject, Subscription, take } from 'rxjs';
+import { combineLatestWith, from, map, Observable, startWith, Subject, Subscription, take, tap } from 'rxjs';
 import { TreeTableModule } from 'primeng/treetable';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +19,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { getAnalytics, logEvent } from '@angular/fire/analytics';
+import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
     selector: 'app-root',
@@ -41,7 +43,9 @@ import { getAnalytics, logEvent } from '@angular/fire/analytics';
         ToastModule,
         ConfirmDialogModule,
         DialogModule,
-        DecimalPipe
+        DecimalPipe,
+        DropdownModule,
+        MenuModule
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './app.component.html',
@@ -57,10 +61,19 @@ export class AppComponent implements OnInit, OnDestroy {
     userSubscription!: Subscription;
     recipes = Recipes;
     selectedItems: any[] = [];
+    filteredItems: any[] = [];
     searchText = new FormControl('');
+    autocompleteSearch = new FormControl('');
     howItWorksIsVisible = false;
+    loggedInMenuItems = [
+        {
+            label: 'Sign Out',
+            icon: 'pi pi-sign-out',
+            command: this.signOut.bind(this)
+        }
+    ];
 
-    itemsToSearch$ = this.searchText.valueChanges.pipe(
+    itemsToSearch$: Observable<any[]> = this.searchText.valueChanges.pipe(
         startWith(''),
         combineLatestWith(this.triggerSearchManually$.pipe(
             startWith(true))
@@ -70,13 +83,14 @@ export class AppComponent implements OnInit, OnDestroy {
             return Object.keys(Recipes).sort().filter(key => {
                 return !this.alreadySelected(key) && Recipes[key].name.toLowerCase().includes(searchText.toLowerCase());
             }).map(key => {
-            return {
-                name: Recipes[key as RecipesKey].name,
-                image: `../assets/images/${key}.png`,
-                key
-            };
+                return {
+                    name: Recipes[key as RecipesKey].name,
+                    image: `../assets/images/${key}.png`,
+                    key
+                };
+            });
         })
-    }));
+    );
 
     ngOnInit() {
         this.userSubscription = this.user$.subscribe((user: User | null) => {
@@ -90,6 +104,25 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.userSubscription.unsubscribe();
+    }
+
+    filterItems(event: AutoCompleteCompleteEvent) {
+        const query = event.query;
+
+        this.filteredItems = Object.keys(Recipes).sort().filter(key => {
+            return !this.alreadySelected(key) && Recipes[key].name.toLowerCase().includes(query.toLowerCase());
+        }).map(key => {
+            return {
+                name: Recipes[key as RecipesKey].name,
+                image: `../assets/images/${key}.png`,
+                key
+            };
+        });
+    }
+
+    selectAutocompleteItem(event: AutoCompleteSelectEvent) {
+        this.selectItem(event.value);
+        this.autocompleteSearch.reset();
     }
 
     selectItem(item: any) {

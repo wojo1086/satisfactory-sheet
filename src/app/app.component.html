@@ -3,17 +3,15 @@
         <img ngSrc="assets/images/logo-small.webp" alt="Satisfactory Logo" height="35" width="182" priority>
         <span class="text-primary">Sheet</span>
     </div>
-    <div class="pr-8">
+    <div class="lg:pr-8">
         <p-button [link]="true" label="How it works" (click)="showHowItWorks()"></p-button>
     </div>
     @if (user$ | async; as user) {
         <div class="flex align-items-center">
             @if (user.photoURL) {
-                <img [ngSrc]="user.photoURL" [alt]="user?.displayName" class="mr-2" width="32" height="32" priority>
+                <img [ngSrc]="user.photoURL" [alt]="user?.displayName" class="mr-2 border-circle" width="32" height="32" priority (click)="menu.toggle($event)">
             }
-            <span>{{user?.displayName}}</span>
         </div>
-        <p-button (click)="signOut()" icon="pi pi-sign-out" [rounded]="true" severity="danger" [text]="true"></p-button>
     } @else {
         <div>
             <p-button (click)="signIn()">
@@ -24,18 +22,36 @@
     }
 </header>
 <main>
+    <div class="block lg:hidden">
+        <p-autoComplete [suggestions]="filteredItems" [formControl]="autocompleteSearch" delay="100"
+                        optionLabel="name" (onSelect)="selectAutocompleteItem($event)" (completeMethod)="filterItems($event)">
+            <ng-template let-item pTemplate="item">
+                <div class="flex align-items-center">
+                    <div>
+                        <img [ngSrc]="item.image" [alt]="item.name" class="mr-2" width="32" height="32" priority>
+                    </div>
+                    <div>{{item.name}}</div>
+                </div>
+
+            </ng-template>
+        </p-autoComplete>
+    </div>
+
     <div>
         <p-treeTable [value]="selectedItems" (onEditComplete)="editingComplete()">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th>Name</th>
-                    <th class="w-12rem">Remaining</th>
-                    <th class="w-12rem">Total</th>
+                    <th>Remaining</th>
+                    <th>Total</th>
                     <th class="w-4rem"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
                 <tr [ttRow]="rowNode" class="hover:bg-black-alpha-10 delete-row">
+                    @if (rowData.item) {
+
+                    })
                     <td class="flex align-items-center" style="height: 65px">
                         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                         @if (rowData.image) {
@@ -43,7 +59,11 @@
                                 <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32" priority>
                             </span>
                         }
-                        <span [ngClass]="{'pl-5 text-gray-500': !rowData.item}">{{rowData.name}}</span>
+                        @if (rowData.item) {
+                            <span class="hidden lg:block">{{rowData.name}}</span>
+                        } @else {
+                            <span class="lg:pl-5 text-gray-500 block">{{rowData.name}}</span>
+                        }
                     </td>
                     @if (!rowData.item) {
                         <td></td>
@@ -91,7 +111,7 @@
         }
     </div>
 
-    <div class="border-left-1 surface-border overflow-y-auto surface-ground">
+    <div class="border-left-1 surface-border overflow-y-auto surface-ground lg:block hidden">
         <div class="sticky top-0 surface-ground pt-4 pb-2 border-bottom-1 surface-border px-2">
             <h3 class="mt-0">Add an item</h3>
             <span class="p-input-icon-left mb-2">
@@ -138,3 +158,4 @@
     <p class="pb-2">If you are using this tool and you <span class="text-primary">are NOT</span> logged in, your data is saved locally in your browser. If you decide to log in, your data will be saved in the cloud in Google Firebase.</p>
     <p class="text-green-500">I do NOT store anything about you except your production rates and will gladly prove it to whomever is concerned.</p>
 </p-dialog>
+<p-menu #menu [model]="loggedInMenuItems" [popup]="true"></p-menu>

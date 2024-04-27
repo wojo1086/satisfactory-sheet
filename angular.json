@@ -29,7 +29,8 @@
                             "src/favicon.ico",
                             "src/assets",
                             "src/site.webmanifest",
-                            "src/browserconfig.xml"
+                            "src/browserconfig.xml",
+                            "src/sitemap.xml"
                         ],
                         "styles": [
                             "node_modules/primeng/resources/primeng.min.css",
