@@ -1,0 +1,12 @@
+<main class="h-screen">
+    <div #canvasWrapper>
+        <canvas id="production" #production (onDrop)="dropHandler($event)" pDroppable></canvas>
+    </div>
+    <div class="border-left-1 surface-border">
+        <div class="factory" id="factory" pDraggable (onDragStart)="dragStartHandler($event)" (onDragEnd)="dragEndHandler($event)"></div>
+<!--        @for (item of draggableItems; track item.key) {-->
+<!--            <img [ngSrc]="item.src" [alt]="item.alt" [width]="item.width" [height]="item.height" priority-->
+<!--                 pDraggable (onDragStart)="dragStartHandler(item)" (onDragEnd)="dragEndHandler(item)">-->
+<!--        }-->
+    </div>
+</main>
