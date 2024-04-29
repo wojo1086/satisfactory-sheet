@@ -1,98 +1,172 @@
+import { Recipes } from './recipes';
+import { IMachines } from './machine-model';
+export type RecipesKey = keyof typeof Recipes;
 
+export interface Items {
+    hatcherRemains: Item,
+    hogRemains: Item,
+    spitterRemains: Item,
+    stingerRemains: Item,
+    limestone: Item,
+    ironOre: Item,
+    copperOre: Item,
+    cateriumOre: Item,
+    coal: Item,
+    rawQuartz: Item,
+    sulfur: Item,
+    bauxite: Item,
+    samOre: Item,
+    uranium: Item,
+    leaves: Item,
+    mycelia: Item,
+    flowerPetals: Item,
+    wood: Item,
+    alienProtein: Item,
+    alienDNACapsule: Item,
+    ironIngot: Item,
+    copperIngot: Item,
+    cateriumIngot: Item,
+    steelIngot: Item,
+    aluminumIngot: Item,
+    concrete: Item,
+    quartzCrystal: Item,
+    silica: Item,
+    copperPowder: Item,
+    polymerResin: Item,
+    petroleumCoke: Item,
+    aluminumScrap: Item,
+    water: Item,
+    crudeOil: Item,
+    heavyOilResidue: Item,
+    fuel: Item,
+    liquidBiofuel: Item,
+    turbofuel: Item,
+    aluminaSolution: Item,
+    sulfuricAcid: Item,
+    nitricAcid: Item,
+    nitrogenGas: Item,
+    ironRod: Item,
+    screw: Item,
+    ironPlate: Item,
+    reinforcedIronPlate: Item,
+    copperSheet: Item,
+    alcladAluminumSheet: Item,
+    aluminumCasing: Item,
+    steelPipe: Item,
+    steelBeam: Item,
+    encasedIndustrialBeam: Item,
+    modularFrame: Item,
+    heavyModularFrame: Item,
+    fusedModularFrame: Item,
+    fabric: Item,
+    plastic: Item,
+    rubber: Item,
+    rotor: Item,
+    stator: Item,
+    battery: Item,
+    motor: Item,
+    heatSink: Item,
+    coolingSystem: Item,
+    turboMotor: Item,
+    wire: Item,
+    cable: Item,
+    quickwire: Item,
+    circuitBoard: Item,
+    aiLimiter: Item,
+    highSpeedConnector: Item,
+    computer: Item,
+    supercomputer: Item,
+    radioControlUnit: Item,
+    crystalOscillator: Item,
+    emptyCanister: Item,
+    emptyFluidTank: Item,
+    pressureConversionCube: Item,
+    packagedWater: Item,
+    packagedAluminaSolution: Item,
+    packagedSulfuricAcid: Item,
+    packagedNitricAcid: Item,
+    packagedNitrogenGas: Item,
+    compactedCoal: Item,
+    packagedOil: Item,
+    packagedHeavyOilResidue: Item,
+    packagedFuel: Item,
+    packagedLiquidBiofuel: Item,
+    packagedTurbofuel: Item,
+    solidBiofuel: Item,
+    biomass: Item,
+    uraniumFuelRod: Item,
+    plutoniumFuelRod: Item,
+    blackPowder: Item,
+    smokelessPowder: Item,
+    gasFilter: Item,
+    colorCartridge: Item,
+    beacon: Item,
+    iodineInfusedFilter: Item,
+    electromagneticControlRod: Item,
+    encasedUraniumCell: Item,
+    nonfissileUranium: Item,
+    plutoniumPellet: Item,
+    encasedPlutoniumCell: Item,
+    uraniumWaste: Item,
+    plutoniumWaste: Item,
+    smartPlating: Item,
+    versatileFramework: Item,
+    automatedWiring: Item,
+    modularEngine: Item,
+    adaptiveControlUnit: Item,
+    assemblyDirectorSystem: Item,
+    magneticFieldGenerator: Item,
+    thermalPropulsionRocket: Item,
+    nuclearPasta: Item,
+    portableMiner: Item,
+    ironRebar: Item,
+    stunRebar: Item,
+    shatterRebar: Item,
+    explosiveRebar: Item,
+    rifleAmmo: Item,
+    homingRifleAmmo: Item,
+    turboRifleAmmo: Item,
+    nobelisk: Item,
+    gasNobelisk: Item,
+    pulseNobelisk: Item,
+    clusterNobelisk: Item,
+    nukeNobelisk: Item,
+}
 
-// export interface Recipe {
-//     name: string;
-//     piped: boolean;
-//     isRaw: boolean;
-//     handPicked: boolean;
-//     default: '' | keyof typeof RecipeNames;
-//     recipes: {[key in RecipeNames]: RecipeData}
-// }
-//
-// export interface RecipeData {
-//     name: string;
-//     machine: string;
-//     inputs: {[key in RecipeNames]: {amount: number, rate: number}};
-//     outputs: {[key in RecipeNames]: {amount: number, rate: number}};
-//     parentRecipe: keyof typeof RecipeNames;
-// }
-//
-// export type RecipeType = {
-//     [key in RecipeNames]: Recipe;
-// }
-//
-// export enum RecipeNames {
-//     hatcherRemains = "Hatcher Remains",
-//     hogRemains = "Hog Remains",
-//     spitterRemains = "Plasma Spitter Remains",
-//     stingerRemains = "Stinger Remains",
-//     limestone = "Limestone",
-//     ironOre = "Iron Ore",
-//     copperOre = "Copper Ore",
-//     cateriumOre = "Caterium Ore",
-//     coal = "Coal",
-//     rawQuartz = "Raw Quartz",
-//     sulfur = "Sulfur",
-//     bauxite = "Bauxite",
-//     samOre = "S.A.M. Ore",
-//     uranium = "Uranium",
-//     leaves = "Leaves",
-//     mycelia = "Mycelia",
-//     flowerPetals = "Flower Petals",
-//     wood = "Wood",
-//     alienProtein = "Alien Protein",
-//     organicDataCapsule = "Organic Data Capsule",
-//     ironIngot = "Iron Ingot",
-//     copperIngot = "Copper Ingot",
-//     cateriumIngot = "Caterium Ingot",
-//     steelIngot = "Steel Ingot",
-//     aluminumIngot = "Aluminum Ingot",
-//     concrete = "Concrete",
-//     quartzCrystal = "Quartz Crystal",
-//     silica = "Silica",
-//     copperPowder = "Copper Powder",
-//     polymerResin = "Polymer Resin",
-//     petroleumCoke = "Petroleum Coke",
-//     aluminumScrap = "Aluminum Scrap",
-//     water = "Water",
-//     crudeOil = "Crude Oil",
-//     heavyOilResidue = "Heavy Oil Residue",
-//     plastic = "Plastic",
-//     rubber = "Rubber",
-//     wire = "Wire",
-//     circuitBoard = "Circuit Board",
-//     ironPlate = "Iron Plate",
-//     ironRod = "Iron Rod",
-//     screw = "Screw",
-//     modularFrame = "Modular Frame",
-//     reinforcedIronPlate = "Reinforced Iron Plate",
-//     rotor = "Rotor",
-//     stator = "Stator",
-//     motor = "Motor",
-//     quickwire = "Quickwire",
-//     cable = "Cable",
-//     wireCable = "Wire Cable",
-//     highSpeedConnector = "High-Speed Connector",
-//     computer = "Computer",
-//     supercomputer = "Supercomputer",
-//     plasticSmartPlating = "Plastic Smart Plating",
-//     versatileFramework = "Versatile Framework",
-//     automatedWiring = "Automated Wiring",
-//     heavyModularFrame = "Heavy Modular Frame",
-//     crystalOscillator = "Crystal Oscillator",
-//     radioControlUnit = "Radio Control Unit",
-//     electromagneticControlRod = "Electromagnetic Control Rod",
-//     nuclearPasta = "Nuclear Pasta",
-//     nuclearFuelRod = "Nuclear Fuel Rod",
-//     encasedUraniumCell = "Encased Uranium Cell",
-//     uraniumFuelRod = "Uranium Fuel Rod",
-//     heatSink = "Heat Sink",
-//     coolingSystem = "Cooling System",
-//     turboMotor = "Turbo Motor",
-//     battery = "Battery",
-//     emptyCanister = "Empty Canister",
-//     packagedWater = "Packaged Water",
-//     packagedOil = "Packaged Oil",
-//     packagedFuel = "Packaged Fuel",
-//     packagedHeavyOilResidue = "Packaged Heavy Oil Residue",
-// }
+export interface Item {
+    name: string,
+    piped: boolean,
+    isRaw: boolean,
+    handPicked: boolean,
+    default: string,
+    sinkPoints: number,
+    recipes: Recipe
+}
+
+export interface Recipe {
+    [key: string]: RecipeDetails
+}
+
+export interface RecipeDetails {
+    name: string,
+    machines: [keyof IMachines] | [keyof IMachines, keyof IMachines, keyof IMachines],
+    inputs: Input,
+    outputs: Output,
+    parentRecipe: keyof Items
+}
+
+export interface Input {
+    [key: string]: InputDetails
+}
+
+export interface InputDetails {
+    amount: number,
+    rate: number
+}
+
+export interface Output {
+    [key: string]: OutputDetails
+}
+
+export interface OutputDetails extends InputDetails {
+}

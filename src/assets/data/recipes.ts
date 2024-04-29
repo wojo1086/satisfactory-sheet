@@ -1,77 +1,57 @@
-export type RecipesKey = keyof typeof Recipes;
+import { Items } from "./recipe-model";
 
-export interface Item {
-    [key: string]: {
-        name: string;
-        piped: boolean;
-        isRaw: boolean;
-        handPicked: boolean;
-        default: string;
-        recipes: {
-            [key: string]: {
-                name: string;
-                machine: string;
-                inputs: {
-                    [key: string]: {
-                        amount: number;
-                        rate: number;
-                    };
-                };
-                outputs: {
-                    [key: string]: {
-                        amount: number;
-                        rate: number;
-                    };
-                };
-                parentRecipe: string;
-            }
-        }
-    }
-}
-
-export const Recipes: Item = {
+export const Recipes: Items = {
     hatcherRemains: {
-        name: "Hatcher Remains",
+        name: 'Hatcher Remains',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {}
     },
     hogRemains: {
-        name: "Hog Remains",
+        name: 'Hog Remains',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {}
     },
     spitterRemains: {
-        name: "Plasma Spitter Remains",
+        name: 'Plasma Spitter Remains',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {}
     },
     stingerRemains: {
-        name: "Stinger Remains",
+        name: 'Stinger Remains',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {}
     },
     limestone: {
-        name: "Limestone",
+        name: 'Limestone',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 2,
         recipes: {
             limestone: {
-                name: "Limestone",
-                machine: "miner",
+                name: 'Limestone',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     limestone: {
@@ -79,20 +59,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "limestone"
+                parentRecipe: 'limestone'
             }
         }
     },
     ironOre: {
-        name: "Iron Ore",
+        name: 'Iron Ore',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 1,
         recipes: {
             ironOre: {
-                name: "Iron Ore",
-                machine: "miner",
+                name: 'Iron Ore',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     ironOre: {
@@ -100,20 +85,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "ironOre"
+                parentRecipe: 'ironOre'
             }
         }
     },
     copperOre: {
-        name: "Copper Ore",
+        name: 'Copper Ore',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 3,
         recipes: {
             copperOre: {
-                name: "Copper Ore",
-                machine: "miner",
+                name: 'Copper Ore',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     copperOre: {
@@ -121,20 +111,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "copperOre"
+                parentRecipe: 'copperOre'
             }
         }
     },
     cateriumOre: {
-        name: "Caterium Ore",
+        name: 'Caterium Ore',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 7,
         recipes: {
             cateriumOre: {
-                name: "Caterium Ore",
-                machine: "miner",
+                name: 'Caterium Ore',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     cateriumOre: {
@@ -142,20 +137,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "cateriumOre"
+                parentRecipe: 'cateriumOre'
             }
         }
     },
     coal: {
-        name: "Coal",
+        name: 'Coal',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 3,
         recipes: {
             coal: {
-                name: "Coal",
-                machine: "miner",
+                name: 'Coal',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     coal: {
@@ -163,20 +163,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "coal"
+                parentRecipe: 'coal'
             }
         }
     },
     rawQuartz: {
-        name: "Raw Quartz",
+        name: 'Raw Quartz',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 15,
         recipes: {
             rawQuartz: {
-                name: "Raw Quartz",
-                machine: "miner",
+                name: 'Raw Quartz',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     rawQuartz: {
@@ -184,20 +189,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "rawQuartz"
+                parentRecipe: 'rawQuartz'
             }
         }
     },
     sulfur: {
-        name: "Sulfur",
+        name: 'Sulfur',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 11,
         recipes: {
             sulfur: {
-                name: "Sulfur",
-                machine: "miner",
+                name: 'Sulfur',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     sulfur: {
@@ -205,20 +215,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "sulfur"
+                parentRecipe: 'sulfur'
             }
         }
     },
     bauxite: {
-        name: "Bauxite",
+        name: 'Bauxite',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 8,
         recipes: {
             bauxite: {
-                name: "Bauxite",
-                machine: "miner",
+                name: 'Bauxite',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     bauxite: {
@@ -226,20 +241,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "bauxite"
+                parentRecipe: 'bauxite'
             }
         }
     },
     samOre: {
-        name: "S.A.M. Ore",
+        name: 'S.A.M. Ore',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {
             samOre: {
-                name: "S.A.M. Ore",
-                machine: "miner",
+                name: 'S.A.M. Ore',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     samOre: {
@@ -247,20 +267,25 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "samOre"
+                parentRecipe: 'samOre'
             }
         }
     },
     uranium: {
-        name: "Uranium",
+        name: 'Uranium',
         piped: false,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 35,
         recipes: {
             uranium: {
-                name: "Uranium",
-                machine: "miner",
+                name: 'Uranium',
+                machines: [
+                    'minerMk1',
+                    'minerMk2',
+                    "minerMk3"
+                ],
                 inputs: {},
                 outputs: {
                     uranium: {
@@ -268,52 +293,59 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "uranium"
+                parentRecipe: 'uranium'
             }
         }
     },
     leaves: {
-        name: "Leaves",
+        name: 'Leaves',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 3,
         recipes: {}
     },
     mycelia: {
-        name: "Mycelia",
+        name: 'Mycelia',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 10,
         recipes: {}
     },
     flowerPetals: {
-        name: "Flower Petals",
+        name: 'Flower Petals',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 10,
         recipes: {}
     },
     wood: {
-        name: "Wood",
+        name: 'Wood',
         piped: false,
         isRaw: true,
         handPicked: true,
-        default: "",
+        default: '',
+        sinkPoints: 30,
         recipes: {}
     },
     alienProtein: {
-        name: "Alien Protein",
+        name: 'Alien Protein',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "hogProtein",
+        default: 'hogProtein',
+        sinkPoints: 0,
         recipes: {
             hatcherProtein: {
-                name: "Hatcher Protein",
-                machine: "constructor",
+                name: 'Hatcher Protein',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     hatcherRemains: {
                         amount: 1,
@@ -326,11 +358,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "alienProtein"
+                parentRecipe: 'alienProtein'
             },
             hogProtein: {
-                name: "Hog Protein",
-                machine: "constructor",
+                name: 'Hog Protein',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     hogRemains: {
                         amount: 1,
@@ -343,11 +377,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "alienProtein"
+                parentRecipe: 'alienProtein'
             },
             spitterProtein: {
-                name: "Spitter Protein",
-                machine: "constructor",
+                name: 'Spitter Protein',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     spitterRemains: {
                         amount: 1,
@@ -360,11 +396,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "alienProtein"
+                parentRecipe: 'alienProtein'
             },
             stingerProtein: {
-                name: "Stinger Protein",
-                machine: "constructor",
+                name: 'Stinger Protein',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     stingerRemains: {
                         amount: 1,
@@ -377,20 +415,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "alienProtein"
+                parentRecipe: 'alienProtein'
             }
         }
     },
-    organicDataCapsule: {
-        name: "Organic Data Capsule",
+    alienDNACapsule: {
+        name: 'Alien DNA Capsule',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "organicDataCapsule",
+        default: 'alienDNACapsule',
+        sinkPoints: 0,
         recipes: {
-            organicDataCapsule: {
-                name: "Organic Data Capsule",
-                machine: "constructor",
+            alienDNACapsule: {
+                name: 'Alien DNA Capsule',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     alienProtein: {
                         amount: 1,
@@ -398,25 +439,28 @@ export const Recipes: Item = {
                     }
                 },
                 outputs: {
-                    organicDataCapsule: {
+                    alienDNACapsule: {
                         amount: 1,
                         rate: 10
                     }
                 },
-                parentRecipe: "organicDataCapsule"
+                parentRecipe: 'alienDNACapsule'
             }
         }
     },
     ironIngot: {
-        name: "Iron Ingot",
+        name: 'Iron Ingot',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "ironIngot",
+        default: 'ironIngot',
+        sinkPoints: 2,
         recipes: {
             ironIngot: {
-                name: "Iron Ingot",
-                machine: "smelter",
+                name: 'Iron Ingot',
+                machines: [
+                    'smelter'
+                ],
                 inputs: {
                     ironOre: {
                         amount: 1,
@@ -429,11 +473,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "ironIngot"
+                parentRecipe: 'ironIngot'
             },
             altPureIronIngot: {
-                name: "Alternate: Pure Iron Ingot",
-                machine: "refinery",
+                name: 'Alternate: Pure Iron Ingot',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     ironOre: {
                         amount: 7,
@@ -450,11 +496,13 @@ export const Recipes: Item = {
                         rate: 65
                     }
                 },
-                parentRecipe: "ironIngot"
+                parentRecipe: 'ironIngot'
             },
             altIronAlloyIngot: {
-                name: "Alternate: Iron Alloy Ingot",
-                machine: "foundry",
+                name: 'Alternate: Iron Alloy Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     ironOre: {
                         amount: 2,
@@ -471,20 +519,23 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "ironIngot"
+                parentRecipe: 'ironIngot'
             }
         }
     },
     copperIngot: {
-        name: "Copper Ingot",
+        name: 'Copper Ingot',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "copperIngot",
+        default: 'copperIngot',
+        sinkPoints: 6,
         recipes: {
             copperIngot: {
-                name: "Copper Ingot",
-                machine: "smelter",
+                name: 'Copper Ingot',
+                machines: [
+                    'smelter'
+                ],
                 inputs: {
                     copperOre: {
                         amount: 1,
@@ -497,11 +548,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "copperIngot"
+                parentRecipe: 'copperIngot'
             },
             altPureCopperIngot: {
-                name: "Alternate: Pure Copper Ingot",
-                machine: "refinery",
+                name: 'Alternate: Pure Copper Ingot',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     copperOre: {
                         amount: 6,
@@ -518,11 +571,13 @@ export const Recipes: Item = {
                         rate: 37.5
                     }
                 },
-                parentRecipe: "copperIngot"
+                parentRecipe: 'copperIngot'
             },
             altCopperAlloyIngot: {
-                name: "Alternate: Copper Alloy Ingot",
-                machine: "foundry",
+                name: 'Alternate: Copper Alloy Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     copperOre: {
                         amount: 10,
@@ -539,20 +594,23 @@ export const Recipes: Item = {
                         rate: 100
                     }
                 },
-                parentRecipe: "copperIngot"
+                parentRecipe: 'copperIngot'
             }
         }
     },
     cateriumIngot: {
-        name: "Caterium Ingot",
+        name: 'Caterium Ingot',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "cateriumIngot",
+        default: 'cateriumIngot',
+        sinkPoints: 42,
         recipes: {
             cateriumIngot: {
-                name: "Caterium Ingot",
-                machine: "smelter",
+                name: 'Caterium Ingot',
+                machines: [
+                    'smelter'
+                ],
                 inputs: {
                     cateriumOre: {
                         amount: 3,
@@ -565,11 +623,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "cateriumIngot"
+                parentRecipe: 'cateriumIngot'
             },
             altPureCateriumIngot: {
-                name: "Alternate: Pure Caterium Ingot",
-                machine: "refinery",
+                name: 'Alternate: Pure Caterium Ingot',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     cateriumOre: {
                         amount: 2,
@@ -586,20 +646,23 @@ export const Recipes: Item = {
                         rate: 12
                     }
                 },
-                parentRecipe: "cateriumIngot"
+                parentRecipe: 'cateriumIngot'
             }
         }
     },
     steelIngot: {
-        name: "Steel Ingot",
+        name: 'Steel Ingot',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "steelIngot",
+        default: 'steelIngot',
+        sinkPoints: 8,
         recipes: {
             steelIngot: {
-                name: "Steel Ingot",
-                machine: "foundry",
+                name: 'Steel Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     ironOre: {
                         amount: 3,
@@ -616,11 +679,13 @@ export const Recipes: Item = {
                         rate: 45
                     }
                 },
-                parentRecipe: "steelIngot"
+                parentRecipe: 'steelIngot'
             },
             altCokeSteelIngot: {
-                name: "Alternate: Coke Steel Ingot",
-                machine: "foundry",
+                name: 'Alternate: Coke Steel Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     ironOre: {
                         amount: 15,
@@ -637,11 +702,13 @@ export const Recipes: Item = {
                         rate: 100
                     }
                 },
-                parentRecipe: "steelIngot"
+                parentRecipe: 'steelIngot'
             },
             altCompactedSteelIngot: {
-                name: "Alternate: Compacted Steel Ingot",
-                machine: "foundry",
+                name: 'Alternate: Compacted Steel Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     ironOre: {
                         amount: 6,
@@ -658,11 +725,13 @@ export const Recipes: Item = {
                         rate: 37.5
                     }
                 },
-                parentRecipe: "steelIngot"
+                parentRecipe: 'steelIngot'
             },
             altSolidSteelIngot: {
-                name: "Alternate: Solid Steel Ingot",
-                machine: "foundry",
+                name: 'Alternate: Solid Steel Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     ironIngot: {
                         amount: 2,
@@ -679,20 +748,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "steelIngot"
+                parentRecipe: 'steelIngot'
             }
         }
     },
     aluminumIngot: {
-        name: "Aluminum Ingot",
+        name: 'Aluminum Ingot',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "aluminumIngot",
+        default: 'aluminumIngot',
+        sinkPoints: 131,
         recipes: {
             aluminumIngot: {
-                name: "Aluminum Ingot",
-                machine: "foundry",
+                name: 'Aluminum Ingot',
+                machines: [
+                    'foundry'
+                ],
                 inputs: {
                     aluminumScrap: {
                         amount: 6,
@@ -709,11 +781,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "aluminumIngot"
+                parentRecipe: 'aluminumIngot'
             },
             altPureAluminumIngot: {
-                name: "Alternate: Pure Aluminum Ingot",
-                machine: "smelter",
+                name: 'Alternate: Pure Aluminum Ingot',
+                machines: [
+                    'smelter'
+                ],
                 inputs: {
                     aluminumScrap: {
                         amount: 2,
@@ -726,20 +800,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "aluminumIngot"
+                parentRecipe: 'aluminumIngot'
             }
         }
     },
     concrete: {
-        name: "Concrete",
+        name: 'Concrete',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "concrete",
+        default: 'concrete',
+        sinkPoints: 12,
         recipes: {
             concrete: {
-                name: "Concrete",
-                machine: "constructor",
+                name: 'Concrete',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     limestone: {
                         amount: 3,
@@ -752,11 +829,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "concrete"
+                parentRecipe: 'concrete'
             },
             altFineConcrete: {
-                name: "Alternate: Fine Concrete",
-                machine: "assembler",
+                name: 'Alternate: Fine Concrete',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     limestone: {
                         amount: 12,
@@ -773,11 +852,13 @@ export const Recipes: Item = {
                         rate: 25
                     }
                 },
-                parentRecipe: "concrete"
+                parentRecipe: 'concrete'
             },
             altRubberConcrete: {
-                name: "Alternate: Rubber Concrete",
-                machine: "assembler",
+                name: 'Alternate: Rubber Concrete',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     limestone: {
                         amount: 10,
@@ -794,11 +875,13 @@ export const Recipes: Item = {
                         rate: 45
                     }
                 },
-                parentRecipe: "concrete"
+                parentRecipe: 'concrete'
             },
             altWetConcrete: {
-                name: "Alternate: Wet Concrete",
-                machine: "refinery",
+                name: 'Alternate: Wet Concrete',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     limestone: {
                         amount: 6,
@@ -815,20 +898,23 @@ export const Recipes: Item = {
                         rate: 80
                     }
                 },
-                parentRecipe: "concrete"
+                parentRecipe: 'concrete'
             }
         }
     },
     quartzCrystal: {
-        name: "Quartz Crystal",
+        name: 'Quartz Crystal',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "quartzCrystal",
+        default: 'quartzCrystal',
+        sinkPoints: 50,
         recipes: {
             quartzCrystal: {
-                name: "Quartz Crystal",
-                machine: "constructor",
+                name: 'Quartz Crystal',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     rawQuartz: {
                         amount: 5,
@@ -841,11 +927,13 @@ export const Recipes: Item = {
                         rate: 22.5
                     }
                 },
-                parentRecipe: "quartzCrystal"
+                parentRecipe: 'quartzCrystal'
             },
             altPureQuartzCrystal: {
-                name: "Alternate: Pure Quartz Crystal",
-                machine: "refinery",
+                name: 'Alternate: Pure Quartz Crystal',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     rawQuartz: {
                         amount: 9,
@@ -862,20 +950,23 @@ export const Recipes: Item = {
                         rate: 52.5
                     }
                 },
-                parentRecipe: "quartzCrystal"
+                parentRecipe: 'quartzCrystal'
             }
         }
     },
     silica: {
-        name: "Silica",
+        name: 'Silica',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "silica",
+        default: 'silica',
+        sinkPoints: 20,
         recipes: {
             silica: {
-                name: "Silica",
-                machine: "constructor",
+                name: 'Silica',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     rawQuartz: {
                         amount: 3,
@@ -888,11 +979,13 @@ export const Recipes: Item = {
                         rate: 37.5
                     }
                 },
-                parentRecipe: "silica"
+                parentRecipe: 'silica'
             },
             aluminaSolution: {
-                name: "Alumina Solution",
-                machine: "refinery",
+                name: 'Alumina Solution',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     bauxite: {
                         amount: 12,
@@ -913,11 +1006,13 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "silica"
+                parentRecipe: 'silica'
             },
             altCheapSilica: {
-                name: "Alternate: Cheap Silica",
-                machine: "assembler",
+                name: 'Alternate: Cheap Silica',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     rawQuartz: {
                         amount: 3,
@@ -934,20 +1029,23 @@ export const Recipes: Item = {
                         rate: 26.25
                     }
                 },
-                parentRecipe: "silica"
+                parentRecipe: 'silica'
             }
         }
     },
     copperPowder: {
-        name: "Copper Powder",
+        name: 'Copper Powder',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "copperPowder",
+        default: 'copperPowder',
+        sinkPoints: 72,
         recipes: {
             copperPowder: {
-                name: "Copper Powder",
-                machine: "constructor",
+                name: 'Copper Powder',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     copperIngot: {
                         amount: 30,
@@ -960,20 +1058,23 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "copperPowder"
+                parentRecipe: 'copperPowder'
             }
         }
     },
     polymerResin: {
-        name: "Polymer Resin",
+        name: 'Polymer Resin',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "fuel",
+        default: 'fuel',
+        sinkPoints: 12,
         recipes: {
             fuel: {
-                name: "Fuel",
-                machine: "refinery",
+                name: 'Fuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 6,
@@ -990,11 +1091,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "polymerResin"
+                parentRecipe: 'polymerResin'
             },
             altHeavyOilResidue: {
-                name: "Alternate: Heavy Oil Residue",
-                machine: "refinery",
+                name: 'Alternate: Heavy Oil Residue',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 3,
@@ -1011,11 +1114,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "polymerResin"
+                parentRecipe: 'polymerResin'
             },
             altPolymerResin: {
-                name: "Alternate: Polymer Resin",
-                machine: "refinery",
+                name: 'Alternate: Polymer Resin',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 6,
@@ -1032,20 +1137,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "polymerResin"
+                parentRecipe: 'polymerResin'
             }
         }
     },
     petroleumCoke: {
-        name: "Petroleum Coke",
+        name: 'Petroleum Coke',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "petroleumCoke",
+        default: 'petroleumCoke',
+        sinkPoints: 20,
         recipes: {
             petroleumCoke: {
-                name: "Petroleum Coke",
-                machine: "refinery",
+                name: 'Petroleum Coke',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     heavyOilResidue: {
                         amount: 4,
@@ -1058,20 +1166,23 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "petroleumCoke"
+                parentRecipe: 'petroleumCoke'
             }
         }
     },
     aluminumScrap: {
-        name: "Aluminum Scrap",
+        name: 'Aluminum Scrap',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "aluminumScrap",
+        default: 'aluminumScrap',
+        sinkPoints: 27,
         recipes: {
             aluminumScrap: {
-                name: "Aluminum Scrap",
-                machine: "refinery",
+                name: 'Aluminum Scrap',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     aluminaSolution: {
                         amount: 4,
@@ -1092,11 +1203,13 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "aluminumScrap"
+                parentRecipe: 'aluminumScrap'
             },
             altElectrodeAluminumScrap: {
-                name: "Alternate: Electrode - Aluminum Scrap",
-                machine: "refinery",
+                name: 'Alternate: Electrode - Aluminum Scrap',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     aluminaSolution: {
                         amount: 12,
@@ -1117,11 +1230,13 @@ export const Recipes: Item = {
                         rate: 105
                     }
                 },
-                parentRecipe: "aluminumScrap"
+                parentRecipe: 'aluminumScrap'
             },
             altInstantScrap: {
-                name: "Alternate: Instant Scrap",
-                machine: "blender",
+                name: 'Alternate: Instant Scrap',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     bauxite: {
                         amount: 15,
@@ -1150,20 +1265,23 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "aluminumScrap"
+                parentRecipe: 'aluminumScrap'
             }
         }
     },
     water: {
-        name: "Water",
+        name: 'Water',
         piped: true,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {
             aluminumScrap: {
-                name: "Aluminum Scrap",
-                machine: "refinery",
+                name: 'Aluminum Scrap',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     aluminaSolution: {
                         amount: 4,
@@ -1184,11 +1302,13 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             battery: {
-                name: "Battery",
-                machine: "blender",
+                name: 'Battery',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     sulfuricAcid: {
                         amount: 2.5,
@@ -1213,11 +1333,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             nonfissileUranium: {
-                name: "Non-fissile",
-                machine: "blender",
+                name: 'Non-fissile',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     uraniumWaste: {
                         amount: 15,
@@ -1246,11 +1368,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             unpackagedWater: {
-                name: "Unpackaged Water",
-                machine: "packager",
+                name: 'Unpackaged Water',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedWater: {
                         amount: 2,
@@ -1267,11 +1391,13 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             altElectrodeAluminumScrap: {
-                name: "Alternate: Electrode - Aluminum Scrap",
-                machine: "refinery",
+                name: 'Alternate: Electrode - Aluminum Scrap',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     aluminaSolution: {
                         amount: 12,
@@ -1292,11 +1418,13 @@ export const Recipes: Item = {
                         rate: 105
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             altFertileUranium: {
-                name: "Alternate: Fertile Uranium",
-                machine: "blender",
+                name: 'Alternate: Fertile Uranium',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     uranium: {
                         amount: 5,
@@ -1325,11 +1453,13 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             altInstantScrap: {
-                name: "Alternate: Instant Scrap",
-                machine: "blender",
+                name: 'Alternate: Instant Scrap',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     bauxite: {
                         amount: 15,
@@ -1358,11 +1488,13 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             },
             water: {
-                name: "Water",
-                machine: "waterExtractor",
+                name: 'Water',
+                machines: [
+                    'waterExtractor'
+                ],
                 inputs: {},
                 outputs: {
                     water: {
@@ -1370,20 +1502,23 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "water"
+                parentRecipe: 'water'
             }
         }
     },
     crudeOil: {
-        name: "Crude Oil",
+        name: 'Crude Oil',
         piped: true,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {
             unpackagedOil: {
-                name: "Unpackaged Oil",
-                machine: "packager",
+                name: 'Unpackaged Oil',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedOil: {
                         amount: 2,
@@ -1400,11 +1535,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "crudeOil"
+                parentRecipe: 'crudeOil'
             },
             crudeOil: {
-                name: "Crude Oil",
-                machine: "oilExtractor",
+                name: 'Crude Oil',
+                machines: [
+                    'oilExtractor'
+                ],
                 inputs: {},
                 outputs: {
                     crudeOil: {
@@ -1412,20 +1549,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "crudeOil"
+                parentRecipe: 'crudeOil'
             }
         }
     },
     heavyOilResidue: {
-        name: "Heavy Oil Residue",
+        name: 'Heavy Oil Residue',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "plastic",
+        default: 'plastic',
+        sinkPoints: 0,
         recipes: {
             plastic: {
-                name: "Plastic",
-                machine: "refinery",
+                name: 'Plastic',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 3,
@@ -1442,11 +1582,13 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "heavyOilResidue"
+                parentRecipe: 'heavyOilResidue'
             },
             rubber: {
-                name: "Rubber",
-                machine: "refinery",
+                name: 'Rubber',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 3,
@@ -1463,11 +1605,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "heavyOilResidue"
+                parentRecipe: 'heavyOilResidue'
             },
             unpackagedHeavyOilResidue: {
-                name: "Unpackaged Heavy Oil Residue",
-                machine: "packager",
+                name: 'Unpackaged Heavy Oil Residue',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedHeavyOilResidue: {
                         amount: 2,
@@ -1484,11 +1628,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "heavyOilResidue"
+                parentRecipe: 'heavyOilResidue'
             },
             altHeavyOilResidue: {
-                name: "Unpackaged Heavy Oil Residue",
-                machine: "refinery",
+                name: 'Unpackaged Heavy Oil Residue',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 3,
@@ -1505,11 +1651,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "heavyOilResidue"
+                parentRecipe: 'heavyOilResidue'
             },
             altPolymerResin: {
-                name: "Alternate: Polymer Resin",
-                machine: "refinery",
+                name: 'Alternate: Polymer Resin',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 6,
@@ -1526,20 +1674,23 @@ export const Recipes: Item = {
                         rate: 130
                     }
                 },
-                parentRecipe: "heavyOilResidue"
+                parentRecipe: 'heavyOilResidue'
             }
         }
     },
     fuel: {
-        name: "Fuel",
+        name: 'Fuel',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "fuel",
+        default: 'fuel',
+        sinkPoints: 0,
         recipes: {
             fuel: {
-                name: "Fuel",
-                machine: "refinery",
+                name: 'Fuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 6,
@@ -1556,11 +1707,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "fuel"
+                parentRecipe: 'fuel'
             },
             residualFuel: {
-                name: "Residual Fuel",
-                machine: "refinery",
+                name: 'Residual Fuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     heavyOilResidue: {
                         amount: 6,
@@ -1573,11 +1726,13 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "fuel"
+                parentRecipe: 'fuel'
             },
             unpackagedFuel: {
-                name: "Unpackaged Fuel",
-                machine: "packager",
+                name: 'Unpackaged Fuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedFuel: {
                         amount: 2,
@@ -1594,11 +1749,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "fuel"
+                parentRecipe: 'fuel'
             },
             altDilutedFuel: {
-                name: "Alternate: Diluted Fuel",
-                machine: "blender",
+                name: 'Alternate: Diluted Fuel',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     heavyOilResidue: {
                         amount: 5,
@@ -1615,20 +1772,23 @@ export const Recipes: Item = {
                         rate: 100
                     }
                 },
-                parentRecipe: "fuel"
+                parentRecipe: 'fuel'
             }
         }
     },
     liquidBiofuel: {
-        name: "Liquid Biofuel",
+        name: 'Liquid Biofuel',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "liquidBiofuel",
+        default: 'liquidBiofuel',
+        sinkPoints: 0,
         recipes: {
             liquidBiofuel: {
-                name: "Liquid Biofuel",
-                machine: "refinery",
+                name: 'Liquid Biofuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     solidBiofuel: {
                         amount: 6,
@@ -1645,11 +1805,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "liquidBiofuel"
+                parentRecipe: 'liquidBiofuel'
             },
             unpackagedLiquidBiofuel: {
-                name: "Unpackaged Liquid Biofuel",
-                machine: "packager",
+                name: 'Unpackaged Liquid Biofuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedLiquidBiofuel: {
                         amount: 2,
@@ -1666,20 +1828,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "liquidBiofuel"
+                parentRecipe: 'liquidBiofuel'
             }
         }
     },
     turbofuel: {
-        name: "Turbofuel",
+        name: 'Turbofuel',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "turbofuel",
+        default: 'turbofuel',
+        sinkPoints: 0,
         recipes: {
             unpackagedTurbofuel: {
-                name: "Unpackaged Turbofuel",
-                machine: "packager",
+                name: 'Unpackaged Turbofuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedTurbofuel: {
                         amount: 2,
@@ -1696,11 +1861,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "turbofuel"
+                parentRecipe: 'turbofuel'
             },
             altTurboBlendFuel: {
-                name: "Alternate: Turbo Blend Fuel",
-                machine: "blender",
+                name: 'Alternate: Turbo Blend Fuel',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     fuel: {
                         amount: 2,
@@ -1725,11 +1892,13 @@ export const Recipes: Item = {
                         rate: 45
                     }
                 },
-                parentRecipe: "turbofuel"
+                parentRecipe: 'turbofuel'
             },
             altTurboHeavyFuel: {
-                name: "Alternate: Turbo Heavy Fuel",
-                machine: "refinery",
+                name: 'Alternate: Turbo Heavy Fuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     heavyOilResidue: {
                         amount: 5,
@@ -1746,11 +1915,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "turbofuel"
+                parentRecipe: 'turbofuel'
             },
             turbofuel: {
-                name: "Turbofuel",
-                machine: "refinery",
+                name: 'Turbofuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     fuel: {
                         amount: 6,
@@ -1767,20 +1938,23 @@ export const Recipes: Item = {
                         rate: 18.75
                     }
                 },
-                parentRecipe: "turbofuel"
+                parentRecipe: 'turbofuel'
             }
         }
     },
     aluminaSolution: {
-        name: "Alumina Solution",
+        name: 'Alumina Solution',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "aluminaSolution",
+        default: 'aluminaSolution',
+        sinkPoints: 0,
         recipes: {
             aluminaSolution: {
-                name: "Alumina Solution",
-                machine: "refinery",
+                name: 'Alumina Solution',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     bauxite: {
                         amount: 12,
@@ -1801,11 +1975,13 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "aluminaSolution"
+                parentRecipe: 'aluminaSolution'
             },
             unpackagedAluminaSolution: {
-                name: "Unpackaged Alumina Solution",
-                machine: "packager",
+                name: 'Unpackaged Alumina Solution',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedAluminaSolution: {
                         amount: 2,
@@ -1822,11 +1998,13 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "aluminaSolution"
+                parentRecipe: 'aluminaSolution'
             },
             altSloppyAlumina: {
-                name: "Alternate: Sloppy Alumina",
-                machine: "refinery",
+                name: 'Alternate: Sloppy Alumina',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     bauxite: {
                         amount: 10,
@@ -1843,20 +2021,23 @@ export const Recipes: Item = {
                         rate: 240
                     }
                 },
-                parentRecipe: "aluminaSolution"
+                parentRecipe: 'aluminaSolution'
             }
         }
     },
     sulfuricAcid: {
-        name: "Sulfuric Acid",
+        name: 'Sulfuric Acid',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "sulfuricAcid",
+        default: 'sulfuricAcid',
+        sinkPoints: 0,
         recipes: {
             encasedUraniumCell: {
-                name: "Encased Uranium Cell",
-                machine: "blender",
+                name: 'Encased Uranium Cell',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     uranium: {
                         amount: 10,
@@ -1881,11 +2062,13 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "sulfuricAcid"
+                parentRecipe: 'sulfuricAcid'
             },
             sulfuricAcid: {
-                name: "Sulfuric Acid",
-                machine: "refinery",
+                name: 'Sulfuric Acid',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     sulfur: {
                         amount: 5,
@@ -1902,11 +2085,13 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "sulfuricAcid"
+                parentRecipe: 'sulfuricAcid'
             },
             unpackagedSulfuricAcid: {
-                name: "Unpackaged Sulfuric Acid",
-                machine: "packager",
+                name: 'Unpackaged Sulfuric Acid',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedSulfuricAcid: {
                         amount: 1,
@@ -1923,20 +2108,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "sulfuricAcid"
+                parentRecipe: 'sulfuricAcid'
             }
         }
     },
     nitricAcid: {
-        name: "Nitric Acid",
+        name: 'Nitric Acid',
         piped: true,
         isRaw: false,
         handPicked: false,
-        default: "nitricAcid",
+        default: 'nitricAcid',
+        sinkPoints: 0,
         recipes: {
             nitricAcid: {
-                name: "Nitric Acid",
-                machine: "blender",
+                name: 'Nitric Acid',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     nitrogenGas: {
                         amount: 12,
@@ -1957,11 +2145,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "nitricAcid"
+                parentRecipe: 'nitricAcid'
             },
             unpackagedNitricAcid: {
-                name: "Unpackaged Nitric Acid",
-                machine: "packager",
+                name: 'Unpackaged Nitric Acid',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedNitricAcid: {
                         amount: 1,
@@ -1978,20 +2168,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "nitricAcid"
+                parentRecipe: 'nitricAcid'
             }
         }
     },
     nitrogenGas: {
-        name: "Nitrogen Gas",
+        name: 'Nitrogen Gas',
         piped: true,
         isRaw: true,
         handPicked: false,
-        default: "",
+        default: '',
+        sinkPoints: 0,
         recipes: {
             unpackagedNitrogenGas: {
-                name: "Unpackaged Nitrogen Gas",
-                machine: "packager",
+                name: 'Unpackaged Nitrogen Gas',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedNitrogenGas: {
                         amount: 1,
@@ -2008,11 +2201,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "nitrogenGas"
+                parentRecipe: 'nitrogenGas'
             },
             nitrogenGas: {
-                name: "Nitrogen Gas",
-                machine: "resourceWellExtractor",
+                name: 'Nitrogen Gas',
+                machines: [
+                    'resourceWellExtractor'
+                ],
                 inputs: {},
                 outputs: {
                     nitrogenGas: {
@@ -2020,20 +2215,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "nitrogenGas"
+                parentRecipe: 'nitrogenGas'
             }
         }
     },
     ironRod: {
-        name: "Iron Rod",
+        name: 'Iron Rod',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "ironRod",
+        default: 'ironRod',
+        sinkPoints: 4,
         recipes: {
             ironRod: {
-                name: "Iron Rod",
-                machine: "constructor",
+                name: 'Iron Rod',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     ironIngot: {
                         amount: 1,
@@ -2046,11 +2244,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "ironRod"
+                parentRecipe: 'ironRod'
             },
             altSteelRod: {
-                name: "Alternate: Steel Rod",
-                machine: "constructor",
+                name: 'Alternate: Steel Rod',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     steelIngot: {
                         amount: 1,
@@ -2063,20 +2263,23 @@ export const Recipes: Item = {
                         rate: 48
                     }
                 },
-                parentRecipe: "ironRod"
+                parentRecipe: 'ironRod'
             }
         }
     },
     screw: {
-        name: "Screw",
+        name: 'Screw',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "screw",
+        default: 'screw',
+        sinkPoints: 2,
         recipes: {
             screw: {
-                name: "Screw",
-                machine: "constructor",
+                name: 'Screw',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     ironRod: {
                         amount: 1,
@@ -2089,11 +2292,13 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "screw"
+                parentRecipe: 'screw'
             },
             altCastScrew: {
-                name: "Alternate: Cast Screw",
-                machine: "constructor",
+                name: 'Alternate: Cast Screw',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     ironIngot: {
                         amount: 5,
@@ -2106,11 +2311,13 @@ export const Recipes: Item = {
                         rate: 50
                     }
                 },
-                parentRecipe: "screw"
+                parentRecipe: 'screw'
             },
             altSteelScrew: {
-                name: "Alternate: Steel Screw",
-                machine: "constructor",
+                name: 'Alternate: Steel Screw',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     steelBeam: {
                         amount: 1,
@@ -2123,20 +2330,23 @@ export const Recipes: Item = {
                         rate: 260
                     }
                 },
-                parentRecipe: "screw"
+                parentRecipe: 'screw'
             }
         }
     },
     ironPlate: {
-        name: "Iron Plate",
+        name: 'Iron Plate',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "ironPlate",
+        default: 'ironPlate',
+        sinkPoints: 6,
         recipes: {
             ironPlate: {
-                name: "Iron Plate",
-                machine: "constructor",
+                name: 'Iron Plate',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     ironIngot: {
                         amount: 3,
@@ -2149,11 +2359,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "ironPlate"
+                parentRecipe: 'ironPlate'
             },
             altCoatedIronPlate: {
-                name: "Alternate: Coated Iron Plate",
-                machine: "assembler",
+                name: 'Alternate: Coated Iron Plate',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironIngot: {
                         amount: 10,
@@ -2170,11 +2382,13 @@ export const Recipes: Item = {
                         rate: 75
                     }
                 },
-                parentRecipe: "ironPlate"
+                parentRecipe: 'ironPlate'
             },
             altSteelCoatedPlate: {
-                name: "Alternate: Steel Coated Plate",
-                machine: "assembler",
+                name: 'Alternate: Steel Coated Plate',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     steelIngot: {
                         amount: 3,
@@ -2191,20 +2405,23 @@ export const Recipes: Item = {
                         rate: 45
                     }
                 },
-                parentRecipe: "ironPlate"
+                parentRecipe: 'ironPlate'
             }
         }
     },
     reinforcedIronPlate: {
-        name: "Reinforced Iron Plate",
+        name: 'Reinforced Iron Plate',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "reinforcedIronPlate",
+        default: 'reinforcedIronPlate',
+        sinkPoints: 120,
         recipes: {
             reinforcedIronPlate: {
-                name: "Reinforced Iron Plate",
-                machine: "assembler",
+                name: 'Reinforced Iron Plate',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironPlate: {
                         amount: 6,
@@ -2221,11 +2438,13 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "reinforcedIronPlate"
+                parentRecipe: 'reinforcedIronPlate'
             },
             altAdheredIronPlate: {
-                name: "Alternate: Adhered Iron Plate",
-                machine: "assembler",
+                name: 'Alternate: Adhered Iron Plate',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironPlate: {
                         amount: 3,
@@ -2242,11 +2461,13 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "reinforcedIronPlate"
+                parentRecipe: 'reinforcedIronPlate'
             },
             altBoltedIronPlate: {
-                name: "Alternate: Bolted Iron Plate",
-                machine: "assembler",
+                name: 'Alternate: Bolted Iron Plate',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironPlate: {
                         amount: 18,
@@ -2263,11 +2484,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "reinforcedIronPlate"
+                parentRecipe: 'reinforcedIronPlate'
             },
             altStitchedIronPlate: {
-                name: "Alternate: Stitched Iron Plate",
-                machine: "assembler",
+                name: 'Alternate: Stitched Iron Plate',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironPlate: {
                         amount: 10,
@@ -2284,20 +2507,23 @@ export const Recipes: Item = {
                         rate: 5.63
                     }
                 },
-                parentRecipe: "reinforcedIronPlate"
+                parentRecipe: 'reinforcedIronPlate'
             }
         }
     },
     copperSheet: {
-        name: "Copper Sheet",
+        name: 'Copper Sheet',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "copperSheet",
+        default: 'copperSheet',
+        sinkPoints: 24,
         recipes: {
             copperSheet: {
-                name: "Copper Sheet",
-                machine: "constructor",
+                name: 'Copper Sheet',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     copperIngot: {
                         amount: 2,
@@ -2310,11 +2536,13 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "copperSheet"
+                parentRecipe: 'copperSheet'
             },
             altSteamedCopperSheet: {
-                name: "Alternate: Steamed Copper Sheet",
-                machine: "refinery",
+                name: 'Alternate: Steamed Copper Sheet',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     copperIngot: {
                         amount: 2,
@@ -2331,20 +2559,23 @@ export const Recipes: Item = {
                         rate: 22.5
                     }
                 },
-                parentRecipe: "copperSheet"
+                parentRecipe: 'copperSheet'
             }
         }
     },
     alcladAluminumSheet: {
-        name: "Alclad Aluminum Sheet",
+        name: 'Alclad Aluminum Sheet',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "alcladAluminumSheet",
+        default: 'alcladAluminumSheet',
+        sinkPoints: 266,
         recipes: {
             alcladAluminumSheet: {
-                name: "Alclad Aluminum Sheet",
-                machine: "assembler",
+                name: 'Alclad Aluminum Sheet',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     aluminumIngot: {
                         amount: 3,
@@ -2361,20 +2592,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "alcladAluminumSheet"
+                parentRecipe: 'alcladAluminumSheet'
             }
         }
     },
     aluminumCasing: {
-        name: "Aluminum Casing",
+        name: 'Aluminum Casing',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "aluminumCasing",
+        default: 'aluminumCasing',
+        sinkPoints: 393,
         recipes: {
             aluminumCasing: {
-                name: "Aluminum Casing",
-                machine: "constructor",
+                name: 'Aluminum Casing',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     aluminumIngot: {
                         amount: 3,
@@ -2387,11 +2621,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "aluminumCasing"
+                parentRecipe: 'aluminumCasing'
             },
             altAlcladCasing: {
-                name: "Alternate: Alclad Casing",
-                machine: "assembler",
+                name: 'Alternate: Alclad Casing',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     aluminumIngot: {
                         amount: 20,
@@ -2408,20 +2644,23 @@ export const Recipes: Item = {
                         rate: 112.5
                     }
                 },
-                parentRecipe: "aluminumCasing"
+                parentRecipe: 'aluminumCasing'
             }
         }
     },
     steelPipe: {
-        name: "Steel Pipe",
+        name: 'Steel Pipe',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "steelPipe",
+        default: 'steelPipe',
+        sinkPoints: 24,
         recipes: {
             steelPipe: {
-                name: "Steel Pipe",
-                machine: "constructor",
+                name: 'Steel Pipe',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     steelIngot: {
                         amount: 3,
@@ -2434,20 +2673,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "steelPipe"
+                parentRecipe: 'steelPipe'
             }
         }
     },
     steelBeam: {
-        name: "Steel Beam",
+        name: 'Steel Beam',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "steelBeam",
+        default: 'steelBeam',
+        sinkPoints: 64,
         recipes: {
             steelBeam: {
-                name: "Steel Beam",
-                machine: "constructor",
+                name: 'Steel Beam',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     steelIngot: {
                         amount: 4,
@@ -2460,20 +2702,23 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "steelBeam"
+                parentRecipe: 'steelBeam'
             }
         }
     },
     encasedIndustrialBeam: {
-        name: "Encased Industrial Beam",
+        name: 'Encased Industrial Beam',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "encasedIndustrialBeam",
+        default: 'encasedIndustrialBeam',
+        sinkPoints: 632,
         recipes: {
             encasedIndustrialBeam: {
-                name: "Encased Industrial Beam",
-                machine: "assembler",
+                name: 'Encased Industrial Beam',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     steelBeam: {
                         amount: 4,
@@ -2490,11 +2735,13 @@ export const Recipes: Item = {
                         rate: 6
                     }
                 },
-                parentRecipe: "encasedIndustrialBeam"
+                parentRecipe: 'encasedIndustrialBeam'
             },
             encasedIndustrialPipe: {
-                name: "Alternate: Encased Industrial Pipe",
-                machine: "assembler",
+                name: 'Alternate: Encased Industrial Pipe',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     steelPipe: {
                         amount: 7,
@@ -2511,20 +2758,23 @@ export const Recipes: Item = {
                         rate: 4
                     }
                 },
-                parentRecipe: "encasedIndustrialBeam"
+                parentRecipe: 'encasedIndustrialBeam'
             }
         }
     },
     modularFrame: {
-        name: "Modular Frame",
+        name: 'Modular Frame',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "modularFrame",
+        default: 'modularFrame',
+        sinkPoints: 408,
         recipes: {
             modularFrame: {
-                name: "Modular Frame",
-                machine: "assembler",
+                name: 'Modular Frame',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     reinforcedIronPlate: {
                         amount: 3,
@@ -2541,11 +2791,13 @@ export const Recipes: Item = {
                         rate: 2
                     }
                 },
-                parentRecipe: "modularFrame"
+                parentRecipe: 'modularFrame'
             },
             altBoltedFrame: {
-                name: "Alternate: Bolted Frame",
-                machine: "assembler",
+                name: 'Alternate: Bolted Frame',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     reinforcedIronPlate: {
                         amount: 3,
@@ -2562,11 +2814,13 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "modularFrame"
+                parentRecipe: 'modularFrame'
             },
             altSteeledFrame: {
-                name: "Alternate: Steeled Frame",
-                machine: "assembler",
+                name: 'Alternate: Steeled Frame',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     reinforcedIronPlate: {
                         amount: 2,
@@ -2583,20 +2837,23 @@ export const Recipes: Item = {
                         rate: 3
                     }
                 },
-                parentRecipe: "modularFrame"
+                parentRecipe: 'modularFrame'
             }
         }
     },
     heavyModularFrame: {
-        name: "Heavy Modular Frame",
+        name: 'Heavy Modular Frame',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "heavyModularFrame",
+        default: 'heavyModularFrame',
+        sinkPoints: 11520,
         recipes: {
             heavyModularFrame: {
-                name: "Heavy Modular Frame",
-                machine: "manufacturer",
+                name: 'Heavy Modular Frame',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     modularFrame: {
                         amount: 5,
@@ -2621,11 +2878,13 @@ export const Recipes: Item = {
                         rate: 2
                     }
                 },
-                parentRecipe: "heavyModularFrame"
+                parentRecipe: 'heavyModularFrame'
             },
             altHeavyEncasedFrame: {
-                name: "Alternate: Heavy Encased Frame",
-                machine: "manufacturer",
+                name: 'Alternate: Heavy Encased Frame',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     modularFrame: {
                         amount: 8,
@@ -2650,11 +2909,13 @@ export const Recipes: Item = {
                         rate: 2.81
                     }
                 },
-                parentRecipe: "heavyModularFrame"
+                parentRecipe: 'heavyModularFrame'
             },
             altHeavyFlexibleFrame: {
-                name: "Alternate: Heavy Flexible Frame",
-                machine: "manufacturer",
+                name: 'Alternate: Heavy Flexible Frame',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     modularFrame: {
                         amount: 5,
@@ -2679,20 +2940,23 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "heavyModularFrame"
+                parentRecipe: 'heavyModularFrame'
             }
         }
     },
     fusedModularFrame: {
-        name: "Fused Modular Frame",
+        name: 'Fused Modular Frame',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "fusedModularFrame",
+        default: 'fusedModularFrame',
+        sinkPoints: 62840,
         recipes: {
             fusedModularFrame: {
-                name: "Fused Modular Frame",
-                machine: "blender",
+                name: 'Fused Modular Frame',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     heavyModularFrame: {
                         amount: 1,
@@ -2713,11 +2977,13 @@ export const Recipes: Item = {
                         rate: 1.5
                     }
                 },
-                parentRecipe: "fusedModularFrame"
+                parentRecipe: 'fusedModularFrame'
             },
             altHeatFusedFrame: {
-                name: "Alternate: Heat-Fused Frame",
-                machine: "blender",
+                name: 'Alternate: Heat-Fused Frame',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     heavyModularFrame: {
                         amount: 1,
@@ -2742,20 +3008,23 @@ export const Recipes: Item = {
                         rate: 3
                     }
                 },
-                parentRecipe: "fusedModularFrame"
+                parentRecipe: 'fusedModularFrame'
             }
         }
     },
     fabric: {
-        name: "Fabric",
+        name: 'Fabric',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "fabric",
+        default: 'fabric',
+        sinkPoints: 140,
         recipes: {
             fabric: {
-                name: "Fabric",
-                machine: "assembler",
+                name: 'Fabric',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     mycelia: {
                         amount: 1,
@@ -2772,11 +3041,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "fabric"
+                parentRecipe: 'fabric'
             },
             altPolyesterFabric: {
-                name: "Alternate: Polyester Fabric",
-                machine: "refinery",
+                name: 'Alternate: Polyester Fabric',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     polymerResin: {
                         amount: 1,
@@ -2793,20 +3064,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "fabric"
+                parentRecipe: 'fabric'
             }
         }
     },
     plastic: {
-        name: "Plastic",
+        name: 'Plastic',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "plastic",
+        default: 'plastic',
+        sinkPoints: 75,
         recipes: {
             plastic: {
-                name: "Plastic",
-                machine: "refinery",
+                name: 'Plastic',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 3,
@@ -2823,11 +3097,13 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "plastic"
+                parentRecipe: 'plastic'
             },
             residualPlastic: {
-                name: "Residual Plastic",
-                machine: "refinery",
+                name: 'Residual Plastic',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     polymerResin: {
                         amount: 6,
@@ -2844,11 +3120,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "plastic"
+                parentRecipe: 'plastic'
             },
             altRecycledPlastic: {
-                name: "Alternate: Residual Plastic",
-                machine: "refinery",
+                name: 'Alternate: Residual Plastic',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     rubber: {
                         amount: 6,
@@ -2865,20 +3143,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "plastic"
+                parentRecipe: 'plastic'
             }
         }
     },
     rubber: {
-        name: "Rubber",
+        name: 'Rubber',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "rubber",
+        default: 'rubber',
+        sinkPoints: 60,
         recipes: {
             residualRubber: {
-                name: "Residual Rubber",
-                machine: "refinery",
+                name: 'Residual Rubber',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     polymerResin: {
                         amount: 4,
@@ -2895,11 +3176,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "rubber"
+                parentRecipe: 'rubber'
             },
             rubber: {
-                name: "Rubber",
-                machine: "refinery",
+                name: 'Rubber',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 3,
@@ -2916,11 +3199,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "rubber"
+                parentRecipe: 'rubber'
             },
             altRecycledRubber: {
-                name: "Alternate: Residual Rubber",
-                machine: "refinery",
+                name: 'Alternate: Residual Rubber',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     plastic: {
                         amount: 6,
@@ -2937,20 +3222,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "rubber"
+                parentRecipe: 'rubber'
             }
         }
     },
     rotor: {
-        name: "Rotor",
+        name: 'Rotor',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "rotor",
+        default: 'rotor',
+        sinkPoints: 140,
         recipes: {
             rotor: {
-                name: "Rotor",
-                machine: "assembler",
+                name: 'Rotor',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironRod: {
                         amount: 5,
@@ -2967,11 +3255,13 @@ export const Recipes: Item = {
                         rate: 4
                     }
                 },
-                parentRecipe: "rotor"
+                parentRecipe: 'rotor'
             },
             altCopperRotor: {
-                name: "Alternate: Copper Rotor",
-                machine: "assembler",
+                name: 'Alternate: Copper Rotor',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     copperSheet: {
                         amount: 6,
@@ -2988,11 +3278,13 @@ export const Recipes: Item = {
                         rate: 11.25
                     }
                 },
-                parentRecipe: "rotor"
+                parentRecipe: 'rotor'
             },
             altSteelRotor: {
-                name: "Alternate: Steel Rotor",
-                machine: "assembler",
+                name: 'Alternate: Steel Rotor',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     steelPipe: {
                         amount: 2,
@@ -3009,20 +3301,23 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "rotor"
+                parentRecipe: 'rotor'
             }
         }
     },
     stator: {
-        name: "Stator",
+        name: 'Stator',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "stator",
+        default: 'stator',
+        sinkPoints: 240,
         recipes: {
             stator: {
-                name: "Stator",
-                machine: "assembler",
+                name: 'Stator',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     steelPipe: {
                         amount: 3,
@@ -3039,11 +3334,13 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "stator"
+                parentRecipe: 'stator'
             },
             altQuickwireStator: {
-                name: "Alternate: Quickwire Stator",
-                machine: "assembler",
+                name: 'Alternate: Quickwire Stator',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     steelPipe: {
                         amount: 4,
@@ -3060,20 +3357,23 @@ export const Recipes: Item = {
                         rate: 8
                     }
                 },
-                parentRecipe: "stator"
+                parentRecipe: 'stator'
             }
         }
     },
     battery: {
-        name: "Battery",
+        name: 'Battery',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "battery",
+        default: 'battery',
+        sinkPoints: 465,
         recipes: {
             battery: {
-                name: "Battery",
-                machine: "blender",
+                name: 'Battery',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     sulfuricAcid: {
                         amount: 2.5,
@@ -3098,11 +3398,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "battery"
+                parentRecipe: 'battery'
             },
             altClassicBattery: {
-                name: "Alternate: Classic Battery",
-                machine: "manufacturer",
+                name: 'Alternate: Classic Battery',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     sulfur: {
                         amount: 6,
@@ -3127,20 +3429,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "battery"
+                parentRecipe: 'battery'
             }
         }
     },
     motor: {
-        name: "Motor",
+        name: 'Motor',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "motor",
+        default: 'motor',
+        sinkPoints: 1520,
         recipes: {
             motor: {
-                name: "Motor",
-                machine: "assembler",
+                name: 'Motor',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     rotor: {
                         amount: 2,
@@ -3157,11 +3462,13 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "motor"
+                parentRecipe: 'motor'
             },
             altElectricMotor: {
-                name: "Alternate: Electric Motor",
-                machine: "assembler",
+                name: 'Alternate: Electric Motor',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     electromagneticControlRod: {
                         amount: 1,
@@ -3178,11 +3485,13 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "motor"
+                parentRecipe: 'motor'
             },
             altRigourMotor: {
-                name: "Alternate: Rigour Motor",
-                machine: "manufacturer",
+                name: 'Alternate: Rigour Motor',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     rotor: {
                         amount: 3,
@@ -3203,20 +3512,23 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "motor"
+                parentRecipe: 'motor'
             }
         }
     },
     heatSink: {
-        name: "Heat Sink",
+        name: 'Heat Sink',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "heatSink",
+        default: 'heatSink',
+        sinkPoints: 2804,
         recipes: {
             heatSink: {
-                name: "Heat Sink",
-                machine: "assembler",
+                name: 'Heat Sink',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     alcladAluminumSheet: {
                         amount: 5,
@@ -3233,11 +3545,13 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "heatSink"
+                parentRecipe: 'heatSink'
             },
             altHeatExchanger: {
-                name: "Alternate: Heat Exchanger",
-                machine: "assembler",
+                name: 'Alternate: Heat Exchanger',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     aluminumCasing: {
                         amount: 3,
@@ -3254,20 +3568,23 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "heatSink"
+                parentRecipe: 'heatSink'
             }
         }
     },
     coolingSystem: {
-        name: "Cooling System",
+        name: 'Cooling System',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "coolingSystem",
+        default: 'coolingSystem',
+        sinkPoints: 12006,
         recipes: {
             coolingSystem: {
-                name: "Cooling System",
-                machine: "blender",
+                name: 'Cooling System',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     heatSink: {
                         amount: 2,
@@ -3292,11 +3609,13 @@ export const Recipes: Item = {
                         rate: 6
                     }
                 },
-                parentRecipe: "coolingSystem"
+                parentRecipe: 'coolingSystem'
             },
             altCoolingDevice: {
-                name: "Alternate: Cooling Device",
-                machine: "blender",
+                name: 'Alternate: Cooling Device',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     heatSink: {
                         amount: 5,
@@ -3317,20 +3636,23 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "coolingSystem"
+                parentRecipe: 'coolingSystem'
             }
         }
     },
     turboMotor: {
-        name: "Turbo Motor",
+        name: 'Turbo Motor',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "turboMotor",
+        default: 'turboMotor',
+        sinkPoints: 242720,
         recipes: {
             turboMotor: {
-                name: "Turbo Motor",
-                machine: "manufacturer",
+                name: 'Turbo Motor',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     coolingSystem: {
                         amount: 4,
@@ -3355,11 +3677,13 @@ export const Recipes: Item = {
                         rate: 1.88
                     }
                 },
-                parentRecipe: "turboMotor"
+                parentRecipe: 'turboMotor'
             },
             altTurboElectricMotor: {
-                name: "Alternate: Turbo Electric Motor",
-                machine: "manufacturer",
+                name: 'Alternate: Turbo Electric Motor',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     motor: {
                         amount: 7,
@@ -3384,11 +3708,13 @@ export const Recipes: Item = {
                         rate: 2.81
                     }
                 },
-                parentRecipe: "turboMotor"
+                parentRecipe: 'turboMotor'
             },
             altTurboPressureMotor: {
-                name: "Alternate: Turbo Pressure Motor",
-                machine: "manufacturer",
+                name: 'Alternate: Turbo Pressure Motor',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     motor: {
                         amount: 4,
@@ -3413,20 +3739,23 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "turboMotor"
+                parentRecipe: 'turboMotor'
             }
         }
     },
     wire: {
-        name: "Wire",
+        name: 'Wire',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "wire",
+        default: 'wire',
+        sinkPoints: 6,
         recipes: {
             wire: {
-                name: "Wire",
-                machine: "constructor",
+                name: 'Wire',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     copperIngot: {
                         amount: 1,
@@ -3439,11 +3768,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "wire"
+                parentRecipe: 'wire'
             },
             altCateriumWire: {
-                name: "Alternate: Caterium Wire",
-                machine: "constructor",
+                name: 'Alternate: Caterium Wire',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     cateriumIngot: {
                         amount: 1,
@@ -3456,11 +3787,13 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "wire"
+                parentRecipe: 'wire'
             },
             altFusedWire: {
-                name: "Alternate: Fused Wire",
-                machine: "assembler",
+                name: 'Alternate: Fused Wire',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     copperIngot: {
                         amount: 4,
@@ -3477,11 +3810,13 @@ export const Recipes: Item = {
                         rate: 90
                     }
                 },
-                parentRecipe: "wire"
+                parentRecipe: 'wire'
             },
             altIronWire: {
-                name: "Alternate: Iron Wire",
-                machine: "constructor",
+                name: 'Alternate: Iron Wire',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     ironIngot: {
                         amount: 5,
@@ -3494,20 +3829,23 @@ export const Recipes: Item = {
                         rate: 22.5
                     }
                 },
-                parentRecipe: "wire"
+                parentRecipe: 'wire'
             }
         }
     },
     cable: {
-        name: "Cable",
+        name: 'Cable',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "cable",
+        default: 'cable',
+        sinkPoints: 24,
         recipes: {
             cable: {
-                name: "Cable",
-                machine: "constructor",
+                name: 'Cable',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     wire: {
                         amount: 2,
@@ -3520,11 +3858,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "cable"
+                parentRecipe: 'cable'
             },
             altCoatedCable: {
-                name: "Alternate: Coated Cable",
-                machine: "refinery",
+                name: 'Alternate: Coated Cable',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     wire: {
                         amount: 5,
@@ -3541,11 +3881,13 @@ export const Recipes: Item = {
                         rate: 67.5
                     }
                 },
-                parentRecipe: "cable"
+                parentRecipe: 'cable'
             },
             altInsulatedCable: {
-                name: "Alternate: Insulated Cable",
-                machine: "assembler",
+                name: 'Alternate: Insulated Cable',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     wire: {
                         amount: 9,
@@ -3562,11 +3904,13 @@ export const Recipes: Item = {
                         rate: 100
                     }
                 },
-                parentRecipe: "cable"
+                parentRecipe: 'cable'
             },
             altQuickwireCable: {
-                name: "Alternate: Quickwire Cable",
-                machine: "assembler",
+                name: 'Alternate: Quickwire Cable',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     quickwire: {
                         amount: 3,
@@ -3583,20 +3927,23 @@ export const Recipes: Item = {
                         rate: 27.5
                     }
                 },
-                parentRecipe: "cable"
+                parentRecipe: 'cable'
             }
         }
     },
     quickwire: {
-        name: "Quickwire",
+        name: 'Quickwire',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "quickwire",
+        default: 'quickwire',
+        sinkPoints: 17,
         recipes: {
             quickwire: {
-                name: "Quickwire",
-                machine: "constructor",
+                name: 'Quickwire',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     cateriumIngot: {
                         amount: 1,
@@ -3609,11 +3956,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "quickwire"
+                parentRecipe: 'quickwire'
             },
             altFusedQuickwire: {
-                name: "Alternate: Fused Quickwire",
-                machine: "assembler",
+                name: 'Alternate: Fused Quickwire',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     cateriumIngot: {
                         amount: 1,
@@ -3630,20 +3979,23 @@ export const Recipes: Item = {
                         rate: 90
                     }
                 },
-                parentRecipe: "quickwire"
+                parentRecipe: 'quickwire'
             }
         }
     },
     circuitBoard: {
-        name: "Circuit Board",
+        name: 'Circuit Board',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "circuitBoard",
+        default: 'circuitBoard',
+        sinkPoints: 696,
         recipes: {
             circuitBoard: {
-                name: "Circuit Board",
-                machine: "assembler",
+                name: 'Circuit Board',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     copperSheet: {
                         amount: 2,
@@ -3660,11 +4012,13 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "circuitBoard"
+                parentRecipe: 'circuitBoard'
             },
             altCateriumCircuitBoard: {
-                name: "Alternate: Caterium Circuit Board",
-                machine: "assembler",
+                name: 'Alternate: Caterium Circuit Board',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     plastic: {
                         amount: 10,
@@ -3681,11 +4035,13 @@ export const Recipes: Item = {
                         rate: 8.75
                     }
                 },
-                parentRecipe: "circuitBoard"
+                parentRecipe: 'circuitBoard'
             },
             altElectrodeCircuitBoard: {
-                name: "Alternate: Electrode Circuit Board",
-                machine: "assembler",
+                name: 'Alternate: Electrode Circuit Board',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     rubber: {
                         amount: 6,
@@ -3702,11 +4058,13 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "circuitBoard"
+                parentRecipe: 'circuitBoard'
             },
             altSiliconCircuitBoard: {
-                name: "Alternate: Silicon Circuit Board",
-                machine: "assembler",
+                name: 'Alternate: Silicon Circuit Board',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     copperSheet: {
                         amount: 11,
@@ -3723,20 +4081,23 @@ export const Recipes: Item = {
                         rate: 12.5
                     }
                 },
-                parentRecipe: "circuitBoard"
+                parentRecipe: 'circuitBoard'
             }
         }
     },
     aiLimiter: {
-        name: "AI Limiter",
+        name: 'AI Limiter',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "aiLimiter",
+        default: 'aiLimiter',
+        sinkPoints: 920,
         recipes: {
             aiLimiter: {
-                name: "AI Limiter",
-                machine: "assembler",
+                name: 'AI Limiter',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     copperSheet: {
                         amount: 5,
@@ -3753,20 +4114,23 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "aiLimiter"
+                parentRecipe: 'aiLimiter'
             }
         }
     },
     highSpeedConnector: {
-        name: "High-Speed Connector",
+        name: 'High-Speed Connector',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "highSpeedConnector",
+        default: 'highSpeedConnector',
+        sinkPoints: 3776,
         recipes: {
             highSpeedConnector: {
-                name: "High-Speed Connector",
-                machine: "manufacturer",
+                name: 'High-Speed Connector',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     quickwire: {
                         amount: 56,
@@ -3787,11 +4151,13 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "highSpeedConnector"
+                parentRecipe: 'highSpeedConnector'
             },
             altSiliconHighSpeedConnector: {
-                name: "Alternate: Silicon High-Speed Connector",
-                machine: "manufacturer",
+                name: 'Alternate: Silicon High-Speed Connector',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     quickwire: {
                         amount: 60,
@@ -3812,20 +4178,23 @@ export const Recipes: Item = {
                         rate: 3
                     }
                 },
-                parentRecipe: "highSpeedConnector"
+                parentRecipe: 'highSpeedConnector'
             }
         }
     },
     computer: {
-        name: "Computer",
+        name: 'Computer',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "computer",
+        default: 'computer',
+        sinkPoints: 17260,
         recipes: {
             computer: {
-                name: "Computer",
-                machine: "manufacturer",
+                name: 'Computer',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     circuitBoard: {
                         amount: 10,
@@ -3850,11 +4219,13 @@ export const Recipes: Item = {
                         rate: 2.5
                     }
                 },
-                parentRecipe: "computer"
+                parentRecipe: 'computer'
             },
             altCateriumComputer: {
-                name: "Alternate: Caterium Computer",
-                machine: "manufacturer",
+                name: 'Alternate: Caterium Computer',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     circuitBoard: {
                         amount: 7,
@@ -3875,11 +4246,13 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "computer"
+                parentRecipe: 'computer'
             },
             altCrystalComputer: {
-                name: "Alternate: Crystal Computer",
-                machine: "assembler",
+                name: 'Alternate: Crystal Computer',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     circuitBoard: {
                         amount: 8,
@@ -3896,20 +4269,23 @@ export const Recipes: Item = {
                         rate: 2.81
                     }
                 },
-                parentRecipe: "computer"
+                parentRecipe: 'computer'
             }
         }
     },
     supercomputer: {
-        name: "Supercomputer",
+        name: 'Supercomputer',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "supercomputer",
+        default: 'supercomputer',
+        sinkPoints: 99576,
         recipes: {
             supercomputer: {
-                name: "Supercomputer",
-                machine: "manufacturer",
+                name: 'Supercomputer',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     computer: {
                         amount: 2,
@@ -3934,11 +4310,13 @@ export const Recipes: Item = {
                         rate: 1.88
                     }
                 },
-                parentRecipe: "supercomputer"
+                parentRecipe: 'supercomputer'
             },
             altOCSupercomputer: {
-                name: "Alternate: OC Supercomputer",
-                machine: "assembler",
+                name: 'Alternate: OC Supercomputer',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     radioControlUnit: {
                         amount: 3,
@@ -3955,11 +4333,13 @@ export const Recipes: Item = {
                         rate: 3
                     }
                 },
-                parentRecipe: "supercomputer"
+                parentRecipe: 'supercomputer'
             },
             altSuperStateComputer: {
-                name: "Alternate: Super-State Computer",
-                machine: "manufacturer",
+                name: 'Alternate: Super-State Computer',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     computer: {
                         amount: 3,
@@ -3984,20 +4364,23 @@ export const Recipes: Item = {
                         rate: 2.4
                     }
                 },
-                parentRecipe: "supercomputer"
+                parentRecipe: 'supercomputer'
             }
         }
     },
     radioControlUnit: {
-        name: "Radio Control Unit",
+        name: 'Radio Control Unit',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "radioControlUnit",
+        default: 'radioControlUnit',
+        sinkPoints: 19600,
         recipes: {
             radioControlUnit: {
-                name: "Radio Control Unit",
-                machine: "manufacturer",
+                name: 'Radio Control Unit',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     aluminumCasing: {
                         amount: 32,
@@ -4018,11 +4401,13 @@ export const Recipes: Item = {
                         rate: 2.5
                     }
                 },
-                parentRecipe: "radioControlUnit"
+                parentRecipe: 'radioControlUnit'
             },
             altRadioConnectionUnit: {
-                name: "Alternate: Radio Connection Unit",
-                machine: "manufacturer",
+                name: 'Alternate: Radio Connection Unit',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     heatSink: {
                         amount: 4,
@@ -4043,11 +4428,13 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "radioControlUnit"
+                parentRecipe: 'radioControlUnit'
             },
             altRadioControlSystem: {
-                name: "Alternate: Radio Control System",
-                machine: "manufacturer",
+                name: 'Alternate: Radio Control System',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     crystalOscillator: {
                         amount: 1,
@@ -4072,20 +4459,23 @@ export const Recipes: Item = {
                         rate: 4.5
                     }
                 },
-                parentRecipe: "radioControlUnit"
+                parentRecipe: 'radioControlUnit'
             }
         }
     },
     crystalOscillator: {
-        name: "Crystal Oscillator",
+        name: 'Crystal Oscillator',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "crystalOscillator",
+        default: 'crystalOscillator',
+        sinkPoints: 3072,
         recipes: {
             crystalOscillator: {
-                name: "Crystal Oscillator",
-                machine: "manufacturer",
+                name: 'Crystal Oscillator',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     quartzCrystal: {
                         amount: 36,
@@ -4106,11 +4496,13 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "crystalOscillator"
+                parentRecipe: 'crystalOscillator'
             },
             altInsulatedCrystalOscillator: {
-                name: "Alternate: Insulated Crystal Oscillator",
-                machine: "manufacturer",
+                name: 'Alternate: Insulated Crystal Oscillator',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     quartzCrystal: {
                         amount: 10,
@@ -4131,20 +4523,23 @@ export const Recipes: Item = {
                         rate: 1.88
                     }
                 },
-                parentRecipe: "crystalOscillator"
+                parentRecipe: 'crystalOscillator'
             }
         }
     },
     emptyCanister: {
-        name: "Empty Canister",
+        name: 'Empty Canister',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "emptyCanister",
+        default: 'emptyCanister',
+        sinkPoints: 60,
         recipes: {
             emptyCanister: {
-                name: "Empty Canister",
-                machine: "constructor",
+                name: 'Empty Canister',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     plastic: {
                         amount: 2,
@@ -4157,11 +4552,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             altCoatedIronCanister: {
-                name: "Alternate: Coated Iron Canister",
-                machine: "assembler",
+                name: 'Alternate: Coated Iron Canister',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     ironPlate: {
                         amount: 2,
@@ -4178,11 +4575,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             altSteelCanister: {
-                name: "Alternate: Steel Canister",
-                machine: "constructor",
+                name: 'Alternate: Steel Canister',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     steelIngot: {
                         amount: 3,
@@ -4195,11 +4594,13 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedAluminaSolution: {
-                name: "Unpackaged Alumina Solution",
-                machine: "packager",
+                name: 'Unpackaged Alumina Solution',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedAluminaSolution: {
                         amount: 2,
@@ -4216,11 +4617,13 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedFuel: {
-                name: "Unpackaged Fuel",
-                machine: "packager",
+                name: 'Unpackaged Fuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedFuel: {
                         amount: 2,
@@ -4237,11 +4640,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedHeavyOilResidue: {
-                name: "Unpackaged Heavy Oil Residue",
-                machine: "packager",
+                name: 'Unpackaged Heavy Oil Residue',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedHeavyOilResidue: {
                         amount: 2,
@@ -4258,11 +4663,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedLiquidBiofuel: {
-                name: "Unpackaged Liquid Biofuel",
-                machine: "packager",
+                name: 'Unpackaged Liquid Biofuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedLiquidBiofuel: {
                         amount: 2,
@@ -4279,11 +4686,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedOil: {
-                name: "Unpackaged Oil",
-                machine: "packager",
+                name: 'Unpackaged Oil',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedOil: {
                         amount: 2,
@@ -4300,11 +4709,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedSulfuricAcid: {
-                name: "Unpackaged Sulfuric Acid",
-                machine: "packager",
+                name: 'Unpackaged Sulfuric Acid',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedSulfuricAcid: {
                         amount: 1,
@@ -4321,11 +4732,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedTurbofuel: {
-                name: "Unpackaged Turbofuel",
-                machine: "packager",
+                name: 'Unpackaged Turbofuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedTurbofuel: {
                         amount: 2,
@@ -4342,11 +4755,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             },
             unpackagedWater: {
-                name: "Unpackaged Water",
-                machine: "packager",
+                name: 'Unpackaged Water',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedWater: {
                         amount: 2,
@@ -4363,20 +4778,23 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "emptyCanister"
+                parentRecipe: 'emptyCanister'
             }
         }
     },
     emptyFluidTank: {
-        name: "Empty Fluid Tank",
+        name: 'Empty Fluid Tank',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "emptyFluidTank",
+        default: 'emptyFluidTank',
+        sinkPoints: 225,
         recipes: {
             emptyFluidTank: {
-                name: "Empty Fluid Tank",
-                machine: "constructor",
+                name: 'Empty Fluid Tank',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     aluminumIngot: {
                         amount: 1,
@@ -4389,11 +4807,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyFluidTank"
+                parentRecipe: 'emptyFluidTank'
             },
             unpackagedNitricAcid: {
-                name: "Unpackaged Nitric Acid",
-                machine: "packager",
+                name: 'Unpackaged Nitric Acid',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedNitricAcid: {
                         amount: 1,
@@ -4410,11 +4830,13 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "emptyFluidTank"
+                parentRecipe: 'emptyFluidTank'
             },
             unpackagedNitrogenGas: {
-                name: "Unpackaged Nitrogen Gas",
-                machine: "packager",
+                name: 'Unpackaged Nitrogen Gas',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     packagedNitrogenGas: {
                         amount: 1,
@@ -4431,20 +4853,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "emptyFluidTank"
+                parentRecipe: 'emptyFluidTank'
             }
         }
     },
     pressureConversionCube: {
-        name: "Pressure Conversion Cube",
+        name: 'Pressure Conversion Cube',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "pressureConversionCube",
+        default: 'pressureConversionCube',
+        sinkPoints: 257312,
         recipes: {
             pressureConversionCube: {
-                name: "Pressure Conversion Cube",
-                machine: "assembler",
+                name: 'Pressure Conversion Cube',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     fusedModularFrame: {
                         amount: 1,
@@ -4461,20 +4886,23 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "pressureConversionCube"
+                parentRecipe: 'pressureConversionCube'
             }
         }
     },
     packagedWater: {
-        name: "Packaged Water",
+        name: 'Packaged Water',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedWater",
+        default: 'packagedWater',
+        sinkPoints: 130,
         recipes: {
             packagedWater: {
-                name: "Packaged Water",
-                machine: "packager",
+                name: 'Packaged Water',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     water: {
                         amount: 2,
@@ -4491,20 +4919,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "packagedWater"
+                parentRecipe: 'packagedWater'
             }
         }
     },
     packagedAluminaSolution: {
-        name: "Packaged Alumina Solution",
+        name: 'Packaged Alumina Solution',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedAluminaSolution",
+        default: 'packagedAluminaSolution',
+        sinkPoints: 160,
         recipes: {
             packagedAluminaSolution: {
-                name: "Packaged Alumina Solution",
-                machine: "packager",
+                name: 'Packaged Alumina Solution',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     aluminaSolution: {
                         amount: 2,
@@ -4521,20 +4952,23 @@ export const Recipes: Item = {
                         rate: 120
                     }
                 },
-                parentRecipe: "packagedAluminaSolution"
+                parentRecipe: 'packagedAluminaSolution'
             }
         }
     },
     packagedSulfuricAcid: {
-        name: "Packaged Sulfuric Acid",
+        name: 'Packaged Sulfuric Acid',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedSulfuricAcid",
+        default: 'packagedSulfuricAcid',
+        sinkPoints: 152,
         recipes: {
             packagedSulfuricAcid: {
-                name: "Packaged Sulfuric Acid",
-                machine: "packager",
+                name: 'Packaged Sulfuric Acid',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     sulfuricAcid: {
                         amount: 2,
@@ -4551,20 +4985,23 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "packagedSulfuricAcid"
+                parentRecipe: 'packagedSulfuricAcid'
             }
         }
     },
     packagedNitricAcid: {
-        name: "Packaged Nitric Acid",
+        name: 'Packaged Nitric Acid',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedNitricAcid",
+        default: 'packagedNitricAcid',
+        sinkPoints: 412,
         recipes: {
             packagedNitricAcid: {
-                name: "Packaged Nitric Acid",
-                machine: "packager",
+                name: 'Packaged Nitric Acid',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     nitricAcid: {
                         amount: 1,
@@ -4581,20 +5018,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "packagedNitricAcid"
+                parentRecipe: 'packagedNitricAcid'
             }
         }
     },
     packagedNitrogenGas: {
-        name: "Packaged Nitrogen Gas",
+        name: 'Packaged Nitrogen Gas',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedNitrogenGas",
+        default: 'packagedNitrogenGas',
+        sinkPoints: 312,
         recipes: {
             packagedNitrogenGas: {
-                name: "Packaged Nitrogen Gas",
-                machine: "packager",
+                name: 'Packaged Nitrogen Gas',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     nitrogenGas: {
                         amount: 4,
@@ -4611,20 +5051,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "packagedNitrogenGas"
+                parentRecipe: 'packagedNitrogenGas'
             }
         }
     },
     compactedCoal: {
-        name: "Compacted Coal",
+        name: 'Compacted Coal',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "compactedCoal",
+        default: 'compactedCoal',
+        sinkPoints: 28,
         recipes: {
             compactedCoal: {
-                name: "Alternate: Compacted Coal",
-                machine: "assembler",
+                name: 'Alternate: Compacted Coal',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     coal: {
                         amount: 5,
@@ -4641,20 +5084,23 @@ export const Recipes: Item = {
                         rate: 25
                     }
                 },
-                parentRecipe: "compactedCoal"
+                parentRecipe: 'compactedCoal'
             }
         }
     },
     packagedOil: {
-        name: "Packaged Oil",
+        name: 'Packaged Oil',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedOil",
+        default: 'packagedOil',
+        sinkPoints: 180,
         recipes: {
             packagedOil: {
-                name: "Packaged Oil",
-                machine: "packager",
+                name: 'Packaged Oil',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     crudeOil: {
                         amount: 2,
@@ -4671,20 +5117,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "packagedOil"
+                parentRecipe: 'packagedOil'
             }
         }
     },
     packagedHeavyOilResidue: {
-        name: "Packaged Heavy Oil Residue",
+        name: 'Packaged Heavy Oil Residue',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedHeavyOilResidue",
+        default: 'packagedHeavyOilResidue',
+        sinkPoints: 180,
         recipes: {
             packagedHeavyOilResidue: {
-                name: "Packaged Heavy Oil Residue",
-                machine: "packager",
+                name: 'Packaged Heavy Oil Residue',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     heavyOilResidue: {
                         amount: 2,
@@ -4701,20 +5150,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "packagedHeavyOilResidue"
+                parentRecipe: 'packagedHeavyOilResidue'
             }
         }
     },
     packagedFuel: {
-        name: "Packaged Fuel",
+        name: 'Packaged Fuel',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedFuel",
+        default: 'packagedFuel',
+        sinkPoints: 270,
         recipes: {
             packagedFuel: {
-                name: "Packaged Fuel",
-                machine: "packager",
+                name: 'Packaged Fuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     fuel: {
                         amount: 2,
@@ -4731,11 +5183,13 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "packagedFuel"
+                parentRecipe: 'packagedFuel'
             },
             altDilutedPackagedFuel: {
-                name: "Alternate: Diluted Packaged Fuel",
-                machine: "refinery",
+                name: 'Alternate: Diluted Packaged Fuel',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     heavyOilResidue: {
                         amount: 1,
@@ -4752,20 +5206,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "packagedFuel"
+                parentRecipe: 'packagedFuel'
             }
         }
     },
     packagedLiquidBiofuel: {
-        name: "Packaged Liquid Biofuel",
+        name: 'Packaged Liquid Biofuel',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedLiquidBiofuel",
+        default: 'packagedLiquidBiofuel',
+        sinkPoints: 370,
         recipes: {
             packagedLiquidBiofuel: {
-                name: "Packaged Liquid Biofuel",
-                machine: "packager",
+                name: 'Packaged Liquid Biofuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     liquidBiofuel: {
                         amount: 2,
@@ -4782,20 +5239,23 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "packagedLiquidBiofuel"
+                parentRecipe: 'packagedLiquidBiofuel'
             }
         }
     },
     packagedTurbofuel: {
-        name: "Packaged Turbofuel",
+        name: 'Packaged Turbofuel',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "packagedTurbofuel",
+        default: 'packagedTurbofuel',
+        sinkPoints: 570,
         recipes: {
             packagedTurbofuel: {
-                name: "Packaged Turbofuel",
-                machine: "packager",
+                name: 'Packaged Turbofuel',
+                machines: [
+                    'packager'
+                ],
                 inputs: {
                     turbofuel: {
                         amount: 2,
@@ -4812,20 +5272,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "packagedTurbofuel"
+                parentRecipe: 'packagedTurbofuel'
             }
         }
     },
     solidBiofuel: {
-        name: "Solid Biofuel",
+        name: 'Solid Biofuel',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "solidBiofuel",
+        default: 'solidBiofuel',
+        sinkPoints: 48,
         recipes: {
             solidBiofuel: {
-                name: "Solid Biofuel",
-                machine: "constructor",
+                name: 'Solid Biofuel',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     biomass: {
                         amount: 8,
@@ -4838,20 +5301,23 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "solidBiofuel"
+                parentRecipe: 'solidBiofuel'
             }
         }
     },
     biomass: {
-        name: "Biomass",
+        name: 'Biomass',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "biomassLeaves",
+        default: 'biomassLeaves',
+        sinkPoints: 12,
         recipes: {
             biomassAlienProtein: {
-                name: "Biomass (Alien Protein)",
-                machine: "constructor",
+                name: 'Biomass (Alien Protein)',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     alienProtein: {
                         amount: 1,
@@ -4864,11 +5330,13 @@ export const Recipes: Item = {
                         rate: 1500
                     }
                 },
-                parentRecipe: "biomass"
+                parentRecipe: 'biomass'
             },
             biomassLeaves: {
-                name: "Biomass (Leaves)",
-                machine: "constructor",
+                name: 'Biomass (Leaves)',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     leaves: {
                         amount: 10,
@@ -4881,11 +5349,13 @@ export const Recipes: Item = {
                         rate: 60
                     }
                 },
-                parentRecipe: "biomass"
+                parentRecipe: 'biomass'
             },
             biomassMycelia: {
-                name: "Biomass (Mycelia)",
-                machine: "constructor",
+                name: 'Biomass (Mycelia)',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     mycelia: {
                         amount: 1,
@@ -4898,11 +5368,13 @@ export const Recipes: Item = {
                         rate: 150
                     }
                 },
-                parentRecipe: "biomass"
+                parentRecipe: 'biomass'
             },
             biomassWood: {
-                name: "Biomass (Wood)",
-                machine: "constructor",
+                name: 'Biomass (Wood)',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     wood: {
                         amount: 4,
@@ -4915,20 +5387,23 @@ export const Recipes: Item = {
                         rate: 300
                     }
                 },
-                parentRecipe: "biomass"
+                parentRecipe: 'biomass'
             }
         }
     },
     uraniumFuelRod: {
-        name: "Uranium Fuel Rod",
+        name: 'Uranium Fuel Rod',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "uraniumFuelRod",
+        default: 'uraniumFuelRod',
+        sinkPoints: 44092,
         recipes: {
             uraniumFuelRod: {
-                name: "Uranium Fuel Rod",
-                machine: "manufacturer",
+                name: 'Uranium Fuel Rod',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     encasedUraniumCell: {
                         amount: 50,
@@ -4949,11 +5424,13 @@ export const Recipes: Item = {
                         rate: .4
                     }
                 },
-                parentRecipe: "uraniumFuelRod"
+                parentRecipe: 'uraniumFuelRod'
             },
             altUraniumFuelUnit: {
-                name: "Alternative: Uranium Fuel Unit",
-                machine: "manufacturer",
+                name: 'Alternative: Uranium Fuel Unit',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     encasedUraniumCell: {
                         amount: 100,
@@ -4978,20 +5455,23 @@ export const Recipes: Item = {
                         rate: .6
                     }
                 },
-                parentRecipe: "uraniumFuelRod"
+                parentRecipe: 'uraniumFuelRod'
             }
         }
     },
     plutoniumFuelRod: {
-        name: "Plutonium Fuel Rod",
+        name: 'Plutonium Fuel Rod',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "plutoniumFuelRod",
+        default: 'plutoniumFuelRod',
+        sinkPoints: 153184,
         recipes: {
             plutoniumFuelRod: {
-                name: "Plutonium Fuel Rod",
-                machine: "manufacturer",
+                name: 'Plutonium Fuel Rod',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     encasedPlutoniumCell: {
                         amount: 30,
@@ -5016,11 +5496,13 @@ export const Recipes: Item = {
                         rate: .25
                     }
                 },
-                parentRecipe: "plutoniumFuelRod"
+                parentRecipe: 'plutoniumFuelRod'
             },
             altPlutoniumFuelUnit: {
-                name: "Alternative: Plutonium Fuel Unit",
-                machine: "assembler",
+                name: 'Alternative: Plutonium Fuel Unit',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     encasedPlutoniumCell: {
                         amount: 20,
@@ -5037,20 +5519,23 @@ export const Recipes: Item = {
                         rate: .5
                     }
                 },
-                parentRecipe: "plutoniumFuelRod"
+                parentRecipe: 'plutoniumFuelRod'
             }
         }
     },
     blackPowder: {
-        name: "Black Powder",
+        name: 'Black Powder',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "blackPowder",
+        default: 'blackPowder',
+        sinkPoints: 14,
         recipes: {
             blackPowder: {
-                name: "Black Powder",
-                machine: "assembler",
+                name: 'Black Powder',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     coal: {
                         amount: 1,
@@ -5067,11 +5552,13 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "blackPowder"
+                parentRecipe: 'blackPowder'
             },
             altFineBlackPowder: {
-                name: "Alternate: Fine Black Powder",
-                machine: "assembler",
+                name: 'Alternate: Fine Black Powder',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     compactedCoal: {
                         amount: 1,
@@ -5088,20 +5575,23 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "blackPowder"
+                parentRecipe: 'blackPowder'
             }
         }
     },
     smokelessPowder: {
-        name: "Smokeless Powder",
+        name: 'Smokeless Powder',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "smokelessPowder",
+        default: 'smokelessPowder',
+        sinkPoints: 58,
         recipes: {
             smokelessPowder: {
-                name: "Smokeless Powder",
-                machine: "refinery",
+                name: 'Smokeless Powder',
+                machines: [
+                    'refinery'
+                ],
                 inputs: {
                     blackPowder: {
                         amount: 2,
@@ -5118,20 +5608,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "smokelessPowder"
+                parentRecipe: 'smokelessPowder'
             }
         }
     },
     gasFilter: {
-        name: "Gas Filter",
+        name: 'Gas Filter',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "gasFilter",
+        default: 'gasFilter',
+        sinkPoints: 830,
         recipes: {
             gasFilter: {
-                name: "Gas Filter",
-                machine: "manufacturer",
+                name: 'Gas Filter',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     coal: {
                         amount: 5,
@@ -5152,20 +5645,23 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "gasFilter"
+                parentRecipe: 'gasFilter'
             }
         }
     },
     colorCartridge: {
-        name: "Color Cartridge",
+        name: 'Color Cartridge',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "colorCartridge",
+        default: 'colorCartridge',
+        sinkPoints: 10,
         recipes: {
             colorCartridge: {
-                name: "Color Cartridge",
-                machine: "constructor",
+                name: 'Color Cartridge',
+                machines: [
+                    'constructor'
+                ],
                 inputs: {
                     flowerPetals: {
                         amount: 5,
@@ -5178,20 +5674,23 @@ export const Recipes: Item = {
                         rate: 100
                     }
                 },
-                parentRecipe: "colorCartridge"
+                parentRecipe: 'colorCartridge'
             }
         }
     },
     beacon: {
-        name: "Beacon",
+        name: 'Beacon',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "beacon",
+        default: 'beacon',
+        sinkPoints: 320,
         recipes: {
             beacon: {
-                name: "Beacon",
-                machine: "manufacturer",
+                name: 'Beacon',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     ironPlate: {
                         amount: 3,
@@ -5216,11 +5715,13 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "beacon"
+                parentRecipe: 'beacon'
             },
             altCrystalBeacon: {
-                name: "Alternative: Crystal Beacon",
-                machine: "manufacturer",
+                name: 'Alternative: Crystal Beacon',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     steelBeam: {
                         amount: 4,
@@ -5241,20 +5742,23 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "beacon"
+                parentRecipe: 'beacon'
             }
         }
     },
     iodineInfusedFilter: {
-        name: "Ionide Infused Filter",
+        name: 'Ionide Infused Filter',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "iodineInfusedFilter",
+        default: 'iodineInfusedFilter',
+        sinkPoints: 2718,
         recipes: {
             iodineInfusedFilter: {
-                name: "Ionide Infused Filter",
-                machine: "manufacturer",
+                name: 'Ionide Infused Filter',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     gasFilter: {
                         amount: 1,
@@ -5275,20 +5779,23 @@ export const Recipes: Item = {
                         rate: 3.75
                     }
                 },
-                parentRecipe: "iodineInfusedFilter"
+                parentRecipe: 'iodineInfusedFilter'
             }
         }
     },
     electromagneticControlRod: {
-        name: "Electromagnetic Control Rod",
+        name: 'Electromagnetic Control Rod',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "electromagneticControlRod",
+        default: 'electromagneticControlRod',
+        sinkPoints: 2560,
         recipes: {
             electromagneticControlRod: {
-                name: "Electromagnetic Control Rod",
-                machine: "assembler",
+                name: 'Electromagnetic Control Rod',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     stator: {
                         amount: 3,
@@ -5305,11 +5812,13 @@ export const Recipes: Item = {
                         rate: 4
                     }
                 },
-                parentRecipe: "electromagneticControlRod"
+                parentRecipe: 'electromagneticControlRod'
             },
             altElectromagneticConnectionRod: {
-                name: "Alternative: Electromagnetic Connection Rod",
-                machine: "assembler",
+                name: 'Alternative: Electromagnetic Connection Rod',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     stator: {
                         amount: 2,
@@ -5326,20 +5835,23 @@ export const Recipes: Item = {
                         rate: 8
                     }
                 },
-                parentRecipe: "electromagneticControlRod"
+                parentRecipe: 'electromagneticControlRod'
             }
         }
     },
     encasedUraniumCell: {
-        name: "Encased Uranium Cell",
+        name: 'Encased Uranium Cell',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "encasedUraniumCell",
+        default: 'encasedUraniumCell',
+        sinkPoints: 147,
         recipes: {
             encasedUraniumCell: {
-                name: "Encased Uranium Cell",
-                machine: "blender",
+                name: 'Encased Uranium Cell',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     uranium: {
                         amount: 10,
@@ -5364,11 +5876,13 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "encasedUraniumCell"
+                parentRecipe: 'encasedUraniumCell'
             },
             altInfusedUraniumCell: {
-                name: "Alternate: Infused Uranium Cell",
-                machine: "manufacturer",
+                name: 'Alternate: Infused Uranium Cell',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     uranium: {
                         amount: 5,
@@ -5393,20 +5907,23 @@ export const Recipes: Item = {
                         rate: 20
                     }
                 },
-                parentRecipe: "encasedUraniumCell"
+                parentRecipe: 'encasedUraniumCell'
             }
         }
     },
     nonfissileUranium: {
-        name: "Non-fissile Uranium",
+        name: 'Non-fissile Uranium',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "nonfissileUranium",
+        default: 'nonfissileUranium',
+        sinkPoints: 0,
         recipes: {
             nonfissileUranium: {
-                name: "Non-fissile Uranium",
-                machine: "blender",
+                name: 'Non-fissile Uranium',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     uraniumWaste: {
                         amount: 15,
@@ -5435,11 +5952,13 @@ export const Recipes: Item = {
                         rate: 15
                     }
                 },
-                parentRecipe: "nonfissileUranium"
+                parentRecipe: 'nonfissileUranium'
             },
             altFertileUranium: {
-                name: "Alternate: Fertile Uranium",
-                machine: "blender",
+                name: 'Alternate: Fertile Uranium',
+                machines: [
+                    'blender'
+                ],
                 inputs: {
                     uranium: {
                         amount: 5,
@@ -5468,20 +5987,23 @@ export const Recipes: Item = {
                         rate: 40
                     }
                 },
-                parentRecipe: "nonfissileUranium"
+                parentRecipe: 'nonfissileUranium'
             }
         }
     },
     plutoniumPellet: {
-        name: "Plutonium Pellet",
+        name: 'Plutonium Pellet',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "plutoniumPellet",
+        default: 'plutoniumPellet',
+        sinkPoints: 0,
         recipes: {
             plutoniumPellet: {
-                name: "Plutonium Pellet",
-                machine: "particleAccelerator",
+                name: 'Plutonium Pellet',
+                machines: [
+                    'particleAcceleratorPlutoniumPellet'
+                ],
                 inputs: {
                     nonfissileUranium: {
                         amount: 100,
@@ -5498,20 +6020,23 @@ export const Recipes: Item = {
                         rate: 30
                     }
                 },
-                parentRecipe: "plutoniumPellet"
+                parentRecipe: 'plutoniumPellet'
             }
         }
     },
     encasedPlutoniumCell: {
-        name: "Encased Plutonium Cell",
+        name: 'Encased Plutonium Cell',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "encasedPlutoniumCell",
+        default: 'encasedPlutoniumCell',
+        sinkPoints: 0,
         recipes: {
             encasedPlutoniumCell: {
-                name: "Encased Plutonium Cell",
-                machine: "assembler",
+                name: 'Encased Plutonium Cell',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     plutoniumPellet: {
                         amount: 2,
@@ -5528,11 +6053,13 @@ export const Recipes: Item = {
                         rate: 25
                     }
                 },
-                parentRecipe: "encasedPlutoniumCell"
+                parentRecipe: 'encasedPlutoniumCell'
             },
             altInstantPlutoniumCell: {
-                name: "Alternate: Instant Plutonium Cell",
-                machine: "particleAccelerator",
+                name: 'Alternate: Instant Plutonium Cell',
+                machines: [
+                    'particleAcceleratorPlutoniumPellet'
+                ],
                 inputs: {
                     nonfissileUranium: {
                         amount: 150,
@@ -5549,20 +6076,23 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "encasedPlutoniumCell"
+                parentRecipe: 'encasedPlutoniumCell'
             }
         }
     },
     uraniumWaste: {
-        name: "Uranium Waste",
+        name: 'Uranium Waste',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "uraniumWaste",
+        default: 'uraniumWaste',
+        sinkPoints: 0,
         recipes: {
             uraniumWaste: {
-                name: "Uranium Waste",
-                machine: "nuclearPowerPlant",
+                name: 'Uranium Waste',
+                machines: [
+                    'nuclearPowerPlant'
+                ],
                 inputs: {
                     uraniumFuelRod: {
                         amount: 1,
@@ -5575,20 +6105,23 @@ export const Recipes: Item = {
                         rate: 10
                     }
                 },
-                parentRecipe: "uraniumWaste"
+                parentRecipe: 'uraniumWaste'
             }
         }
     },
     plutoniumWaste: {
-        name: "Plutonium Waste",
+        name: 'Plutonium Waste',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "plutoniumWaste",
+        default: 'plutoniumWaste',
+        sinkPoints: 0,
         recipes: {
             plutoniumWaste: {
-                name: "Plutonium Waste",
-                machine: "nuclearPowerPlant",
+                name: 'Plutonium Waste',
+                machines: [
+                    'nuclearPowerPlant'
+                ],
                 inputs: {
                     plutoniumFuelRod: {
                         amount: 1,
@@ -5601,20 +6134,23 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "plutoniumWaste"
+                parentRecipe: 'plutoniumWaste'
             }
         }
     },
     smartPlating: {
-        name: "Smart Plating",
+        name: 'Smart Plating',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "smartPlating",
+        default: 'smartPlating',
+        sinkPoints: 520,
         recipes: {
             smartPlating: {
-                name: "Smart Plating",
-                machine: "assembler",
+                name: 'Smart Plating',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     reinforcedIronPlate: {
                         amount: 1,
@@ -5631,11 +6167,13 @@ export const Recipes: Item = {
                         rate: 2
                     }
                 },
-                parentRecipe: "smartPlating"
+                parentRecipe: 'smartPlating'
             },
             altPlasticSmartPlating: {
-                name: "Alternate: Plastic Smart Plating",
-                machine: "manufacturer",
+                name: 'Alternate: Plastic Smart Plating',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     reinforcedIronPlate: {
                         amount: 1,
@@ -5656,20 +6194,23 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "smartPlating"
+                parentRecipe: 'smartPlating'
             }
         }
     },
     versatileFramework: {
-        name: "Versatile Framework",
+        name: 'Versatile Framework',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "versatileFramework",
+        default: 'versatileFramework',
+        sinkPoints: 1176,
         recipes: {
             versatileFramework: {
-                name: "Versatile Framework",
-                machine: "assembler",
+                name: 'Versatile Framework',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     modularFrame: {
                         amount: 1,
@@ -5686,11 +6227,13 @@ export const Recipes: Item = {
                         rate: 5
                     }
                 },
-                parentRecipe: "versatileFramework"
+                parentRecipe: 'versatileFramework'
             },
             altFlexibleFramework: {
-                name: "Alternate: Flexible Framework",
-                machine: "manufacturer",
+                name: 'Alternate: Flexible Framework',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     modularFrame: {
                         amount: 1,
@@ -5711,20 +6254,23 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "versatileFramework"
+                parentRecipe: 'versatileFramework'
             }
         }
     },
     automatedWiring: {
-        name: "Automated Wiring",
+        name: 'Automated Wiring',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "automatedWiring",
+        default: 'automatedWiring',
+        sinkPoints: 1440,
         recipes: {
             automatedWiring: {
-                name: "Automated Wiring",
-                machine: "assembler",
+                name: 'Automated Wiring',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     stator: {
                         amount: 1,
@@ -5741,11 +6287,13 @@ export const Recipes: Item = {
                         rate: 2.5
                     }
                 },
-                parentRecipe: "automatedWiring"
+                parentRecipe: 'automatedWiring'
             },
             altAutomatedSpeedWiring: {
-                name: "Alternate: Automated Speed Wiring",
-                machine: "manufacturer",
+                name: 'Alternate: Automated Speed Wiring',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     stator: {
                         amount: 2,
@@ -5766,20 +6314,23 @@ export const Recipes: Item = {
                         rate: 7.5
                     }
                 },
-                parentRecipe: "automatedWiring"
+                parentRecipe: 'automatedWiring'
             }
         }
     },
     modularEngine: {
-        name: "Modular Engine",
+        name: 'Modular Engine',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "modularEngine",
+        default: 'modularEngine',
+        sinkPoints: 9960,
         recipes: {
             modularEngine: {
-                name: "Modular Engine",
-                machine: "manufacturer",
+                name: 'Modular Engine',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     motor: {
                         amount: 2,
@@ -5800,20 +6351,23 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "modularEngine"
+                parentRecipe: 'modularEngine'
             }
         }
     },
     adaptiveControlUnit: {
-        name: "Adaptive Control Unit",
+        name: 'Adaptive Control Unit',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "adaptiveControlUnit",
+        default: 'adaptiveControlUnit',
+        sinkPoints: 86120,
         recipes: {
             adaptiveControlUnit: {
-                name: "Adaptive Control Unit",
-                machine: "manufacturer",
+                name: 'Adaptive Control Unit',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     automatedWiring: {
                         amount: 15,
@@ -5838,20 +6392,23 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "adaptiveControlUnit"
+                parentRecipe: 'adaptiveControlUnit'
             }
         }
     },
     assemblyDirectorSystem: {
-        name: "Assembly Director System",
+        name: 'Assembly Director System',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "assemblyDirectorSystem",
+        default: 'assemblyDirectorSystem',
+        sinkPoints: 543632,
         recipes: {
             assemblyDirectorSystem: {
-                name: "Assembly Director System",
-                machine: "assembler",
+                name: 'Assembly Director System',
+                machines: [
+                    'assembler'
+                ],
                 inputs: {
                     adaptiveControlUnit: {
                         amount: 2,
@@ -5868,20 +6425,23 @@ export const Recipes: Item = {
                         rate: .75
                     }
                 },
-                parentRecipe: "assemblyDirectorSystem"
+                parentRecipe: 'assemblyDirectorSystem'
             }
         }
     },
     magneticFieldGenerator: {
-        name: "Magnetic Field Generator",
+        name: 'Magnetic Field Generator',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "magneticFieldGenerator",
+        default: 'magneticFieldGenerator',
+        sinkPoints: 15650,
         recipes: {
             magneticFieldGenerator: {
-                name: "Magnetic Field Generator",
-                machine: "manufacturer",
+                name: 'Magnetic Field Generator',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     versatileFramework: {
                         amount: 5,
@@ -5902,20 +6462,23 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "magneticFieldGenerator"
+                parentRecipe: 'magneticFieldGenerator'
             }
         }
     },
     thermalPropulsionRocket: {
-        name: "Thermal Propulsion Rocket",
+        name: 'Thermal Propulsion Rocket',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "thermalPropulsionRocket",
+        default: 'thermalPropulsionRocket',
+        sinkPoints: 732956,
         recipes: {
             thermalPropulsionRocket: {
-                name: "Thermal Propulsion Rocket",
-                machine: "manufacturer",
+                name: 'Thermal Propulsion Rocket',
+                machines: [
+                    'manufacturer'
+                ],
                 inputs: {
                     modularEngine: {
                         amount: 5,
@@ -5940,20 +6503,23 @@ export const Recipes: Item = {
                         rate: 1
                     }
                 },
-                parentRecipe: "thermalPropulsionRocket"
+                parentRecipe: 'thermalPropulsionRocket'
             }
         }
     },
     nuclearPasta: {
-        name: "Nuclear Pasta",
+        name: 'Nuclear Pasta',
         piped: false,
         isRaw: false,
         handPicked: false,
-        default: "nuclearPasta",
+        default: 'nuclearPasta',
+        sinkPoints: 543424,
         recipes: {
             nuclearPasta: {
-                name: "Nuclear Pasta",
-                machine: "particleAccelerator",
+                name: 'Nuclear Pasta',
+                machines: [
+                    'particleAcceleratorNuclearPasta'
+                ],
                 inputs: {
                     copperPowder: {
                         amount: 200,
@@ -5970,8 +6536,476 @@ export const Recipes: Item = {
                         rate: .5
                     }
                 },
-                parentRecipe: "nuclearPasta"
+                parentRecipe: 'nuclearPasta'
             }
         }
-    }
+    },
+    portableMiner: {
+        name: "Portable Miner",
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'portableMiner',
+        sinkPoints: 56,
+        recipes: {
+            portableMiner: {
+                name: 'Portable Miner',
+                machines: [
+                    "equipmentWorkshop"
+                ],
+                inputs: {
+                    ironPlate: {
+                        amount: 2,
+                        rate: 1
+                    },
+                    ironRod: {
+                        amount: 4,
+                        rate: 1
+                    }
+                },
+                outputs: {
+                    portableMiner: {
+                        amount: 1,
+                        rate: 1
+                    }
+                },
+                parentRecipe: 'portableMiner'
+            }
+        }
+    },
+    ironRebar: {
+        name: 'Iron Rebar',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'ironRebar',
+        sinkPoints: 8,
+        recipes: {
+            ironIngot: {
+                name: 'Iron Ingot',
+                machines: [
+                    'constructor'
+                ],
+                inputs: {
+                    ironRod: {
+                        amount: 1,
+                        rate: 15
+                    }
+                },
+                outputs: {
+                    ironRebar: {
+                        amount: 1,
+                        rate: 15
+                    }
+                },
+                parentRecipe: 'ironRebar'
+            }
+        }
+    },
+    stunRebar: {
+        name: 'Stun Rebar',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'stunRebar',
+        sinkPoints: 186,
+        recipes: {
+            stunRebar: {
+                name: 'Stun Rebar',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    ironRebar: {
+                        amount: 1,
+                        rate: 10
+                    },
+                    quickwire: {
+                        amount: 5,
+                        rate: 50
+                    }
+                },
+                outputs: {
+                    stunRebar: {
+                        amount: 1,
+                        rate: 10
+                    }
+                },
+                parentRecipe: 'stunRebar'
+            }
+        }
+    },
+    shatterRebar: {
+        name: 'Shatter Rebar',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'shatterRebar',
+        sinkPoints: 332,
+        recipes: {
+            shatterRebar: {
+                name: 'Stun Rebar',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    ironRebar: {
+                        amount: 2,
+                        rate: 10
+                    },
+                    quartzCrystal: {
+                        amount: 3,
+                        rate: 15
+                    }
+                },
+                outputs: {
+                    shatterRebar: {
+                        amount: 1,
+                        rate: 5
+                    }
+                },
+                parentRecipe: 'shatterRebar'
+            }
+        }
+    },
+    explosiveRebar: {
+        name: 'Explosive Rebar',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'explosiveRebar',
+        sinkPoints: 360,
+        recipes: {
+            explosiveRebar: {
+                name: 'Explosive Rebar',
+                machines: [
+                    'manufacturer'
+                ],
+                inputs: {
+                    ironRebar: {
+                        amount: 2,
+                        rate: 10
+                    },
+                    smokelessPowder: {
+                        amount: 2,
+                        rate: 10
+                    },
+                    steelPipe: {
+                        amount: 2,
+                        rate: 10
+                    }
+                },
+                outputs: {
+                    explosiveRebar: {
+                        amount: 1,
+                        rate: 5
+                    }
+                },
+                parentRecipe: 'explosiveRebar'
+            }
+        }
+    },
+    rifleAmmo: {
+        name: 'Rifle Ammo',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'rifleAmmo',
+        sinkPoints: 25,
+        recipes: {
+            rifleAmmo: {
+                name: 'Rifle Ammo',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    copperSheet: {
+                        amount: 3,
+                        rate: 15
+                    },
+                    smokelessPowder: {
+                        amount: 2,
+                        rate: 10
+                    }
+                },
+                outputs: {
+                    rifleAmmo: {
+                        amount: 15,
+                        rate: 75
+                    }
+                },
+                parentRecipe: 'rifleAmmo'
+            }
+        }
+    },
+    homingRifleAmmo: {
+        name: 'Homing Rifle Ammo',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'homingRifleAmmo',
+        sinkPoints: 855,
+        recipes: {
+            homingRifleAmmo: {
+                name: 'Homing Rifle Ammo',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    rifleAmmo: {
+                        amount: 20,
+                        rate: 50
+                    },
+                    highSpeedConnector: {
+                        amount: 1,
+                        rate: 2.5
+                    }
+                },
+                outputs: {
+                    homingRifleAmmo: {
+                        amount: 10,
+                        rate: 25
+                    }
+                },
+                parentRecipe: 'homingRifleAmmo'
+            }
+        }
+    },
+    turboRifleAmmo: {
+        name: 'Turbo Rifle Ammo',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'turboRifleAmmo',
+        sinkPoints: 120,
+        recipes: {
+            turboRifleAmmo: {
+                name: 'Turbo Rifle Ammo',
+                machines: [
+                    'manufacturer'
+                ],
+                inputs: {
+                    rifleAmmo: {
+                        amount: 25,
+                        rate: 125
+                    },
+                    aluminumCasing: {
+                        amount: 3,
+                        rate: 15
+                    },
+                    packagedTurboFuel: {
+                        amount: 3,
+                        rate: 15
+                    }
+                },
+                outputs: {
+                    turboRifleAmmo: {
+                        amount: 50,
+                        rate: 250
+                    }
+                },
+                parentRecipe: 'turboRifleAmmo'
+            },
+            turboRifleAmmoBlender: {
+                name: 'Turbo Rifle Ammo (Blender)',
+                machines: [
+                    'blender'
+                ],
+                inputs: {
+                    rifleAmmo: {
+                        amount: 25,
+                        rate: 125
+                    },
+                    aluminumCasing: {
+                        amount: 3,
+                        rate: 15
+                    },
+                    turboFuel: {
+                        amount: 3,
+                        rate: 15
+                    }
+                },
+                outputs: {
+                    turboRifleAmmo: {
+                        amount: 50,
+                        rate: 250
+                    }
+                },
+                parentRecipe: 'turboRifleAmmo'
+            }
+        }
+    },
+    nobelisk: {
+        name: 'Nobelisk',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'nobelisk',
+        sinkPoints: 152,
+        recipes: {
+            nobelisk: {
+                name: 'Nobelisk',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    blackPowder: {
+                        amount: 2,
+                        rate: 20
+                    },
+                    steelPipe: {
+                        amount: 2,
+                        rate: 20
+                    }
+                },
+                outputs: {
+                    nobelisk: {
+                        amount: 1,
+                        rate: 10
+                    }
+                },
+                parentRecipe: 'nobelisk'
+            }
+        }
+    },
+    gasNobelisk: {
+        name: 'Gas Nobelisk',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'gasNobelisk',
+        sinkPoints: 152,
+        recipes: {
+            gasNobelisk: {
+                name: 'Gas Nobelisk',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    nobelisk: {
+                        amount: 1,
+                        rate: 5
+                    },
+                    biomass: {
+                        amount: 10,
+                        rate: 50
+                    }
+                },
+                outputs: {
+                    gasNobelisk: {
+                        amount: 1,
+                        rate: 5
+                    }
+                },
+                parentRecipe: 'gasNobelisk'
+            }
+        }
+    },
+    pulseNobelisk: {
+        name: 'Pulse Nobelisk',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'pulseNobelisk',
+        sinkPoints: 1533,
+        recipes: {
+            pulseNobelisk: {
+                name: 'Pulse Nobelisk',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    nobelisk: {
+                        amount: 5,
+                        rate: 5
+                    },
+                    crystalOscillator: {
+                        amount: 1,
+                        rate: 1
+                    }
+                },
+                outputs: {
+                    pulseNobelisk: {
+                        amount: 5,
+                        rate: 5
+                    }
+                },
+                parentRecipe: 'pulseNobelisk'
+            }
+        }
+    },
+    clusterNobelisk: {
+        name: 'Cluster Nobelisk',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'clusterNobelisk',
+        sinkPoints: 1376,
+        recipes: {
+            clusterNobelisk: {
+                name: 'Cluster Nobelisk',
+                machines: [
+                    'assembler'
+                ],
+                inputs: {
+                    nobelisk: {
+                        amount: 3,
+                        rate: 7.5
+                    },
+                    smokelessPowder: {
+                        amount: 4,
+                        rate: 10
+                    }
+                },
+                outputs: {
+                    clusterNobelisk: {
+                        amount: 1,
+                        rate: 2.5
+                    }
+                },
+                parentRecipe: 'clusterNobelisk'
+            }
+        }
+    },
+    nukeNobelisk: {
+        name: 'Nuke Nobelisk',
+        piped: false,
+        isRaw: false,
+        handPicked: false,
+        default: 'nukeNobelisk',
+        sinkPoints: 19600,
+        recipes: {
+            nukeNobelisk: {
+                name: 'Nuke Nobelisk',
+                machines: [
+                    'manufacturer'
+                ],
+                inputs: {
+                    nobelisk: {
+                        amount: 5,
+                        rate: 2.5
+                    },
+                    smokelessPowder: {
+                        amount: 10,
+                        rate: 5
+                    },
+                    encasedUraniumCell: {
+                        amount: 20,
+                        rate: 10
+                    },
+                    aiLimiter: {
+                        amount: 6,
+                        rate: 3
+                    }
+                },
+                outputs: {
+                    nukeNobelisk: {
+                        amount: 1,
+                        rate: 0.5
+                    }
+                },
+                parentRecipe: 'nukeNobelisk'
+            }
+        }
+    },
 };

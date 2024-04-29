@@ -1,9 +1,9 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Recipes, RecipesKey } from '../assets/data/recipes';
+import { Recipes } from '../assets/data/recipes';
 import { AsyncPipe, DecimalPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { combineLatestWith, from, map, Observable, startWith, Subject, Subscription, take, tap } from 'rxjs';
@@ -21,6 +21,8 @@ import { DialogModule } from 'primeng/dialog';
 import { getAnalytics, logEvent } from '@angular/fire/analytics';
 import { DropdownModule } from 'primeng/dropdown';
 import { MenuModule } from 'primeng/menu';
+import { RecipesKey } from '../assets/data/recipe-model';
+import { Machines } from '../assets/data/machines';
 
 @Component({
     selector: 'app-root',
@@ -51,7 +53,8 @@ import { MenuModule } from 'primeng/menu';
     templateUrl: './app.component.html',
     styleUrl: './app.component.sass'
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild('treeTableWrapper') treeTableWrapper!: ElementRef
     private confirmationService = inject(ConfirmationService);
     private auth = inject(Auth);
     private firestore = inject(Firestore);
@@ -72,6 +75,9 @@ export class AppComponent implements OnInit, OnDestroy {
             command: this.signOut.bind(this)
         }
     ];
+    scrollHeight!: string;
+    estimatedPowerUsage = 0;
+    sinkPoints = 0;
 
     itemsToSearch$: Observable<any[]> = this.searchText.valueChanges.pipe(
         startWith(''),
@@ -81,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
         map((value: [string | null, boolean]) => {
             const searchText = value[0] ?? '';
             return Object.keys(Recipes).sort().filter(key => {
-                return !this.alreadySelected(key) && Recipes[key].name.toLowerCase().includes(searchText.toLowerCase());
+                return !this.alreadySelected(key) && Recipes[key as RecipesKey].name.toLowerCase().includes(searchText.toLowerCase());
             }).map(key => {
                 return {
                     name: Recipes[key as RecipesKey].name,
@@ -102,6 +108,12 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.scrollHeight = this.treeTableWrapper.nativeElement.offsetHeight - 45 + 'px';
+        }, 0);
+    }
+
     ngOnDestroy() {
         this.userSubscription.unsubscribe();
     }
@@ -110,7 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
         const query = event.query;
 
         this.filteredItems = Object.keys(Recipes).sort().filter(key => {
-            return !this.alreadySelected(key) && Recipes[key].name.toLowerCase().includes(query.toLowerCase());
+            return !this.alreadySelected(key) && Recipes[key as RecipesKey].name.toLowerCase().includes(query.toLowerCase());
         }).map(key => {
             return {
                 name: Recipes[key as RecipesKey].name,
@@ -134,7 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 remaining: 0,
                 total: 0,
                 image: `../assets/images/${item.key}.png`,
-                item: Recipes[item.key],
+                item: Recipes[item.key as RecipesKey],
             },
             children: Object.keys(Recipes[item.key as RecipesKey].recipes).map(key => {
                 return {
@@ -160,13 +172,15 @@ export class AppComponent implements OnInit, OnDestroy {
         this.selectedItems.forEach(item => {
             this.recalculateAmounts(item);
         });
+        this.calculatePowerUsage(this.selectedItems);
+        this.calculateSinkPoints(this.selectedItems);
         if (saveData) {
             this.saveData();
         }
     }
 
     recalculateAmounts(item: any) {
-        const parentKey = item.data.key;
+        const parentKey = item.data.key as RecipesKey;
 
         item.children.forEach((child: any) => {
             const childKey = child.data.key;
@@ -175,6 +189,9 @@ export class AppComponent implements OnInit, OnDestroy {
                 const selectedItemInput = this.alreadySelected(inputKey);
                 const recipeInput = Recipes[parentKey].recipes[childKey].inputs[inputKey];
                 if (selectedItemInput) {
+                    if (!recipeOutputValues) {
+                        console.log(child)
+                    }
                     selectedItemInput.data.remaining -= (child.data.amount * recipeInput.amount) / recipeOutputValues.amount;
                 }
             }
@@ -261,19 +278,20 @@ export class AppComponent implements OnInit, OnDestroy {
     private prepareLoadData(data: any) {
         const selectedItems = [];
         for (const parentKey in data) {
+            const pKey = parentKey as RecipesKey;
             selectedItems.push({
                 data: {
                     key: parentKey,
-                    name: Recipes[parentKey].name,
+                    name: Recipes[pKey].name,
                     remaining: 0,
                     total: 0,
-                    image: `../assets/images/${parentKey}.png`,
-                    item: Recipes[parentKey],
+                    image: `../assets/images/${pKey}.png`,
+                    item: Recipes[pKey],
                 },
-                children: Object.keys(data[parentKey]).map(key => {
+                children: Object.keys(data[pKey]).map(key => {
                     return {
                         data: {
-                            name: Recipes[parentKey].recipes[key].name,
+                            name: Recipes[pKey].recipes[key].name,
                             amount: data[parentKey][key],
                             parentKey,
                             key
@@ -288,22 +306,23 @@ export class AppComponent implements OnInit, OnDestroy {
     private loadOldCloudFormat(data: any) {
         const selectedItems = [];
         for (const parentKey in data) {
+            const pKey = parentKey as RecipesKey;
             if (data[parentKey].total > 0) {
                 selectedItems.push({
                     data: {
-                        key: parentKey,
-                        name: Recipes[parentKey].name,
+                        key: pKey,
+                        name: Recipes[pKey].name,
                         remaining: 0,
                         total: 0,
-                        image: `../assets/images/${parentKey}.png`,
-                        item: Recipes[parentKey],
+                        image: `../assets/images/${pKey}.png`,
+                        item: Recipes[pKey],
                     },
-                    children: Object.keys(data[parentKey].recipes).map(recipeKey => {
+                    children: Object.keys(data[pKey].recipes).map(recipeKey => {
                         return {
                             data: {
-                                name: Recipes[parentKey].recipes[recipeKey].name,
-                                amount: data[parentKey].recipes[recipeKey].rate,
-                                parentKey,
+                                name: Recipes[pKey].recipes[recipeKey].name,
+                                amount: data[pKey].recipes[recipeKey].rate,
+                                pKey,
                                 key: recipeKey
                             },
                         };
@@ -354,6 +373,31 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.editingComplete(false);
                 }
             }
+        });
+    }
+
+    private calculatePowerUsage(items : any) {
+        this.estimatedPowerUsage = 0;
+        items.forEach((item: any) => {
+            item.children.forEach((child: any) => {
+                const data = child.data;
+                const recipe = Recipes[data.parentKey as RecipesKey].recipes[data.key];
+                const machineToUse = recipe.machines[0];
+                const machineData = Machines[machineToUse];
+                const ratio = data.amount / recipe.outputs[data.parentKey].rate;
+                const powerUsage = machineData.power.min * ratio;
+                this.estimatedPowerUsage += powerUsage;
+            });
+        });
+    }
+
+    private calculateSinkPoints(items: any) {
+        this.sinkPoints = 0;
+        items.forEach((item: any) => {
+            console.log(item);
+            const remaining = item.data.remaining > 0 ? item.data.remaining : 0;
+            const sinkPerItem = Recipes[item.data.key as RecipesKey].sinkPoints;
+            this.sinkPoints += sinkPerItem * remaining;
         });
     }
 }
