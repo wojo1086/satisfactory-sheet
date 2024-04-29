@@ -272,6 +272,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             const parsedData = JSON.parse(data);
             this.prepareLoadData(parsedData);
             this.editingComplete(false);
+            this.triggerSearchManually$.next(true);
         }
     }
 
@@ -301,6 +302,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
         this.selectedItems = [...selectedItems];
+        this.triggerSearchManually$.next(true);
     }
 
     private loadOldCloudFormat(data: any) {
@@ -330,7 +332,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             }
         }
+
         this.selectedItems = [...selectedItems];
+        this.triggerSearchManually$.next(true);
     }
 
     private loadUserItems(uid: string) {
@@ -349,7 +353,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                     rejectButtonStyleClass: 'p-button-text',
                     accept: () => {
                         if (data.key) {
-                            console.log('old format');
+                            this.loadOldCloudFormat(data);
+                            this.editingComplete();
                         } else {
                             this.prepareLoadData(data);
                             this.editingComplete(false);
