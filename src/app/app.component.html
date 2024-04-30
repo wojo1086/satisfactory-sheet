@@ -32,7 +32,7 @@
         </div>
     }
 </header>
-<main>
+<main class="flex flex-column lg:flex-none lg:flex-row">
     <div class="block lg:hidden p-2 w-full">
         <p-autoComplete [suggestions]="filteredItems" [formControl]="autocompleteSearch" delay="100" class="w-full"
                         styleClass="w-full" inputStyleClass="w-full" placeholder="Add an item" [dropdown]="true"
@@ -49,7 +49,7 @@
         </p-autoComplete>
     </div>
 
-    <div class="flex overflow-hidden">
+    <div class="flex flex-1 overflow-hidden">
         <div class="flex-1 mb-7" #treeTableWrapper>
             <p-treeTable [value]="selectedItems" (onEditComplete)="editingComplete()" [scrollable]="true" [scrollHeight]="scrollHeight">
                 <ng-template pTemplate="header" let-columns>
@@ -66,9 +66,9 @@
                             <td class="flex align-items-center" style="height: 65px">
                                 <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                                 <span>
-                                <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32"
-                                     priority>
-                            </span>
+                                    <img [ngSrc]="rowData.image" [alt]="rowData.name" class="mr-2" width="32" height="32"
+                                         priority>
+                                </span>
                                 <span class="hidden lg:block">{{ rowData.name }}</span>
                             </td>
                             <td class="font-bold" style="height: 65px"
@@ -88,7 +88,7 @@
                                     min
                                 }
                             </td>
-                            <td style="height: 65px" class="text-right">
+                            <td style="height: 65px" class="text-right w-4rem">
                                 <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true"
                                           (click)="deleteItem(rowNode)"></p-button>
                             </td>
@@ -108,7 +108,7 @@
                                     </ng-template>
                                 </p-treeTableCellEditor>
                             </td>
-                            <td></td>
+                            <td class="w-4rem"></td>
                         }
                     </tr>
                 </ng-template>
