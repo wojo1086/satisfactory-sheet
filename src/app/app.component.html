@@ -121,8 +121,15 @@
 
         </div>
         <div class="fixed bottom-0 h-4rem border-top-1 surface-border bottom-stats flex align-items-center px-2">
-            <div class="flex-1">Estimated Power Usage: <span class="text-primary block lg:inline-block">{{estimatedPowerUsage | number: '0.0-2'}} MW</span></div>
-            <div>Estimated Sink Points: <span class="text-primary block lg:inline-block">{{sinkPoints | number: '0.0-2'}} / min</span></div>
+            <div class="flex" tooltipPosition="top"
+                 pTooltip="This value is calculated with the assumption that any machine not running at full efficiency is underclocked.">
+                Estimated Power Usage:<span class="text-primary block lg:inline-block pl-1">{{estimatedPowerUsage | number: '0.0-2'}} MW</span>
+            </div>
+            <div class="flex-1"></div>
+            <div tooltipPosition="top" pTooltip="This value is approximately what you get if you sunk all of your current production lines along with any leftovers.">
+                Estimated Sink Points:<span class="text-primary block lg:inline-block pl-1">{{sinkPoints | number: '0.0-2'}} / min</span>
+            </div>
+
         </div>
     </div>
 
