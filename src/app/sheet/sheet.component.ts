@@ -49,7 +49,6 @@ export class SheetComponent implements OnInit, OnDestroy, AfterViewInit {
     private confirmationService = inject(ConfirmationService);
     private auth = inject(Auth);
     private firestore = inject(Firestore);
-    private analytics = getAnalytics();
     private triggerSearchManually$ = new Subject<boolean>();
     user$ = user(this.auth);
     userSubscription!: Subscription;
@@ -58,14 +57,6 @@ export class SheetComponent implements OnInit, OnDestroy, AfterViewInit {
     filteredItems: any[] = [];
     searchText = new FormControl('');
     autocompleteSearch = new FormControl('');
-    howItWorksIsVisible = false;
-    loggedInMenuItems = [
-        {
-            label: 'Sign Out',
-            icon: 'pi pi-sign-out',
-            command: this.signOut.bind(this)
-        }
-    ];
     scrollHeight!: string;
     estimatedPowerUsage = 0;
     sinkPoints = 0;
@@ -202,20 +193,6 @@ export class SheetComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedItems.splice(this.selectedItems.indexOf(node.node), 1);
         this.selectedItems = [...this.selectedItems];
         this.saveData();
-    }
-
-    signIn() {
-        const provider = new GoogleAuthProvider();
-        from(signInWithPopup(this.auth, provider)).pipe(take(1)).subscribe();
-    }
-
-    signOut() {
-        signOut(this.auth);
-    }
-
-    showHowItWorks() {
-        this.howItWorksIsVisible = true;
-        logEvent(this.analytics, 'how_it_works', {action: 'open'});
     }
 
     private saveData() {
