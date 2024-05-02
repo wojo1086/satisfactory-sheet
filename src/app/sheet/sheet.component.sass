@@ -1,0 +1,18 @@
+header
+    height: 60px
+
+main
+    display: grid
+    height: calc(100vh - 60px)
+    grid-template-columns: 1fr 300px
+
+    .bottom-stats
+        width: calc(100% - 300px)
+
+@media(max-width: 991px)
+    main
+        display: block
+        grid-template-columns: 1fr
+
+        .bottom-stats
+            width: 100%
