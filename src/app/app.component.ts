@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -68,6 +68,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     searchText = new FormControl('');
     autocompleteSearch = new FormControl('');
     howItWorksIsVisible = false;
+    editNoteIsVisible = false;
     loggedInMenuItems = [
         {
             label: 'Sign Out',
@@ -213,6 +214,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.saveData();
     }
 
+    editNote(data: any) {
+        console.log(data);
+        this.editNoteIsVisible = true;
+    }
+
     signIn() {
         const provider = new GoogleAuthProvider();
         from(signInWithPopup(this.auth, provider)).pipe(take(1)).subscribe();
@@ -263,6 +269,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                 saveObj[item.data.key][child.data.key] = child.data.amount;
             });
         });
+        // this.selectedItems.forEach(item => {
+        //     saveObj[item.data.key] = {
+        //         notes: item.data.notes || '',
+        //         recipes: {}
+        //     };
+        //     item.children.forEach((child: any) => {
+        //         saveObj[item.data.key].recipes[child.data.key] = {
+        //             notes: child.data.notes || '',
+        //             amount: child.data.amount
+        //         };
+        //     });
+        // });
+        console.log(saveObj)
         return saveObj;
     }
 
@@ -399,7 +418,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private calculateSinkPoints(items: any) {
         this.sinkPoints = 0;
         items.forEach((item: any) => {
-            console.log(item);
             const remaining = item.data.remaining > 0 ? item.data.remaining : 0;
             const sinkPerItem = Recipes[item.data.key as RecipesKey].sinkPoints;
             this.sinkPoints += sinkPerItem * remaining;

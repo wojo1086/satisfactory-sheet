@@ -108,7 +108,10 @@
                                     </ng-template>
                                 </p-treeTableCellEditor>
                             </td>
-                            <td class="w-4rem"></td>
+                            <td class="w-4rem">
+                                <p-button icon="pi pi-pen-to-square" [rounded]="true" severity="secondary" [text]="true"
+                                          (click)="editNote(rowData)"></p-button>
+                            </td>
                         }
                     </tr>
                 </ng-template>
@@ -197,3 +200,7 @@
         whomever is concerned.</p>
 </p-dialog>
 <p-menu #menu [model]="loggedInMenuItems" [popup]="true"></p-menu>
+
+<p-dialog header="Edit note" [(visible)]="editNoteIsVisible" [style]="{'min-width': '50vw'}">
+
+</p-dialog>
