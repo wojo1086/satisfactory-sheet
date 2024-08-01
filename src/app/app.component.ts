@@ -23,6 +23,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MenuModule } from 'primeng/menu';
 import { RecipesKey } from '../assets/data/recipe-model';
 import { Machines } from '../assets/data/machines';
+import { EditorModule } from 'primeng/editor';
 
 @Component({
     selector: 'app-root',
@@ -47,7 +48,8 @@ import { Machines } from '../assets/data/machines';
         DialogModule,
         DecimalPipe,
         DropdownModule,
-        MenuModule
+        MenuModule,
+        EditorModule
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './app.component.html',
@@ -79,6 +81,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     scrollHeight!: string;
     estimatedPowerUsage = 0;
     sinkPoints = 0;
+    currentNoteBeingEdited = '';
 
     itemsToSearch$: Observable<any[]> = this.searchText.valueChanges.pipe(
         startWith(''),
@@ -217,6 +220,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     editNote(data: any) {
         console.log(data);
         this.editNoteIsVisible = true;
+    }
+
+    cancelEditNote() {
+        this.editNoteIsVisible = false;
+    }
+
+    saveNote() {
+        this.editNoteIsVisible = false;
     }
 
     signIn() {
@@ -404,6 +415,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                         } else {
                             this.prepareLoadData(data);
                             this.editingComplete(false);
+                            this.clearLocalData();
                         }
                     },
                     reject: () => {

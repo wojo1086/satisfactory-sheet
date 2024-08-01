@@ -161,6 +161,7 @@
         </div>
     </div>
 </main>
+
 <p-toast></p-toast>
 <p-confirmDialog position="top" [closeOnEscape]="false" [closable]="false"></p-confirmDialog>
 <p-dialog header="How it works" [(visible)]="howItWorksIsVisible" [style]="{'min-width': '50vw'}">
@@ -205,6 +206,11 @@
 </p-dialog>
 <p-menu #menu [model]="loggedInMenuItems" [popup]="true"></p-menu>
 
-<p-dialog header="Edit note" [(visible)]="editNoteIsVisible" [style]="{'min-width': '50vw'}">
+<p-dialog header="Notes" [(visible)]="editNoteIsVisible" [style]="{'min-width': '50vw'}">
+    <p-editor [(ngModel)]="currentNoteBeingEdited" [style]="{ height: '320px' }" />
 
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (onClick)="cancelEditNote()" />
+        <p-button label="Save" (onClick)="saveNote()" />
+    </div>
 </p-dialog>
