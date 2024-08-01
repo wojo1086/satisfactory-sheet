@@ -263,24 +263,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private prepareSaveData() {
         const saveObj: any = {};
-        this.selectedItems.forEach(item => {
-            saveObj[item.data.key] = {};
-            item.children.forEach((child: any) => {
-                saveObj[item.data.key][child.data.key] = child.data.amount;
-            });
-        });
         // this.selectedItems.forEach(item => {
-        //     saveObj[item.data.key] = {
-        //         notes: item.data.notes || '',
-        //         recipes: {}
-        //     };
+        //     saveObj[item.data.key] = {};
         //     item.children.forEach((child: any) => {
-        //         saveObj[item.data.key].recipes[child.data.key] = {
-        //             notes: child.data.notes || '',
-        //             amount: child.data.amount
-        //         };
+        //         saveObj[item.data.key][child.data.key] = child.data.amount;
         //     });
         // });
+        this.selectedItems.forEach(item => {
+            saveObj[item.data.key] = {
+                notes: item.data.notes || '',
+                recipes: {}
+            };
+            item.children.forEach((child: any) => {
+                saveObj[item.data.key].recipes[child.data.key] = {
+                    notes: child.data.notes || '',
+                    amount: child.data.amount
+                };
+            });
+        });
         console.log(saveObj)
         return saveObj;
     }
@@ -297,29 +297,56 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private prepareLoadData(data: any) {
         const selectedItems = [];
+        console.log(data);
         for (const parentKey in data) {
             const pKey = parentKey as RecipesKey;
-            selectedItems.push({
-                data: {
-                    key: parentKey,
-                    name: Recipes[pKey].name,
-                    remaining: 0,
-                    total: 0,
-                    image: `../assets/images/${pKey}.png`,
-                    item: Recipes[pKey],
-                },
-                children: Object.keys(data[pKey]).map(key => {
-                    return {
-                        data: {
-                            name: Recipes[pKey].recipes[key].name,
-                            amount: data[parentKey][key],
-                            parentKey,
-                            key
-                        },
-                    };
-                }),
-            });
-        }
+            if (data[pKey].notes !== undefined) {
+                selectedItems.push({
+                    data: {
+                        key: parentKey,
+                        name: Recipes[pKey].name,
+                        remaining: 0,
+                        total: 0,
+                        image: `../assets/images/${pKey}.png`,
+                        item: Recipes[pKey],
+                        notes: data[pKey].notes
+                    },
+                    children: Object.keys(data[pKey].recipes).map(key => {
+                        return {
+                            data: {
+                                name: Recipes[pKey].recipes[key].name,
+                                amount: data[parentKey].recipes[key].amount,
+                                parentKey,
+                                key,
+                                notes: data[pKey].recipes[key].notes
+                            },
+                        };
+                    })
+                });
+            } else {
+                selectedItems.push({
+                    data: {
+                        key: parentKey,
+                        name: Recipes[pKey].name,
+                        remaining: 0,
+                        total: 0,
+                        image: `../assets/images/${pKey}.png`,
+                        item: Recipes[pKey],
+                    },
+                    children: Object.keys(data[pKey]).map(key => {
+                        return {
+                            data: {
+                                name: Recipes[pKey].recipes[key].name,
+                                amount: data[parentKey][key],
+                                parentKey,
+                                key
+                            },
+                        };
+                    }),
+                });
+            }
+            }
+
         this.selectedItems = [...selectedItems];
         this.triggerSearchManually$.next(true);
     }

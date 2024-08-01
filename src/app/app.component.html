@@ -88,9 +88,13 @@
                                     min
                                 }
                             </td>
-                            <td style="height: 65px" class="text-right w-4rem">
-                                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true"
-                                          (click)="deleteItem(rowNode)"></p-button>
+                            <td style="height: 65px" class="text-right w-8rem">
+                                <div class="flex">
+                                    <p-button icon="pi pi-pen-to-square" [rounded]="true" severity="secondary" [text]="true"
+                                              (click)="editNote(rowNode)"></p-button>
+                                    <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true"
+                                              (click)="deleteItem(rowNode)"></p-button>
+                                </div>
                             </td>
                         } @else {
                             <td colspan="2">
