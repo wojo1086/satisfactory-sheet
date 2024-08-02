@@ -24,6 +24,8 @@ import { MenuModule } from 'primeng/menu';
 import { RecipesKey } from '../assets/data/recipe-model';
 import { Machines } from '../assets/data/machines';
 import { EditorModule } from 'primeng/editor';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { NotesDialogComponent } from './components/notes-dialog/notes-dialog.component';
 
 @Component({
     selector: 'app-root',
@@ -51,7 +53,7 @@ import { EditorModule } from 'primeng/editor';
         MenuModule,
         EditorModule
     ],
-    providers: [ConfirmationService, MessageService],
+    providers: [ConfirmationService, MessageService, DialogService],
     templateUrl: './app.component.html',
     styleUrl: './app.component.sass'
 })
@@ -60,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private confirmationService = inject(ConfirmationService);
     private auth = inject(Auth);
     private firestore = inject(Firestore);
+    private dialogService = inject(DialogService);
     private analytics = getAnalytics();
     private triggerSearchManually$ = new Subject<boolean>();
     user$ = user(this.auth);
@@ -70,7 +73,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     searchText = new FormControl('');
     autocompleteSearch = new FormControl('');
     howItWorksIsVisible = false;
-    editNoteIsVisible = false;
     loggedInMenuItems = [
         {
             label: 'Sign Out',
@@ -81,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     scrollHeight!: string;
     estimatedPowerUsage = 0;
     sinkPoints = 0;
-    currentNoteBeingEdited = '';
+    ref: DynamicDialogRef | undefined;
 
     itemsToSearch$: Observable<any[]> = this.searchText.valueChanges.pipe(
         startWith(''),
@@ -217,17 +219,36 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.saveData();
     }
 
-    editNote(data: any) {
-        console.log(data);
-        this.editNoteIsVisible = true;
+    editParentNote(data: any) {
+        this.ref = this.dialogService.open(NotesDialogComponent, {
+            header: 'Notes',
+            data: {
+                note: data.node.data.notes
+            }
+        });
+
+        this.ref.onClose.subscribe((note: string) => {
+            if (note != undefined) {
+                data.node.data.notes = note;
+                this.saveData();
+            }
+        });
     }
 
-    cancelEditNote() {
-        this.editNoteIsVisible = false;
-    }
+    editChildNote(data: any) {
+        this.ref = this.dialogService.open(NotesDialogComponent, {
+            header: 'Notes',
+            data: {
+                note: data.notes
+            }
+        });
 
-    saveNote() {
-        this.editNoteIsVisible = false;
+        this.ref.onClose.subscribe((note: string) => {
+            if (note != undefined) {
+                data.notes = note;
+                this.saveData();
+            }
+        });
     }
 
     signIn() {
@@ -320,7 +341,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                         total: 0,
                         image: `../assets/images/${pKey}.png`,
                         item: Recipes[pKey],
-                        notes: data[pKey].notes
+                        notes: data[pKey].notes || ''
                     },
                     children: Object.keys(data[pKey].recipes).map(key => {
                         return {
@@ -329,7 +350,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                                 amount: data[parentKey].recipes[key].amount,
                                 parentKey,
                                 key,
-                                notes: data[pKey].recipes[key].notes
+                                notes: data[pKey].recipes[key].notes || ''
                             },
                         };
                     })
