@@ -90,9 +90,11 @@
                             </td>
                             <td style="height: 65px" class="text-right w-8rem">
                                 <div class="flex">
-                                    <p-button icon="pi pi-pen-to-square" [rounded]="true" severity="secondary" [text]="true"
+                                    <p-button icon="pi pi-paperclip" [rounded]="true" severity="secondary" [text]="true"
+                                              pTooltip="Notes" tooltipPosition="top"
                                               (click)="editParentNote(rowNode)"></p-button>
                                     <p-button icon="pi pi-times" [rounded]="true" severity="danger" [text]="true"
+                                              pTooltip="Delete" tooltipPosition="top"
                                               (click)="deleteItem(rowNode)"></p-button>
                                 </div>
                             </td>
@@ -113,7 +115,8 @@
                                 </p-treeTableCellEditor>
                             </td>
                             <td class="w-4rem">
-                                <p-button icon="pi pi-pen-to-square" [rounded]="true" severity="secondary" [text]="true"
+                                <p-button icon="pi pi-paperclip" [rounded]="true" severity="secondary" [text]="true"
+                                          pTooltip="Notes" tooltipPosition="top"
                                           (click)="editChildNote(rowData)"></p-button>
                             </td>
                         }
