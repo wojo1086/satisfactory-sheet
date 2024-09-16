@@ -215,6 +215,51 @@ export const Machines: IMachines = {
             turboMotor: 10
         }
     },
+    particleAcceleratorDiamonds: {
+        name: 'Particle Accelerator',
+        power: {
+            min: 250,
+            max: 750
+        },
+        ingredients: {
+            radioControlUnit: 25,
+            electromagneticControlRod: 100,
+            supercomputer: 10,
+            coolingSystem: 50,
+            fusedModularFrame: 20,
+            turboMotor: 10
+        }
+    },
+    particleAcceleratorDarkMatterCrystal: {
+        name: 'Particle Accelerator',
+        power: {
+            min: 500,
+            max: 1500
+        },
+        ingredients: {
+            radioControlUnit: 25,
+            electromagneticControlRod: 100,
+            supercomputer: 10,
+            coolingSystem: 50,
+            fusedModularFrame: 20,
+            turboMotor: 10
+        }
+    },
+    particleAcceleratorFicsonium: {
+        name: 'Particle Accelerator',
+        power: {
+            min: 500,
+            max: 1500
+        },
+        ingredients: {
+            radioControlUnit: 25,
+            electromagneticControlRod: 100,
+            supercomputer: 10,
+            coolingSystem: 50,
+            fusedModularFrame: 20,
+            turboMotor: 10
+        }
+    },
     equipmentWorkshop: {
         name: 'Equipment Workshop',
         power: {
@@ -240,4 +285,31 @@ export const Machines: IMachines = {
             alcladAluminumSheet: 100
         }
     },
+    converter: {
+        name: 'Converter',
+        power: {
+            min: 100,
+            max: 300
+        },
+        ingredients: {
+            fusedModularFrame: 10,
+            coolingSystem: 25,
+            radioControlUnit: 50,
+            samFluctuator: 100
+        }
+    },
+    quantumEncoder: {
+        name: 'Quantum Encoder',
+        power: {
+            min: 0,
+            max: 0
+        },
+        ingredients: {
+            turboMotor: 20,
+            supercomputer: 20,
+            coolingSystem: 50,
+            timeCrystal: 50,
+            ficsiteTrigon: 100
+        }
+    }
 };
