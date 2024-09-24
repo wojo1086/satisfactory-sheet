@@ -166,20 +166,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             }),
         });
         this.selectedItems = [...copy];
+        this.updateTotals();
         this.saveData();
         this.triggerSearchManually$.next(true);
     }
 
     editingComplete(saveData = true) {
-        this.selectedItems.forEach(item => {
-            item.data.remaining = 0;
-            item.data.total = 0;
-        });
-        this.selectedItems.forEach(item => {
-            this.recalculateAmounts(item);
-        });
-        this.calculatePowerUsage(this.selectedItems);
-        this.calculateSinkPoints(this.selectedItems);
+        this.updateTotals();
         if (saveData) {
             this.saveData();
         }
@@ -216,6 +209,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     deleteItem(node: any) {
         this.selectedItems.splice(this.selectedItems.indexOf(node.node), 1);
         this.selectedItems = [...this.selectedItems];
+        this.updateTotals();
         this.saveData();
     }
 
@@ -263,6 +257,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     showHowItWorks() {
         this.howItWorksIsVisible = true;
         logEvent(this.analytics, 'how_it_works', { action: 'open' });
+    }
+
+    private updateTotals() {
+        this.selectedItems.forEach(item => {
+            item.data.remaining = 0;
+            item.data.total = 0;
+
+        });
+        this.selectedItems.forEach(item => {
+            this.recalculateAmounts(item);
+        });
+        this.calculatePowerUsage(this.selectedItems);
+        this.calculateSinkPoints(this.selectedItems);
     }
 
     private saveData() {
@@ -438,6 +445,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.editingComplete(false);
                             this.clearLocalData();
                         }
+                        this.clearLocalData();
                     },
                     reject: () => {
                         this.loadLocalItems();

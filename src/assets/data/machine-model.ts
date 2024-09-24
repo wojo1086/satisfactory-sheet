@@ -20,8 +20,13 @@ export interface IMachines {
     blender: IMachine,
     particleAcceleratorNuclearPasta: IMachine,
     particleAcceleratorPlutoniumPellet: IMachine,
+    particleAcceleratorDiamonds: IMachine,
+    particleAcceleratorDarkMatterCrystal: IMachine,
+    particleAcceleratorFicsonium: IMachine,
     equipmentWorkshop: IMachine,
     nuclearPowerPlant: IMachine,
+    converter: IMachine,
+    quantumEncoder: IMachine
 }
 
 export interface IMachine {
