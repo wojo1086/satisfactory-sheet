@@ -222,7 +222,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.ref.onClose.subscribe((note: string) => {
-            if (note != undefined) {
+            if (note !== undefined) {
                 data.node.data.notes = note;
                 this.saveData();
             }
@@ -238,7 +238,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.ref.onClose.subscribe((note: string) => {
-            if (note != undefined) {
+            if (note !== undefined) {
                 data.notes = note;
                 this.saveData();
             }
@@ -263,7 +263,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedItems.forEach(item => {
             item.data.remaining = 0;
             item.data.total = 0;
-
         });
         this.selectedItems.forEach(item => {
             this.recalculateAmounts(item);
@@ -336,7 +335,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private prepareLoadData(data: any) {
         const selectedItems = [];
-        console.log(data);
         for (const parentKey in data) {
             const pKey = parentKey as RecipesKey;
             if (data[pKey].notes !== undefined) {
@@ -386,7 +384,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             }
 
-        this.selectedItems = [...selectedItems];
+        this.selectedItems = [...selectedItems].sort((a, b) => {
+            return a.data.name.localeCompare(b.data.name);
+        });
         this.triggerSearchManually$.next(true);
     }
 
