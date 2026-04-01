@@ -5,15 +5,14 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-notes-dialog',
-  standalone: true,
+    selector: 'app-notes-dialog',
     imports: [
         ButtonModule,
         EditorModule,
         FormsModule
     ],
-  templateUrl: './notes-dialog.component.html',
-  styleUrl: './notes-dialog.component.sass'
+    templateUrl: './notes-dialog.component.html',
+    styleUrl: './notes-dialog.component.sass'
 })
 export class NotesDialogComponent {
     private ref = inject(DynamicDialogRef);

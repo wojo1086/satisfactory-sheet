@@ -1,12 +1,11 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Recipes } from '../assets/data/recipes';
-import { AsyncPipe, DecimalPipe, KeyValuePipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-import { combineLatestWith, from, map, Observable, startWith, Subject, Subscription, take, tap } from 'rxjs';
+import { combineLatestWith, from, map, Observable, startWith, Subject, Subscription, take } from 'rxjs';
 import { TreeTableModule } from 'primeng/treetable';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -19,23 +18,22 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { getAnalytics, logEvent } from '@angular/fire/analytics';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { MenuModule } from 'primeng/menu';
 import { RecipesKey } from '../assets/data/recipe-model';
 import { Machines } from '../assets/data/machines';
 import { EditorModule } from 'primeng/editor';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { DialogService } from 'primeng/dynamicdialog';
 import { NotesDialogComponent } from './components/notes-dialog/notes-dialog.component';
 
 @Component({
     selector: 'app-root',
-    standalone: true,
     imports: [
-        RouterOutlet,
         AutoCompleteModule,
         FormsModule,
         NgOptimizedImage,
-        KeyValuePipe,
         InputTextModule,
         ReactiveFormsModule,
         TreeTableModule,
@@ -49,9 +47,11 @@ import { NotesDialogComponent } from './components/notes-dialog/notes-dialog.com
         ConfirmDialogModule,
         DialogModule,
         DecimalPipe,
-        DropdownModule,
+        SelectModule,
         MenuModule,
-        EditorModule
+        EditorModule,
+        IconFieldModule,
+        InputIconModule
     ],
     providers: [ConfirmationService, MessageService, DialogService],
     templateUrl: './app.component.html',
@@ -83,7 +83,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     scrollHeight!: string;
     estimatedPowerUsage = 0;
     sinkPoints = 0;
-    ref: DynamicDialogRef | undefined;
 
     itemsToSearch$: Observable<any[]> = this.searchText.valueChanges.pipe(
         startWith(''),
@@ -214,14 +213,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     editParentNote(data: any) {
-        this.ref = this.dialogService.open(NotesDialogComponent, {
+        const ref = this.dialogService.open(NotesDialogComponent, {
             header: 'Notes',
             data: {
                 note: data.node.data.notes
             }
         });
 
-        this.ref.onClose.subscribe((note: string) => {
+        ref?.onClose.subscribe((note: string) => {
             if (note !== undefined) {
                 data.node.data.notes = note;
                 this.saveData();
@@ -230,14 +229,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     editChildNote(data: any) {
-        this.ref = this.dialogService.open(NotesDialogComponent, {
+        const ref = this.dialogService.open(NotesDialogComponent, {
             header: 'Notes',
             data: {
                 note: data.notes
             }
         });
 
-        this.ref.onClose.subscribe((note: string) => {
+        ref?.onClose.subscribe((note: string) => {
             if (note !== undefined) {
                 data.notes = note;
                 this.saveData();

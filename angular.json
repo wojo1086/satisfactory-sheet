@@ -33,7 +33,6 @@
                             "src/sitemap.xml"
                         ],
                         "styles": [
-                            "node_modules/primeng/resources/primeng.min.css",
                             "node_modules/primeflex/primeflex.css",
                             "node_modules/quill/dist/quill.core.css",
                             "node_modules/quill/dist/quill.snow.css",
@@ -121,5 +120,31 @@
                 }
             }
         }
+    },
+    "schematics": {
+      "@schematics/angular:component": {
+        "type": "component"
+      },
+      "@schematics/angular:directive": {
+        "type": "directive"
+      },
+      "@schematics/angular:service": {
+        "type": "service"
+      },
+      "@schematics/angular:guard": {
+        "typeSeparator": "."
+      },
+      "@schematics/angular:interceptor": {
+        "typeSeparator": "."
+      },
+      "@schematics/angular:module": {
+        "typeSeparator": "."
+      },
+      "@schematics/angular:pipe": {
+        "typeSeparator": "."
+      },
+      "@schematics/angular:resolver": {
+        "typeSeparator": "."
+      }
     }
 }
