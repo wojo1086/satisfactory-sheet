@@ -8,7 +8,26 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { providePrimeNG } from 'primeng/config';
+import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
+
+const SatisfactoryTheme = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: '{orange.50}',
+            100: '{orange.100}',
+            200: '{orange.200}',
+            300: '{orange.300}',
+            400: '{orange.400}',
+            500: '#FA9549',
+            600: '{orange.600}',
+            700: '{orange.700}',
+            800: '{orange.800}',
+            900: '{orange.900}',
+            950: '{orange.950}'
+        }
+    }
+});
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +35,7 @@ export const appConfig: ApplicationConfig = {
       provideAnimationsAsync(),
       providePrimeNG({
           theme: {
-              preset: Aura,
+              preset: SatisfactoryTheme,
               options: {
                   darkModeSelector: '.dark-mode',
                   cssLayer: false

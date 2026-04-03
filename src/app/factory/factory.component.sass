@@ -1,0 +1,951 @@
+$grid-size: 100px
+$grid-color: rgba(255, 255, 255, 0.06)
+$accent: #FA9549
+$belt-color: #FA9549
+$pipe-color: #4FC3F7
+$train-color: #FFD54F
+
+.factory-layout
+    display: flex
+    height: 100vh
+    overflow: hidden
+
+// Machine Palette (Left Sidebar)
+.machine-palette
+    width: 220px
+    min-width: 220px
+    background: rgba(255, 255, 255, 0.03)
+    border-right: 1px solid rgba(255, 255, 255, 0.1)
+    padding: 1rem
+    overflow-y: auto
+
+    h3
+        margin: 0 0 1rem
+        color: $accent
+        font-size: 1rem
+        text-transform: uppercase
+        letter-spacing: 0.05em
+
+.palette-list
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+.palette-item
+    padding: 8px 12px
+    border-radius: 6px
+    cursor: grab
+    background: rgba(255, 255, 255, 0.05)
+    border: 1px solid rgba(255, 255, 255, 0.08)
+    transition: background 0.15s, border-color 0.15s
+
+    &:hover
+        background: rgba(255, 255, 255, 0.1)
+        border-color: $accent
+
+    &:active
+        cursor: grabbing
+
+.palette-item-content
+    display: flex
+    flex-direction: row
+    align-items: center
+    gap: 8px
+
+    .palette-machine-img
+        width: 36px
+        height: 36px
+        object-fit: contain
+        flex-shrink: 0
+
+    .palette-machine-info
+        display: flex
+        flex-direction: column
+        gap: 2px
+
+    .machine-name
+        font-size: 0.8rem
+        font-weight: 500
+        color: rgba(255, 255, 255, 0.9)
+
+    .machine-power
+        font-size: 0.7rem
+        color: rgba(255, 255, 255, 0.4)
+
+.drag-placeholder
+    background: rgba($accent, 0.15)
+    border: 2px dashed $accent
+    border-radius: 6px
+    height: 40px
+
+.drag-preview
+    width: 100px
+    height: 100px
+    background: rgba(30, 30, 30, 0.95)
+    border: 2px solid $accent
+    border-radius: 8px
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 4px
+    font-size: 0.65rem
+    font-weight: 600
+    color: rgba(255, 255, 255, 0.9)
+    text-align: center
+    padding: 4px
+
+    .preview-img
+        width: 44px
+        height: 44px
+        object-fit: contain
+    color: white
+    font-size: 0.85rem
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4)
+
+// Logistics palette items
+.logistics-label
+    color: $train-color
+
+.logistics-palette-item
+    border-color: rgba($train-color, 0.25)
+
+    &:hover
+        border-color: $train-color
+
+.logistics-palette-icon
+    width: 36px
+    height: 36px
+    object-fit: contain
+    flex-shrink: 0
+
+// Sub-factory palette items
+.palette-section-label
+    margin: 1rem 0 0.4rem
+    color: $pipe-color
+    font-size: 0.7rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 0.08em
+
+.subfactory-palette-item
+    border-color: rgba($pipe-color, 0.25)
+
+    &:hover
+        border-color: $pipe-color
+
+    .subfactory-palette-icon
+        font-size: 1.4rem
+        width: 36px
+        height: 36px
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-shrink: 0
+
+.subfactory-preview-icon
+    font-size: 2rem
+
+// Canvas Area
+.canvas-area
+    flex: 1
+    display: flex
+    flex-direction: column
+    overflow: hidden
+
+// Factory Tab Bar
+.factory-tab-bar
+    display: flex
+    align-items: center
+    gap: 4px
+    padding: 6px 1rem 0
+    background: rgba(255, 255, 255, 0.02)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08)
+    overflow-x: auto
+    flex-shrink: 0
+
+    &::-webkit-scrollbar
+        height: 3px
+
+    &::-webkit-scrollbar-thumb
+        background: rgba(255, 255, 255, 0.15)
+        border-radius: 2px
+
+.factory-tab
+    display: flex
+    align-items: center
+    gap: 4px
+    padding: 4px 8px
+    border-radius: 6px 6px 0 0
+    border: 1px solid rgba(255, 255, 255, 0.08)
+    border-bottom: none
+    background: rgba(255, 255, 255, 0.04)
+    cursor: pointer
+    transition: background 0.15s, border-color 0.15s
+    white-space: nowrap
+
+    &:hover
+        background: rgba(255, 255, 255, 0.08)
+
+    &.active
+        background: rgba($accent, 0.12)
+        border-color: rgba($accent, 0.4)
+        border-bottom: 1px solid #1a1a2e
+
+.tab-name-text
+    font-size: 0.8rem
+    font-weight: 500
+    color: rgba(255, 255, 255, 0.85)
+    max-width: 120px
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    user-select: none
+
+    .factory-tab.active &
+        color: $accent
+
+.tab-name-input
+    background: transparent
+    border: none
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3)
+    outline: none
+    color: rgba(255, 255, 255, 0.95)
+    font-size: 0.8rem
+    font-weight: 500
+    width: 100px
+    cursor: text
+    padding: 0 0 1px
+
+    .factory-tab.active &
+        color: $accent
+        border-bottom-color: $accent
+
+.tab-close
+    background: none
+    border: none
+    color: rgba(255, 255, 255, 0.3)
+    font-size: 1rem
+    line-height: 1
+    cursor: pointer
+    padding: 0 2px
+    border-radius: 3px
+    transition: color 0.15s, background 0.15s
+
+    &:hover
+        color: rgba(255, 255, 255, 0.8)
+        background: rgba(255, 255, 255, 0.1)
+
+.tab-add
+    background: rgba(255, 255, 255, 0.05)
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    border-radius: 6px
+    color: rgba(255, 255, 255, 0.5)
+    font-size: 1.1rem
+    line-height: 1
+    cursor: pointer
+    padding: 3px 10px
+    transition: background 0.15s, color 0.15s, border-color 0.15s
+    flex-shrink: 0
+
+    &:hover
+        background: rgba($accent, 0.15)
+        border-color: $accent
+        color: $accent
+
+.toolbar
+    display: flex
+    align-items: center
+    gap: 1rem
+    padding: 0.5rem 1rem
+    background: rgba(255, 255, 255, 0.03)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+
+    .factory-name-input
+        width: 200px
+        font-size: 0.9rem
+
+    .power-total
+        display: flex
+        align-items: center
+        gap: 0.4rem
+        color: $accent
+        font-weight: 600
+        font-size: 0.9rem
+
+        i
+            font-size: 1rem
+
+    .toolbar-actions
+        margin-left: auto
+        display: flex
+        align-items: center
+        gap: 0.5rem
+
+    .connection-mode
+        display: flex
+        align-items: center
+        gap: 0.5rem
+        color: $belt-color
+        font-size: 0.85rem
+
+        &.active
+            animation: pulse 1.5s infinite
+
+@keyframes pulse
+    0%, 100%
+        opacity: 1
+    50%
+        opacity: 0.5
+
+.grid-canvas
+    flex: 1
+    position: relative
+    overflow: auto
+    background-color: #1a1a2e
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 1.5px, transparent 1.5px)
+    background-size: $grid-size $grid-size
+    min-height: 2000px
+    min-width: 3000px
+
+    // Hide CDK's auto-generated placeholder inside the canvas — placement is handled by dropOnCanvas()
+    .cdk-drag-placeholder
+        display: none !important
+
+    &.placing-copy
+        cursor: copy
+
+.ghost-node
+    opacity: 0.5
+    pointer-events: none
+    border-style: dashed !important
+
+.connections-layer
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    pointer-events: none
+    z-index: 1
+
+    line, path
+        stroke-width: 3
+        pointer-events: stroke
+        cursor: pointer
+        fill: none
+
+        &:hover
+            stroke-width: 5
+            stroke-opacity: 1 !important
+
+    .belt-line
+        // stroke color set inline per mark
+        stroke-opacity: 0.75
+        stroke-linecap: round
+
+    .pipe-line
+        // stroke color set inline per mark
+        stroke-opacity: 0.75
+        stroke-dasharray: 8 4
+        stroke-linecap: round
+
+    .conn-selected
+        stroke-width: 4 !important
+        stroke-opacity: 1 !important
+        filter: drop-shadow(0 0 4px currentColor)
+
+    .conn-label-bg
+        fill: rgba(15, 18, 30, 0.9)
+        stroke: rgba(255, 255, 255, 0.08)
+        stroke-width: 1
+        pointer-events: none
+
+    .conn-label-capped
+        fill: rgba(50, 20, 20, 0.9)
+        stroke: rgba(255, 100, 80, 0.35)
+
+    .conn-label
+        fill: rgba(255, 255, 255, 0.92)
+        font-size: 0.72rem
+        font-weight: 600
+        font-family: inherit
+        text-anchor: middle
+        dominant-baseline: auto
+        pointer-events: none
+
+    .conn-mark-label
+        font-size: 0.62rem
+        font-weight: 700
+        font-family: inherit
+        text-anchor: middle
+        dominant-baseline: auto
+        pointer-events: none
+        opacity: 0.85
+
+    .conn-item-img
+        pointer-events: none
+        border-radius: 3px
+
+// Placed Machines
+.placed-machine
+    position: absolute
+    z-index: 2
+    cursor: grab
+    border-radius: 8px
+    border: 2px solid rgba(255, 255, 255, 0.15)
+    background: rgba(30, 30, 40, 0.9)
+    transition: border-color 0.15s, box-shadow 0.15s
+
+    &:hover
+        border-color: rgba(255, 255, 255, 0.3)
+        box-shadow: 0 0 12px rgba($accent, 0.2)
+
+    &.selected
+        border-color: $accent
+        box-shadow: 0 0 16px rgba($accent, 0.4)
+
+    &.connecting-source
+        border-color: #4FC3F7
+        box-shadow: 0 0 16px rgba(79, 195, 247, 0.4)
+        animation: pulse 1s infinite
+
+    &:active
+        cursor: grabbing
+
+.machine-card
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    height: 100%
+    padding: 4px
+    text-align: center
+
+    .node-machine-img
+        width: 44px
+        height: 44px
+        object-fit: contain
+        pointer-events: none
+
+    .machine-label
+        font-size: 0.65rem
+        font-weight: 600
+        color: rgba(255, 255, 255, 0.9)
+        line-height: 1.2
+        margin-top: 2px
+
+    .node-outputs
+        display: flex
+        flex-wrap: wrap
+        justify-content: center
+        gap: 3px
+        margin-top: 3px
+
+        .node-output-slot
+            display: flex
+            flex-direction: column
+            align-items: center
+            gap: 1px
+
+        .node-output-icon
+            width: 18px
+            height: 18px
+            object-fit: contain
+            pointer-events: none
+            border-radius: 3px
+            background: rgba(0, 0, 0, 0.3)
+
+        .node-output-rate
+            font-size: 0.62rem
+            font-weight: 600
+            color: $accent
+            line-height: 1
+            pointer-events: none
+
+// Train station node card
+.placed-machine.is-train-station
+    border-color: rgba($train-color, 0.35)
+    background: rgba(35, 30, 15, 0.92)
+
+    &:hover
+        border-color: rgba($train-color, 0.65)
+        box-shadow: 0 0 12px rgba($train-color, 0.2)
+
+    &.selected
+        border-color: $train-color
+        box-shadow: 0 0 16px rgba($train-color, 0.4)
+
+    &.connecting-source
+        border-color: $train-color
+        box-shadow: 0 0 16px rgba($train-color, 0.4)
+        animation: pulse 1s infinite
+
+.train-station-card
+    cursor: default
+
+.train-station-node-icon
+    width: 44px
+    height: 44px
+    object-fit: contain
+    filter: drop-shadow(0 0 4px rgba($train-color, 0.4))
+    pointer-events: none
+
+// Train station properties panel
+.roundtrip-row
+    display: flex
+    align-items: center
+    gap: 5px
+    margin-top: 0.3rem
+
+.roundtrip-input
+    width: 58px
+
+.train-slot-list
+    display: flex
+    flex-direction: column
+    gap: 5px
+    margin-top: 0.4rem
+
+.train-slot-row
+    display: flex
+    align-items: center
+    gap: 4px
+
+    .slot-item-select
+        flex: 1
+        min-width: 0
+        font-size: 0.75rem
+
+    .slot-qty-input
+        width: 40px
+        flex-shrink: 0
+
+    .slot-rate
+        font-size: 0.68rem
+        color: $accent
+        font-weight: 600
+        white-space: nowrap
+        min-width: 46px
+        text-align: right
+        flex-shrink: 0
+
+.slot-dir-btn
+    width: 26px
+    height: 26px
+    border-radius: 5px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background: rgba(255, 255, 255, 0.06)
+    color: rgba(255, 255, 255, 0.55)
+    font-size: 0.95rem
+    font-weight: 700
+    cursor: pointer
+    flex-shrink: 0
+    transition: background 0.15s, border-color 0.15s, color 0.15s
+
+    &.is-load
+        border-color: rgba($train-color, 0.5)
+        color: $train-color
+
+    &.is-unload
+        border-color: rgba($pipe-color, 0.5)
+        color: $pipe-color
+
+    &:hover
+        background: rgba(255, 255, 255, 0.12)
+
+.slot-delete-btn
+    width: 20px
+    height: 20px
+    border-radius: 4px
+    border: none
+    background: none
+    color: rgba(255, 255, 255, 0.25)
+    font-size: 1rem
+    line-height: 1
+    cursor: pointer
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s, background 0.15s
+
+    &:hover
+        color: #FF6B6B
+        background: rgba(255, 80, 60, 0.1)
+
+.add-slot-btn
+    margin-top: 6px
+    width: 100%
+    padding: 5px 0
+    border-radius: 5px
+    border: 1px dashed rgba(255, 255, 255, 0.2)
+    background: transparent
+    color: rgba(255, 255, 255, 0.4)
+    font-size: 0.75rem
+    cursor: pointer
+    transition: border-color 0.15s, color 0.15s, background 0.15s
+
+    &:hover
+        border-color: $train-color
+        color: $train-color
+        background: rgba($train-color, 0.06)
+
+// Sub-factory node card
+.placed-machine.is-subfactory
+    border-color: rgba($pipe-color, 0.35)
+    background: rgba(20, 35, 45, 0.92)
+
+    &:hover
+        border-color: rgba($pipe-color, 0.6)
+        box-shadow: 0 0 12px rgba($pipe-color, 0.2)
+
+    &.selected
+        border-color: $pipe-color
+        box-shadow: 0 0 16px rgba($pipe-color, 0.4)
+
+    &.connecting-source
+        border-color: $pipe-color
+        box-shadow: 0 0 16px rgba($pipe-color, 0.4)
+        animation: pulse 1s infinite
+
+.subfactory-card
+    cursor: default
+
+.subfactory-node-icon
+    font-size: 1.6rem
+    line-height: 1
+    filter: drop-shadow(0 0 4px rgba($pipe-color, 0.6))
+
+.subfactory-hint
+    font-size: 0.55rem
+    color: rgba(255, 255, 255, 0.25)
+    font-style: italic
+    margin-top: 2px
+    pointer-events: none
+
+// Properties Panel (Right)
+.properties-panel
+    width: 240px
+    min-width: 240px
+    background: rgba(255, 255, 255, 0.03)
+    border-left: 1px solid rgba(255, 255, 255, 0.1)
+    padding: 1rem
+
+    h3
+        margin: 0 0 1rem
+        color: $accent
+        font-size: 1rem
+
+.property-row
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0.5rem 0
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05)
+
+    .property-label
+        color: rgba(255, 255, 255, 0.5)
+        font-size: 0.85rem
+
+    .property-value
+        color: rgba(255, 255, 255, 0.9)
+        font-size: 0.85rem
+        font-weight: 500
+
+.property-section
+    padding: 0.5rem 0
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05)
+
+    .property-label
+        display: block
+        color: rgba(255, 255, 255, 0.5)
+        font-size: 0.75rem
+        margin-bottom: 0.4rem
+
+.recipe-option
+    display: flex
+    align-items: center
+    gap: 6px
+
+    &.recipe-match
+        color: $accent
+        font-weight: 600
+
+    .recipe-match-icon
+        font-size: 0.7rem
+        color: $accent
+
+.recipe-items
+    display: flex
+    flex-direction: column
+    gap: 0.4rem
+    margin-top: 0.25rem
+
+.recipe-item
+    display: flex
+    align-items: center
+    gap: 0.5rem
+
+    .recipe-item-img
+        width: 28px
+        height: 28px
+        object-fit: contain
+        flex-shrink: 0
+
+    .recipe-item-info
+        display: flex
+        flex-direction: column
+
+        .recipe-item-name
+            font-size: 0.8rem
+            color: rgba(255, 255, 255, 0.9)
+
+        .recipe-item-rate
+            font-size: 0.7rem
+            color: $accent
+
+.overclock-header
+    display: flex
+    justify-content: space-between
+    align-items: baseline
+    margin-bottom: 6px
+
+.overclock-value
+    font-size: 0.8rem
+    color: $accent
+    font-weight: 600
+    display: flex
+    align-items: center
+    gap: 5px
+
+.overclock-input
+    width: 46px
+    background: rgba(255, 255, 255, 0.07)
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    border-radius: 4px
+    color: $accent
+    font-size: 0.8rem
+    font-weight: 600
+    padding: 2px 4px
+    text-align: right
+    outline: none
+    appearance: textfield
+    -moz-appearance: textfield
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button
+        -webkit-appearance: none
+
+    &:focus
+        border-color: $accent
+        background: rgba(255, 255, 255, 0.1)
+
+    &.is-auto
+        color: rgba(255, 255, 255, 0.4)
+        font-style: italic
+
+.overclock-pct
+    font-size: 0.8rem
+    color: rgba(255, 255, 255, 0.5)
+    margin-right: 4px
+
+.overclock-reset
+    font-size: 0.65rem
+    font-weight: 400
+    color: rgba(255, 255, 255, 0.4)
+    background: rgba(255, 255, 255, 0.07)
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    border-radius: 3px
+    padding: 1px 5px
+    cursor: pointer
+    line-height: 1.4
+
+    &:hover
+        color: rgba(255, 255, 255, 0.8)
+        border-color: rgba(255, 255, 255, 0.35)
+
+.auto-clock-display
+    font-size: 0.75rem
+    color: rgba(255, 255, 255, 0.45)
+    font-style: italic
+
+.slider-wrap
+    position: relative
+    display: flex
+    align-items: center
+    height: 22px
+    margin-top: 2px
+
+.slider-track
+    position: absolute
+    left: 0
+    right: 0
+    height: 4px
+    background: rgba(255, 255, 255, 0.12)
+    border-radius: 2px
+    pointer-events: none
+    overflow: hidden
+
+.slider-track-fill
+    height: 100%
+    background: $accent
+    border-radius: 2px
+
+.overclock-slider
+    position: relative
+    width: 100%
+    -webkit-appearance: none
+    appearance: none
+    height: 22px
+    background: transparent
+    outline: none
+    cursor: pointer
+    z-index: 1
+
+    &::-webkit-slider-thumb
+        -webkit-appearance: none
+        width: 16px
+        height: 16px
+        border-radius: 50%
+        background: $accent
+        cursor: pointer
+        box-shadow: 0 0 6px rgba($accent, 0.6)
+
+    &::-moz-range-thumb
+        width: 16px
+        height: 16px
+        border-radius: 50%
+        background: $accent
+        border: none
+        cursor: pointer
+        box-shadow: 0 0 6px rgba($accent, 0.6)
+
+    &::-webkit-slider-runnable-track
+        background: transparent
+
+    &::-moz-range-track
+        background: transparent
+
+// Purity selector
+.purity-row
+    display: flex
+    gap: 5px
+    margin-top: 0.3rem
+
+$purity-impure: #FF7043
+$purity-normal: #66BB6A
+$purity-pure:   #29B6F6
+
+.purity-btn
+    flex: 1
+    height: 26px
+    border-radius: 5px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background: rgba(255, 255, 255, 0.05)
+    color: rgba(255, 255, 255, 0.5)
+    font-size: 0.72rem
+    font-weight: 700
+    cursor: pointer
+    transition: background 0.15s, border-color 0.15s, color 0.15s
+
+    &.impure:hover, &.impure.active
+        border-color: $purity-impure
+        color: $purity-impure
+
+    &.impure.active
+        background: rgba($purity-impure, 0.15)
+
+    &.normal:hover, &.normal.active
+        border-color: $purity-normal
+        color: $purity-normal
+
+    &.normal.active
+        background: rgba($purity-normal, 0.15)
+
+    &.pure:hover, &.pure.active
+        border-color: $purity-pure
+        color: $purity-pure
+
+    &.pure.active
+        background: rgba($purity-pure, 0.15)
+
+.sloop-row
+    display: flex
+    gap: 6px
+    margin-top: 0.3rem
+
+.sloop-btn
+    width: 34px
+    height: 28px
+    border-radius: 5px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background: rgba(255, 255, 255, 0.06)
+    color: rgba(255, 255, 255, 0.6)
+    font-size: 0.8rem
+    font-weight: 600
+    cursor: pointer
+    transition: background 0.15s, border-color 0.15s, color 0.15s
+
+    &:hover
+        background: rgba(255, 255, 255, 0.12)
+        border-color: rgba(255, 255, 255, 0.3)
+        color: rgba(255, 255, 255, 0.9)
+
+    &.active
+        background: rgba($accent, 0.2)
+        border-color: $accent
+        color: $accent
+
+// Belt / pipe mark selector
+.mark-row
+    display: flex
+    flex-wrap: wrap
+    gap: 5px
+    margin-top: 0.3rem
+
+.mark-btn
+    height: 26px
+    padding: 0 8px
+    border-radius: 5px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background: rgba(255, 255, 255, 0.05)
+    color: rgba(255, 255, 255, 0.55)
+    font-size: 0.72rem
+    font-weight: 700
+    cursor: pointer
+    transition: background 0.15s, border-color 0.15s, color 0.15s
+
+    &:hover
+        border-color: var(--mark-color, rgba(255,255,255,0.4))
+        color: rgba(255, 255, 255, 0.9)
+
+    &.active
+        background: color-mix(in srgb, var(--mark-color, #{$accent}) 20%, transparent)
+        border-color: var(--mark-color, #{$accent})
+        color: var(--mark-color, #{$accent})
+
+// Rate capped in properties panel
+.rate-capped
+    color: #FF6B6B !important
+
+.capped-warning
+    margin-top: 0.6rem
+    padding: 0.5rem 0.6rem
+    background: rgba(255, 80, 60, 0.1)
+    border: 1px solid rgba(255, 80, 60, 0.3)
+    border-radius: 6px
+    color: #FF8A80
+    font-size: 0.72rem
+    line-height: 1.4
+    display: flex
+    align-items: flex-start
+    gap: 0.4rem
+
+    i
+        margin-top: 1px
+        flex-shrink: 0
+
+.property-actions
+    display: flex
+    flex-direction: column
+    gap: 0.5rem
+    margin-top: 1rem

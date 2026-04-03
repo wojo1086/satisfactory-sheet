@@ -311,5 +311,47 @@ export const Machines: IMachines = {
             timeCrystal: 50,
             ficsiteTrigon: 100
         }
+    },
+    conveyorSplitter: {
+        name: 'Conveyor Splitter',
+        power: { min: 0, max: 0 },
+        ingredients: {
+            ironPlate: 5,
+            ironRod: 5
+        }
+    },
+    conveyorMerger: {
+        name: 'Conveyor Merger',
+        power: { min: 0, max: 0 },
+        ingredients: {
+            ironPlate: 5,
+            ironRod: 5
+        }
+    },
+    smartSplitter: {
+        name: 'Smart Splitter',
+        power: { min: 0, max: 0 },
+        ingredients: {
+            ironPlate: 5,
+            ironRod: 5,
+            cable: 5
+        }
+    },
+    programmableSplitter: {
+        name: 'Programmable Splitter',
+        power: { min: 0, max: 0 },
+        ingredients: {
+            ironPlate: 5,
+            ironRod: 5,
+            supercomputer: 1
+        }
+    },
+    pipelineJunction: {
+        name: 'Pipeline Junction Cross',
+        power: { min: 0, max: 0 },
+        ingredients: {
+            ironPlate: 2,
+            ironRod: 2
+        }
     }
 };

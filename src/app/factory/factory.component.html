@@ -1,0 +1,612 @@
+<p-toast></p-toast>
+
+<div class="factory-layout">
+    <!-- Left Sidebar: Machine Palette -->
+    <div class="machine-palette">
+        <h3>Machines</h3>
+        <div cdkDropList #paletteList="cdkDropList" [cdkDropListData]="paletteMachines"
+             [cdkDropListConnectedTo]="[canvasList]" [cdkDropListSortingDisabled]="true"
+             class="palette-list">
+            @for (m of paletteMachines; track m.key) {
+                <div cdkDrag [cdkDragData]="m.key" class="palette-item">
+                    <div class="palette-item-content">
+                        <img [src]="getMachineImage(m.key)" [alt]="m.name" class="palette-machine-img">
+                        <div class="palette-machine-info">
+                            <span class="machine-name">{{ m.name }}</span>
+                            <span class="machine-power">{{ getPowerDisplay(m.power) }}</span>
+                        </div>
+                    </div>
+                    <div *cdkDragPlaceholder class="drag-placeholder"></div>
+                    <div *cdkDragPreview class="drag-preview">
+                        <img [src]="getMachineImage(m.key)" [alt]="m.name" class="preview-img">
+                        <span>{{ m.name }}</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Logistics palette section (Train Station etc.) -->
+        <div class="palette-section-label logistics-label">Logistics</div>
+        <div cdkDropList #logisticsList="cdkDropList"
+             [cdkDropListConnectedTo]="[canvasList]" [cdkDropListSortingDisabled]="true"
+             class="palette-list">
+            @for (item of specialPaletteItems; track item.key) {
+                <div cdkDrag [cdkDragData]="item.key" class="palette-item logistics-palette-item">
+                    <div class="palette-item-content">
+                        <img src="assets/images/machines/trainStation.png" alt="Train Station" class="palette-machine-img logistics-palette-icon">
+                        <div class="palette-machine-info">
+                            <span class="machine-name">{{ item.name }}</span>
+                            <span class="machine-power">Logistics</span>
+                        </div>
+                    </div>
+                    <div *cdkDragPlaceholder class="drag-placeholder"></div>
+                    <div *cdkDragPreview class="drag-preview">
+                        <img src="assets/images/machines/trainStation.png" alt="Train Station" class="preview-img">
+                        <span>{{ item.name }}</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sub-Factory palette section -->
+        @if (getOtherFactories().length > 0) {
+            <div class="palette-section-label">Sub-Factories</div>
+            <div cdkDropList #subPaletteList="cdkDropList"
+                 [cdkDropListConnectedTo]="[canvasList]" [cdkDropListSortingDisabled]="true"
+                 class="palette-list">
+                @for (f of getOtherFactories(); track f.id) {
+                    <div cdkDrag [cdkDragData]="'subfactory:' + f.id" class="palette-item subfactory-palette-item">
+                        <div class="palette-item-content">
+                            <span class="subfactory-palette-icon">⚙</span>
+                            <div class="palette-machine-info">
+                                <span class="machine-name">{{ f.name }}</span>
+                                <span class="machine-power">Sub-Factory</span>
+                            </div>
+                        </div>
+                        <div *cdkDragPlaceholder class="drag-placeholder"></div>
+                        <div *cdkDragPreview class="drag-preview">
+                            <span class="subfactory-preview-icon">⚙</span>
+                            <span>{{ f.name }}</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Main Canvas Area -->
+    <div class="canvas-area">
+        <!-- Factory Tab Bar -->
+        <div class="factory-tab-bar">
+            @for (f of project.factories; track f.id) {
+                <div class="factory-tab" [class.active]="activeFactoryId === f.id"
+                     (click)="switchFactory(f.id)">
+                    @if (editingTabId === f.id) {
+                        <input class="tab-name-input"
+                               [id]="'tab-input-' + f.id"
+                               [ngModel]="f.name"
+                               (ngModelChange)="renameFactory(f.id, $event)"
+                               (blur)="stopEditingTab()"
+                               (keydown.enter)="stopEditingTab()"
+                               (keydown.escape)="stopEditingTab()"
+                               (click)="$event.stopPropagation()">
+                    } @else {
+                        <span class="tab-name-text"
+                              (dblclick)="startEditingTab(f.id, $event)">{{ f.name }}</span>
+                    }
+                    @if (project.factories.length > 1) {
+                        <button class="tab-close"
+                                (click)="deleteFactory(f.id); $event.stopPropagation()"
+                                pTooltip="Delete factory" tooltipPosition="top">×</button>
+                    }
+                </div>
+            }
+            <button class="tab-add" (click)="addFactory()" pTooltip="New factory" tooltipPosition="top">+</button>
+        </div>
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <span class="power-total" pTooltip="Total power consumption">
+                <i class="pi pi-bolt"></i> {{ getTotalPower() }} MW
+            </span>
+            <div class="toolbar-actions">
+                <span class="connection-mode" [class.active]="connectingFromId">
+                    @if (connectingFromId) {
+                        <i class="pi pi-link"></i> Click a machine to connect...
+                        <p-button icon="pi pi-times" [text]="true" severity="secondary" (click)="connectingFromId = null"></p-button>
+                    }
+                </span>
+                <p-button icon="pi pi-trash" label="Clear" severity="danger" [text]="true" (click)="clearCanvas()"></p-button>
+            </div>
+        </div>
+
+        <!-- Grid Canvas -->
+        <div class="grid-canvas" #canvas cdkDropList #canvasList="cdkDropList"
+             [cdkDropListData]="placedMachines" (cdkDropListDropped)="dropOnCanvas($event)"
+             [cdkDropListEnterPredicate]="alwaysTrue" [cdkDropListSortingDisabled]="true"
+             [class.placing-copy]="!!pendingCopy"
+             (click)="pendingCopy ? placePendingCopy($event) : deselectAll()">
+
+            <!-- SVG Connections Layer -->
+            <svg class="connections-layer">
+                @for (conn of connections; track conn.id) {
+                    @let mid = getConnectionMidpoint(conn);
+                    @let rate = getConnectionRate(conn);
+                    @let itemKey = getConnectionItemKey(conn);
+                    @let beltColor = getBeltColor(conn);
+                    @let isCapped = rate != null && rate >= getConnectionMaxRate(conn);
+                    @let isSelected = selectedConnectionId === conn.id;
+                    <g>
+                        <!-- Wider invisible hit-target for easier clicking -->
+                        <path
+                            [attr.d]="getConnectionPath(conn)"
+                            stroke="transparent" stroke-width="12" fill="none"
+                            style="cursor:pointer; pointer-events:stroke"
+                            (click)="selectConnection(conn, $event)"/>
+                        <!-- Visible line -->
+                        <path
+                            [attr.d]="getConnectionPath(conn)"
+                            [class.belt-line]="conn.type === 'belt'"
+                            [class.pipe-line]="conn.type === 'pipe'"
+                            [class.conn-selected]="isSelected"
+                            [style.stroke]="beltColor"
+                            (click)="selectConnection(conn, $event)"
+                        />
+                        <!-- Item icon -->
+                        @if (itemKey) {
+                            <image [attr.href]="getItemImage(itemKey)"
+                                   [attr.x]="mid.x - 11"
+                                   [attr.y]="mid.y - 40"
+                                   width="22" height="22"
+                                   class="conn-item-img"/>
+                        }
+                        <!-- Rate + mark label -->
+                        @if (rate != null) {
+                            <rect
+                                [attr.x]="mid.x - 42"
+                                [attr.y]="mid.y - 16"
+                                width="84" height="18" rx="4"
+                                [class.conn-label-bg]="true"
+                                [class.conn-label-capped]="isCapped"/>
+                            <text
+                                [attr.x]="mid.x - 5"
+                                [attr.y]="mid.y - 2"
+                                class="conn-label">{{ rate }}/min</text>
+                            <text
+                                [attr.x]="mid.x + 30"
+                                [attr.y]="mid.y - 2"
+                                class="conn-mark-label"
+                                [style.fill]="beltColor">Mk{{ conn.mark ?? 1 }}</text>
+                        }
+                    </g>
+                }
+            </svg>
+
+            <!-- Placed Machines -->
+            @for (machine of placedMachines; track machine.id) {
+                @let recipe = getSelectedRecipeOption(machine);
+                <div class="placed-machine"
+                     [class.selected]="selectedMachineId === machine.id"
+                     [class.connecting-source]="connectingFromId === machine.id"
+                     [class.has-recipe]="!!recipe"
+                     [class.is-subfactory]="!!machine.subFactoryId"
+                     [class.is-train-station]="isTrainStation(machine)"
+                     [style.left.px]="machine.x"
+                     [style.top.px]="machine.y"
+                     [style.width.px]="gridSize"
+                     [style.height.px]="gridSize"
+                     (mousedown)="onMachineMouseDown($event, machine)"
+                     (click)="selectMachine(machine, $event)"
+                     (auxclick)="copyMachine(machine, $event)"
+                     (dblclick)="navigateToSubFactory(machine); $event.stopPropagation()">
+                    @if (machine.subFactoryId) {
+                        <!-- Sub-factory node -->
+                        @let iface = getFactoryInterface(machine.subFactoryId);
+                        <div class="machine-card subfactory-card">
+                            <span class="subfactory-node-icon">⚙</span>
+                            <span class="machine-label">{{ machine.name }}</span>
+                            @if (iface.outputs.length > 0) {
+                                <div class="node-outputs">
+                                    @for (output of iface.outputs; track output.key) {
+                                        <div class="node-output-slot"
+                                             [pTooltip]="output.name + ' · ' + output.rate + '/min'"
+                                             tooltipPosition="top">
+                                            <img [src]="getItemImage(output.key)" [alt]="output.name"
+                                                 class="node-output-icon">
+                                            <span class="node-output-rate">{{ output.rate }}</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            <span class="subfactory-hint">double-click to open</span>
+                        </div>
+                    } @else if (isTrainStation(machine)) {
+                        <!-- Train station node -->
+                        @let unloadSlots = (machine.trainSlots ?? []);
+                        <div class="machine-card train-station-card">
+                            <img src="assets/images/machines/trainStation.png" alt="Train Station" class="node-machine-img train-station-node-icon">
+                            <span class="machine-label">{{ machine.name }}</span>
+                            @let rt = machine.roundtripMinutes ?? 5;
+                            @if (unloadSlots.length > 0) {
+                                <div class="node-outputs">
+                                    @for (slot of unloadSlots; track slot.id) {
+                                        @if (slot.itemKey && slot.direction === 'unload') {
+                                            @let slotRate = getTrainSlotRate(slot, rt);
+                                            <div class="node-output-slot"
+                                                 [pTooltip]="slot.itemKey + ' · ' + slotRate + '/min'"
+                                                 tooltipPosition="top">
+                                                <img [src]="getItemImage(slot.itemKey)" [alt]="slot.itemKey"
+                                                     class="node-output-icon">
+                                                <span class="node-output-rate">{{ slotRate }}</span>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+                            <span class="subfactory-hint">{{ rt }}min/trip</span>
+                        </div>
+
+                    } @else {
+                        <!-- Regular machine node -->
+                        <div class="machine-card">
+                            <img [src]="getMachineImage(machine.machineKey)" [alt]="machine.name" class="node-machine-img">
+                            <span class="machine-label">{{ machine.name }}</span>
+                            @if (recipe) {
+                                <div class="node-outputs">
+                                    @for (output of recipe.outputs; track output.key) {
+                                        @let effectiveRate = getEffectiveOutputRate(machine, output.key);
+                                        <div class="node-output-slot"
+                                             [pTooltip]="output.name + ' · ' + effectiveRate + '/min'"
+                                             tooltipPosition="top">
+                                            <img [src]="getItemImage(output.key)" [alt]="output.name"
+                                                 class="node-output-icon">
+                                            <span class="node-output-rate">{{ effectiveRate }}</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            <!-- Ghost node for pending copy -->
+            @if (pendingCopy) {
+                <div class="placed-machine ghost-node"
+                     [style.left.px]="ghostX"
+                     [style.top.px]="ghostY"
+                     [style.width.px]="gridSize"
+                     [style.height.px]="gridSize">
+                    <div class="machine-card">
+                        <img [src]="getMachineImage(pendingCopy.machineKey)" [alt]="pendingCopy.name" class="node-machine-img">
+                        <span class="machine-label">{{ pendingCopy.name }}</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Right Panel: Selected Machine / Connection Properties -->
+    @if (selectedMachineId || selectedConnectionId) {
+        <div class="properties-panel">
+
+        <!-- Connection properties -->
+        @if (selectedConnectionId) {
+            @for (conn of connections; track conn.id) {
+                @if (conn.id === selectedConnectionId) {
+                    @let rate = getConnectionRate(conn);
+                    @let maxRate = getConnectionMaxRate(conn);
+                    @let isCapped = rate != null && rate >= maxRate;
+                    <h3>{{ conn.type === 'belt' ? 'Belt' : 'Pipe' }}</h3>
+
+                    <div class="property-section">
+                        <span class="property-label">Mark</span>
+                        <div class="mark-row">
+                            @for (mk of getBeltMarks(conn.type); track mk) {
+                                <button class="mark-btn"
+                                        [class.active]="(conn.mark ?? 1) === mk"
+                                        [style.--mark-color]="getBeltColorForMark(conn.type, mk)"
+                                        (click)="setConnectionMark(conn, mk); $event.stopPropagation()">
+                                    Mk{{ mk }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="property-row">
+                        <span class="property-label">Rate</span>
+                        <span class="property-value" [class.rate-capped]="isCapped">
+                            {{ rate ?? '—' }}{{ rate != null ? '/min' : '' }}
+                        </span>
+                    </div>
+                    <div class="property-row">
+                        <span class="property-label">Max</span>
+                        <span class="property-value">{{ maxRate }}/min</span>
+                    </div>
+                    @if (isCapped) {
+                        <div class="capped-warning">
+                            <i class="pi pi-exclamation-triangle"></i>
+                            Belt is at capacity — upgrade the mark or add another line.
+                        </div>
+                    }
+
+                    <div class="property-actions">
+                        <p-button icon="pi pi-trash" label="Delete" severity="danger" size="small"
+                                  (click)="deleteConnection(conn.id)"></p-button>
+                    </div>
+                }
+            }
+        }
+
+        <!-- Machine properties -->
+        @if (selectedMachineId) {
+            @for (machine of placedMachines; track machine.id) {
+                @if (machine.id === selectedMachineId) {
+
+                    @if (machine.subFactoryId) {
+                        <!-- Sub-factory node properties -->
+                        @let iface = getFactoryInterface(machine.subFactoryId);
+                        <h3>{{ machine.name }}</h3>
+                        <div class="property-row">
+                            <span class="property-label">Type</span>
+                            <span class="property-value" style="color: #4FC3F7">Sub-Factory</span>
+                        </div>
+
+                        @if (iface.outputs.length > 0) {
+                            <div class="property-section">
+                                <span class="property-label">Outputs</span>
+                                <div class="recipe-items">
+                                    @for (output of iface.outputs; track output.key) {
+                                        <div class="recipe-item">
+                                            <img [src]="getItemImage(output.key)" [alt]="output.name" class="recipe-item-img">
+                                            <div class="recipe-item-info">
+                                                <span class="recipe-item-name">{{ output.name }}</span>
+                                                <span class="recipe-item-rate">{{ output.rate }}/min</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        @if (iface.inputs.length > 0) {
+                            <div class="property-section">
+                                <span class="property-label">Inputs</span>
+                                <div class="recipe-items">
+                                    @for (input of iface.inputs; track input.key) {
+                                        <div class="recipe-item">
+                                            <img [src]="getItemImage(input.key)" [alt]="input.name" class="recipe-item-img">
+                                            <div class="recipe-item-info">
+                                                <span class="recipe-item-name">{{ input.name }}</span>
+                                                <span class="recipe-item-rate">{{ input.rate }}/min</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="property-actions">
+                            <p-button icon="pi pi-external-link" label="Open" severity="info" size="small"
+                                      (click)="navigateToSubFactory(machine)"></p-button>
+                            <p-button icon="pi pi-arrows-alt" label="Belt" severity="warn" size="small"
+                                      (click)="startConnection(machine.id, 'belt')"></p-button>
+                            <p-button icon="pi pi-arrows-alt" label="Pipe" severity="info" size="small"
+                                      (click)="startConnection(machine.id, 'pipe')"></p-button>
+                            <p-button icon="pi pi-trash" label="Delete" severity="danger" size="small"
+                                      (click)="deleteMachine(machine.id)"></p-button>
+                        </div>
+
+                    } @else if (isTrainStation(machine)) {
+                        <!-- Train station properties -->
+                        <h3>Train Station</h3>
+
+                        <!-- Roundtrip time -->
+                        <div class="property-section">
+                            <span class="property-label">Roundtrip Time</span>
+                            <div class="roundtrip-row">
+                                <input type="number" class="overclock-input roundtrip-input"
+                                       [ngModel]="machine.roundtripMinutes ?? 5"
+                                       (ngModelChange)="setRoundtrip(machine, $event)"
+                                       min="0.01" step="0.5"
+                                       (click)="$event.stopPropagation()">
+                                <span class="overclock-pct">min</span>
+                            </div>
+                        </div>
+
+                        <!-- Slot list -->
+                        <div class="property-section">
+                            <span class="property-label">Slots</span>
+                            <div class="train-slot-list">
+                                @for (slot of (machine.trainSlots ?? []); track slot.id) {
+                                    @let rt = machine.roundtripMinutes ?? 5;
+                                    <div class="train-slot-row">
+                                        <button class="slot-dir-btn"
+                                                [class.is-load]="slot.direction === 'load'"
+                                                [class.is-unload]="slot.direction === 'unload'"
+                                                [pTooltip]="slot.direction === 'load' ? 'Load: factory → train' : 'Unload: train → factory'"
+                                                tooltipPosition="top"
+                                                (click)="toggleSlotDirection(machine, slot.id); $event.stopPropagation()">
+                                            {{ slot.direction === 'load' ? '↑' : '↓' }}
+                                        </button>
+                                        <p-select
+                                            [options]="allItems"
+                                            [ngModel]="slot.itemKey"
+                                            (ngModelChange)="setTrainSlotItem(machine, slot.id, $event)"
+                                            optionLabel="name"
+                                            optionValue="key"
+                                            placeholder="Item"
+                                            [filter]="true"
+                                            filterBy="name"
+                                            styleClass="slot-item-select"
+                                            (click)="$event.stopPropagation()">
+                                        </p-select>
+                                        <input type="number" class="overclock-input slot-qty-input"
+                                               [ngModel]="slot.quantityPerTrip"
+                                               (ngModelChange)="setSlotQty(machine, slot.id, $event)"
+                                               min="0" step="1"
+                                               placeholder="qty"
+                                               (click)="$event.stopPropagation()">
+                                        <span class="slot-rate">{{ getTrainSlotRate(slot, rt) }}/min</span>
+                                        <button class="slot-delete-btn"
+                                                pTooltip="Remove" tooltipPosition="top"
+                                                (click)="removeTrainSlot(machine, slot.id); $event.stopPropagation()">×</button>
+                                    </div>
+                                }
+                            </div>
+                            <button class="add-slot-btn"
+                                    (click)="addTrainSlot(machine); $event.stopPropagation()">
+                                + Add Slot
+                            </button>
+                        </div>
+
+                        <div class="property-actions">
+                            <p-button icon="pi pi-arrows-alt" label="Belt" severity="warn" size="small"
+                                      (click)="startConnection(machine.id, 'belt')"></p-button>
+                            <p-button icon="pi pi-arrows-alt" label="Pipe" severity="info" size="small"
+                                      (click)="startConnection(machine.id, 'pipe')"></p-button>
+                            <p-button icon="pi pi-trash" label="Delete" severity="danger" size="small"
+                                      (click)="deleteMachine(machine.id)"></p-button>
+                        </div>
+
+                    } @else {
+                        <!-- Regular machine properties -->
+                        @let recipes = getRecipesForMachine(machine.machineKey);
+                        @let selected = getSelectedRecipeOption(machine);
+
+                        <h3>{{ machine.name }}</h3>
+                        <div class="property-row">
+                            <span class="property-label">Power</span>
+                            <span class="property-value">{{ getPowerDisplay(getMachinePower(machine.machineKey)) }}</span>
+                        </div>
+
+                        <!-- Clock Speed / Overclock -->
+                        <div class="property-section">
+                            <div class="overclock-header">
+                                <span class="property-label">Clock Speed</span>
+                                <span class="overclock-value">
+                                    <input type="number" class="overclock-input"
+                                           [ngModel]="machine.overclockPercent ?? +(getEffectiveClockSpeed(machine) * 100).toFixed(0)"
+                                           (ngModelChange)="setOverclock(machine, $event)"
+                                           [class.is-auto]="machine.overclockPercent == null"
+                                           min="1" max="250" step="1"
+                                           (click)="$event.stopPropagation()">
+                                    <span class="overclock-pct">%</span>
+                                    @if (machine.overclockPercent != null) {
+                                        <button class="overclock-reset"
+                                                pTooltip="Reset to auto" tooltipPosition="top"
+                                                (click)="clearOverclock(machine); $event.stopPropagation()">auto</button>
+                                    }
+                                </span>
+                            </div>
+                            @let sliderVal = getOverclockSliderValue(machine);
+                            <div class="slider-wrap">
+                                <div class="slider-track">
+                                    <div class="slider-track-fill"
+                                         [style.width.%]="((sliderVal - 1) / 249) * 100"></div>
+                                </div>
+                                <input type="range" class="overclock-slider"
+                                       [ngModel]="sliderVal"
+                                       (ngModelChange)="machine.overclockPercent = $event"
+                                       (change)="saveData()"
+                                       min="1" max="250" step="1">
+                            </div>
+                        </div>
+
+                        <!-- Somersloops -->
+                        <div class="property-section">
+                            <span class="property-label">Somersloops</span>
+                            <div class="sloop-row">
+                                @for (n of [0, 1, 2]; track n) {
+                                    <button class="sloop-btn" [class.active]="(machine.somersloops ?? 0) === n"
+                                            [pTooltip]="n === 0 ? 'None' : n === 1 ? '×1.5 output (expected)' : '×2 output'"
+                                            tooltipPosition="top"
+                                            (click)="setSomersloops(machine, n); $event.stopPropagation()">
+                                        {{ n }}
+                                    </button>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Resource node purity (miners & extractors only) -->
+                        @if (isExtractor(machine)) {
+                            <div class="property-section">
+                                <span class="property-label">Node Purity</span>
+                                <div class="purity-row">
+                                    <button class="purity-btn impure"
+                                            [class.active]="(machine.purity ?? 'impure') === 'impure'"
+                                            pTooltip="Base rate (×1)" tooltipPosition="top"
+                                            (click)="setPurity(machine, 'impure'); $event.stopPropagation()">
+                                        Impure
+                                    </button>
+                                    <button class="purity-btn normal"
+                                            [class.active]="(machine.purity ?? 'impure') === 'normal'"
+                                            pTooltip="×2 output rate" tooltipPosition="top"
+                                            (click)="setPurity(machine, 'normal'); $event.stopPropagation()">
+                                        Normal
+                                    </button>
+                                    <button class="purity-btn pure"
+                                            [class.active]="(machine.purity ?? 'impure') === 'pure'"
+                                            pTooltip="×4 output rate" tooltipPosition="top"
+                                            (click)="setPurity(machine, 'pure'); $event.stopPropagation()">
+                                        Pure
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Recipe selector -->
+                        <div class="property-section">
+                            <span class="property-label">Recipe</span>
+                            <p-select
+                                [options]="recipes"
+                                [ngModel]="selected"
+                                (ngModelChange)="selectRecipe(machine, $event)"
+                                optionLabel="name"
+                                placeholder="Select a recipe"
+                                [showClear]="true"
+                                styleClass="w-full"
+                                (click)="$event.stopPropagation()">
+                                <ng-template pTemplate="item" let-opt>
+                                    <div class="recipe-option" [class.recipe-match]="recipeMatchesIncoming(opt, machine.id)">
+                                        @if (recipeMatchesIncoming(opt, machine.id)) {
+                                            <i class="pi pi-arrow-right recipe-match-icon" pTooltip="Matches incoming belt" tooltipPosition="left"></i>
+                                        }
+                                        <span>{{ opt.name }}</span>
+                                    </div>
+                                </ng-template>
+                            </p-select>
+                        </div>
+
+                        <!-- Selected recipe details -->
+                        @if (selected) {
+                            <div class="property-section">
+                                <span class="property-label">Outputs</span>
+                                <div class="recipe-items">
+                                    @for (output of selected.outputs; track output.key) {
+                                        <div class="recipe-item">
+                                            <img [src]="getItemImage(output.key)" [alt]="output.name" class="recipe-item-img">
+                                            <div class="recipe-item-info">
+                                                <span class="recipe-item-name">{{ output.name }}</span>
+                                                <span class="recipe-item-rate">{{ output.rate }}/min</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="property-actions">
+                            <p-button icon="pi pi-arrows-alt" label="Belt" severity="warn" size="small"
+                                      (click)="startConnection(machine.id, 'belt')"></p-button>
+                            <p-button icon="pi pi-arrows-alt" label="Pipe" severity="info" size="small"
+                                      (click)="startConnection(machine.id, 'pipe')"></p-button>
+                            <p-button icon="pi pi-trash" label="Delete" severity="danger" size="small"
+                                      (click)="deleteMachine(machine.id)"></p-button>
+                        </div>
+                    }
+                }
+            }
+        }
+
+        </div>
+    }
+</div>

@@ -26,7 +26,12 @@ export interface IMachines {
     equipmentWorkshop: IMachine,
     nuclearPowerPlant: IMachine,
     converter: IMachine,
-    quantumEncoder: IMachine
+    quantumEncoder: IMachine,
+    conveyorSplitter: IMachine,
+    conveyorMerger: IMachine,
+    smartSplitter: IMachine,
+    programmableSplitter: IMachine,
+    pipelineJunction: IMachine
 }
 
 export interface IMachine {
